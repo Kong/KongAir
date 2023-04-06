@@ -1,11 +1,11 @@
 ---
-# OpenAPI Spec for the KongAir Routes service
+# OpenAPI Spec for the KongAir Flights service
 openapi: 3.0.0
 
 info:
-  description: KongAir Routes service provides the registered routes KongAir flies between origin and destination airports
+  description: KongAir Flights service provides the scheduled flights for KongAir
   version: 0.1.0
-  title: Routes Service
+  title: Flights Service
 
 servers:
 - url: https://api.kong-air.com
