@@ -44,7 +44,7 @@ paths:
                   - scheduledDeparture
                   - scheduledArrival
               examples:
-                lhr-sfo:
+                lhr-sfo-mar-20-2024:
                   value: |
                    {
                     "route": {
