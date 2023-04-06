@@ -1,0 +1,42 @@
+---
+# OpenAPI Spec for the KongAir Routes service
+openapi: 3.0.0
+
+info:
+  description: KongAir Routes service provides the registered routes KongAir flies between origin and destination airports
+  version: 0.1.0
+  title: Routes Service
+
+servers:
+- url: https://api.kong-air.com
+  description: KongAir API Server
+
+paths:
+  "/routes":
+    get:
+      tags:
+      - flight-data
+      summary: Get the KongAir registered routes
+      operationId: getRoutes
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  origin: 
+                    type: string
+                  destination: 
+                    type: string
+                required:
+                  - origin
+                  - destination
+              examples:
+                lhr-sfo:
+                  value: |
+                   {
+                    "origin": "LHR",
+                    "destination": "SFO"
+                   }
