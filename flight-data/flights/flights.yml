@@ -26,6 +26,8 @@ paths:
               schema:
                 type: object
                 properties: 
+                  number:
+                    type: string
                   route:
                     type: object
                     properties:
@@ -47,6 +49,7 @@ paths:
                 lhr-sfo-mar-20-2024:
                   value: |
                    {
+                    "number": "KD924",
                     "route": {
                       "origin": "LHR",
                       "destination": "SFO"
