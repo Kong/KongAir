@@ -1,0 +1,110 @@
+---
+# OpenAPI Spec for the KongAir Bookings service
+openapi: 3.0.0
+
+info:
+  description: KongAir Bookings service provides customers the ability to book and retrieve flight bookings on KongAir 
+  version: 0.1.0
+  title: Bookings Service
+
+servers:
+- url: https://api.kong-air.com
+  description: KongAir API Server
+
+paths:
+  "/bookings":
+    get:
+      tags:
+      - sales 
+      summary: Get a customers current bookings
+      operationId: get-bookings
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  ticket_number:
+                    type: string
+                  flight:
+                    type: object
+                    properties: 
+                      number:
+                        type: string 
+                      route:
+                        type: object
+                        properties:
+                          origin: 
+                            type: string
+                          destination: 
+                            type: string
+                      scheduled_departure:
+                        type: string
+                        format: date-time
+                      scheduled_arrival:
+                        type: string
+                        format: date-time
+                  seat:
+                    type: string
+                required:
+                  - ticket_number
+                  - flight
+              examples:
+                Example Bookings list response:
+                  value: |
+                   {
+                    "ticket_number": "CDF3412",
+                    "seat": "32A",
+                    "flight": {
+                      "number": "KA924",
+                      "route": {
+                        "origin": "LHR",
+                        "destination": "SFO"
+                      },
+                      scheduled_departure: "2023-09-03T09:15:00Z",
+                      scheduled_arrival: "2023-09-03T14:23:00Z"
+                    }
+                   }
+    post:
+      tags:
+        - sales
+      summary: Create a new customer booking
+      operationId: post-booking
+      responses:
+        '201':
+          description: Booking Created Successfully
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  ticket_number:
+                    type: string 
+              examples:
+                Example new booking response body:
+                  value: |
+                   {
+                    "ticket_number": "CDF3412"
+                   }
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                flight_number:
+                  type: string
+                seat:
+                  type: string
+              required:
+                - flight_number
+            examples:
+              Example new booking request body:
+                value: |
+                 {
+                   "flight_number": "KA924",
+                   "seat": "32A"
+                 }
