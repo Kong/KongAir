@@ -1,10 +1,10 @@
 ---
 # OpenAPI Spec for the KongAir Routes service
-openapi: 3.0.0
+openapi: 3.1.0
 
 info:
   description: KongAir Routes service provides the registered routes KongAir flies between origin and destination airports
-  version: 0.1.0
+  version: 1.0.0
   title: Routes Service
 
 servers:
@@ -14,29 +14,49 @@ servers:
 paths:
   "/routes":
     get:
+      summary: Request all the KongAir routes
+      description: |
+        Returns all the routes KongAir is currently registered to fly.
+        A Route is a pairing between origin and destination airport codes.
       tags:
       - flight-data
-      summary: Get the KongAir registered routes
-      operationId: getRoutes
+      operationId: get-routes
+      parameters:
+        - name: origin 
+          in: query
+          description: filter by origin
+          required: false
+          style: form
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
-          description: Successful operation
+          description: Successful response with the registered Routes
           content:
             application/json:
               schema:
-                type: object
-                properties: 
-                  origin: 
-                    type: string
-                  destination: 
-                    type: string
-                required:
-                  - origin
-                  - destination
+                type: array
+                items:
+                  $ref: '#/components/schemas/Route'        
               examples:
                 lhr-sfo:
                   value: |
-                   {
-                    "origin": "LHR",
-                    "destination": "SFO"
-                   }
+                   [{
+                      "origin": "LHR",
+                      "destination": "SFO"
+                    }]
+
+components:
+  schemas:
+    Route:
+      type: object
+      properties: 
+        origin: 
+          type: string
+        destination: 
+          type: string
+      required:
+        - origin
+        - destination

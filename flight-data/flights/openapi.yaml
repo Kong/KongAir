@@ -1,6 +1,6 @@
 ---
 # OpenAPI Spec for the KongAir Flights service
-openapi: 3.0.0
+openapi: 3.1.0
 
 info:
   description: KongAir Flights service provides the scheduled flights for KongAir
@@ -14,37 +14,30 @@ servers:
 paths:
   "/flights":
     get:
+      summary: Get KongAir planned flights 
+      description: |
+        Returns all the scheduled flights for a given day
       tags:
       - flight-data
-      summary: Get KongAir planned flights 
-      operationId: getFlights
+      operationId: get-flights
+      parameters:
+        - name: date
+          in: query
+          description: Filter by date (defaults to current day)
+          required: false
+          style: form
+          schema:
+            type: string
+            format: date
       responses:
         '200':
-          description: Successful operation
+          description: Successful respone with scheduled flights 
           content:
             application/json:
               schema:
-                type: object
-                properties: 
-                  number:
-                    type: string
-                  route:
-                    type: object
-                    properties:
-                      origin: 
-                        type: string
-                      destination: 
-                        type: string
-                  scheduled_departure:
-                    type: string
-                    format: date-time
-                  scheduled_arrival:
-                    type: string
-                    format: date-time
-                required:
-                  - route
-                  - scheduled-departure
-                  - scheduled-arrival
+                type: array
+                items:
+                  $ref: '#/components/schemas/Flight'
               examples:
                 Example Flight KD924:
                   value: |
@@ -57,3 +50,29 @@ paths:
                     "scheduled_departure": "2024-03-20T09:12:28Z",
                     "scheduled_arrival": "2024-03-20T19:12:28Z"
                    }
+
+components:
+  schemas:
+    Flight:
+      type: object
+      properties: 
+        number:
+          type: string
+        route:
+          type: object
+          properties:
+            origin: 
+              type: string
+            destination: 
+              type: string
+        scheduled_departure:
+          type: string
+          format: date-time
+        scheduled_arrival:
+          type: string
+          format: date-time
+      required:
+        - number
+        - route
+        - scheduled-departure
+        - scheduled-arrival
