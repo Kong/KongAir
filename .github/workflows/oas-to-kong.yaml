@@ -44,3 +44,6 @@ jobs:
         with:
           kced-version: '0.1.11'
 
+      - name: Convert Flights API to Kong
+        run: kced openapi2kong -s flight-data/flights/openapi.yaml
+        
