@@ -26,3 +26,21 @@ jobs:
               - 'flight-data/flights/openapi.yaml'
               - 'flight-data/routes/openapi.yaml'
               - 'sales/bookings/opeanapi.yaml'
+
+  oas-to-kong:
+    name: Convert changed OAS to Kong configurations
+
+    needs: changes
+    if: ${{ needs.changes.outputs.changed-specs == 'true' }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup kced 
+        uses: rspurgeon/setup-kced@v1
+        with:
+          kced-version: '0.1.11'
+
