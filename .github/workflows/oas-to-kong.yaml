@@ -63,7 +63,7 @@ jobs:
         run: kced openapi2kong -s flight-data/routes/openapi.yaml -o .github/artifacts/kong/flight-data-routes-kong.yaml
 
       - name: Convert Bookings API to Kong
-        run: kced openapi2kong -s sales/bookings/openapi.yaml -o .github/artifcats/kong/sales-bookings-kong.yaml
+        run: kced openapi2kong -s sales/bookings/openapi.yaml -o .github/artifacts/kong/sales-bookings-kong.yaml
 
       - name: Combine Kong Configurations
         id: kong-combine
