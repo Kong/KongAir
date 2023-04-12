@@ -46,9 +46,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    outputs: 
-      kong-combined: ${{ steps.kong-combine.outputs.stdout }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -60,14 +57,16 @@ jobs:
           wrapper: true
 
       - name: Convert Flights API to Kong
-        run: kced openapi2kong -s flight-data/flights/openapi.yaml -o flight-data-flights-kong.yaml
+        run: kced openapi2kong -s flight-data/flights/openapi.yaml -o .github/artifacts/kong/flight-data-flights-kong.yaml
         
       - name: Convert Routes API to Kong
-        run: kced openapi2kong -s flight-data/routes/openapi.yaml -o flight-data-routes-kong.yaml
+        run: kced openapi2kong -s flight-data/routes/openapi.yaml -o .github/artifacts/kong/flight-data-routes-kong.yaml
 
       - name: Convert Bookings API to Kong
-        run: kced openapi2kong -s sales/bookings/openapi.yaml -o sales-bookings-kong.yaml
+        run: kced openapi2kong -s sales/bookings/openapi.yaml -o .github/artifcats/kong/sales-bookings-kong.yaml
 
       - name: Combine Kong Configurations
         id: kong-combine
-        run: kced merge flight-data-flights-kong.yaml flight-data-routes-kong.yaml sales-bookings-kong.yaml
+        run: kced merge .github/artifacts/kong/*-kong.yaml -o .github/artifacts/kong/kong-combined.yaml
+
+      #- name: Create PR for 
