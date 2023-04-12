@@ -67,12 +67,15 @@ jobs:
 
       - name: Combine Kong Configurations
         id: kong-combine
-        run: kced merge .github/artifacts/kong/*-kong.yaml -o .github/artifacts/kong/kong-combined.yaml
+        run: kced merge .github/artifacts/kong/*-kong.yaml -o platform/kong-combined.yaml
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: kong-configurations
-          path: .github/artifacts/kong/*.yaml
+          path: |
+            .github/artifacts/kong/*.yaml
+            platform/kong-combined.yaml
 
-      #- name: Create PR for 
+      - name: Create PR for changed Kong Gateway Configuration
+        uses: peter-evans/create-pull-request@v5
