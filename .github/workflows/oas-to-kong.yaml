@@ -1,0 +1,92 @@
+name: OAS to Kong
+
+on:
+  push:
+    branches:
+      - main
+      - actions
+
+jobs:
+
+#  this job is useful to debug workflows, see https://github.com/mheap/debug-artifact
+#  debug-artifacts:
+#    name: Upload Debug Artifacts
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Upload Debug Artifacts
+#        uses: mheap/debug-artifact@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  have-oas-changed:
+    name: Have OAS files changed
+    runs-on: ubuntu-latest
+
+    outputs:
+      are-changes: ${{ steps.changed-specs.outputs.spec }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: dorny/paths-filter@v2
+        id: changed-specs 
+        with:
+          filters: |
+            spec:
+              - 'flight-data/flights/openapi.yaml'
+              - 'flight-data/routes/openapi.yaml'
+              - 'sales/bookings/opeanapi.yaml'
+
+  oas-to-kong:
+    name: Convert OAS to Kong configurations
+
+    needs: have-oas-changed
+    if: ${{ needs.have-oas-changed.outputs.are-changes == 'true' }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup kced 
+        uses: rspurgeon/setup-kced@v1
+        with:
+          kced-version: '0.1.11'
+          wrapper: true
+
+      - name: Convert Flights API to Kong
+        # In two steps, convert the OpenAPI Spec to a Kong declarative configuration 
+        #   and then patch the result with the internal hostname for the service
+        run: |
+          kced openapi2kong -s flight-data/flights/openapi.yaml -o .github/artifacts/kong/flight-data-flights-kong.yaml
+          kced patch -s .github/artifacts/kong/flight-data-flights-kong.yaml --selector="$.services[0]" --value='host:\"flights.kong-air.internal\"' -o .github/artifacts/kong/flight-data-flights-kong.yaml
+
+      - name: Convert Routes API to Kong
+        # In two steps, convert the OpenAPI Spec to a Kong declarative configuration 
+        #   and then patch the result with the internal hostname for the service
+        run: |
+          kced openapi2kong -s flight-data/routes/openapi.yaml -o .github/artifacts/kong/flight-data-routes-kong.yaml
+          kced patch -s .github/artifacts/kong/flight-data-routes-kong.yaml --selector="$.services[0]" --value='host:\"routes.kong-air.internal\"' -o .github/artifacts/kong/flight-data-routes-kong.yaml
+
+      - name: Convert Bookings API to Kong
+        run: |
+          kced openapi2kong -s sales/bookings/openapi.yaml -o .github/artifacts/kong/sales-bookings-kong.yaml
+          kced patch -s .github/artifacts/kong/sales-bookings-kong.yaml --selector="$.services[0]" --value='host:\"bookings.kong-air.internal\"' -o .github/artifacts/kong/sales-bookings-kong.yaml
+
+      - name: Combine Kong Configurations
+        id: kong-combine
+        run: |
+          kced merge .github/artifacts/kong/*-kong.yaml -o platform/kong-combined.yaml
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: kong-configurations
+          path: .github/artifacts/kong/*.yaml
+
+      - name: Create PR for changed Kong Gateway Configuration
+        uses: peter-evans/create-pull-request@v5
+        with:
+          title: Kong Gateway combined configuration change 
