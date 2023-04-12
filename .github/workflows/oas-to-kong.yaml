@@ -7,12 +7,21 @@ on:
       - actions
 
 jobs:
-  changes:
-    name: Get Changed Spec Files
+	debug-artifacts:
+    name: Upload Debug Artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Upload Debug Artifacts
+        uses: mheap/debug-artifact@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  have-oas-changed:
+    name: Have OAS files changed
     runs-on: ubuntu-latest
 
     outputs:
-      changed-specs: ${{ steps.changed-specs.outputs.spec }}
+      are-changes: ${{ steps.changed-specs.outputs.spec }}
 
     steps:
       - name: Checkout
@@ -21,6 +30,7 @@ jobs:
       - uses: dorny/paths-filter@v2
         id: changed-specs 
         with:
+          base: main
           filters: |
             spec:
               - 'flight-data/flights/openapi.yaml'
@@ -28,12 +38,15 @@ jobs:
               - 'sales/bookings/opeanapi.yaml'
 
   oas-to-kong:
-    name: Convert changed OAS to Kong configurations
+    name: Convert OAS to Kong configurations
 
-    needs: changes
-    if: ${{ needs.changes.outputs.changed-specs == 'true' }}
+    needs: have-oas-changed
+    if: ${{ needs.have-oas-changed.outputs.are-changes == 'true' }}
 
     runs-on: ubuntu-latest
+
+    outputs: 
+      kong-combined: ${{ steps.kong-combine.outputs.stdout }}
 
     steps:
       - name: Checkout
@@ -43,7 +56,17 @@ jobs:
         uses: rspurgeon/setup-kced@v1
         with:
           kced-version: '0.1.11'
+          wrapper: true
 
       - name: Convert Flights API to Kong
-        run: kced openapi2kong -s flight-data/flights/openapi.yaml
+        run: kced openapi2kong -s flight-data/flights/openapi.yaml -o flight-data-flights-kong.yaml
         
+      - name: Convert Routes API to Kong
+        run: kced openapi2kong -s flight-data/routes/openapi.yaml -o flight-data-routes-kong.yaml
+
+      - name: Convert Bookings API to Kong
+        run: kced openapi2kong -s sales/bookings/openapi.yaml -o sales-bookings-kong.yaml
+
+      - name: Combine Kong Configurations
+        id: kong-combine
+        run: kced merge flight-data-flights-kong.yaml flight-data-routes-kong.yaml sales-bookings-kong.yaml
