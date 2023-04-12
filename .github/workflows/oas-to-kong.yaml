@@ -8,14 +8,15 @@ on:
 
 jobs:
 
-  debug-artifacts:
-    name: Upload Debug Artifacts
-    runs-on: ubuntu-latest
-    steps:
-      - name: Upload Debug Artifacts
-        uses: mheap/debug-artifact@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#  this job is useful to debug workflows, see https://github.com/mheap/debug-artifact
+#  debug-artifacts:
+#    name: Upload Debug Artifacts
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Upload Debug Artifacts
+#        uses: mheap/debug-artifact@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   have-oas-changed:
     name: Have OAS files changed
@@ -31,7 +32,6 @@ jobs:
       - uses: dorny/paths-filter@v2
         id: changed-specs 
         with:
-          base: main
           filters: |
             spec:
               - 'flight-data/flights/openapi.yaml'
