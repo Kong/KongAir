@@ -69,4 +69,10 @@ jobs:
         id: kong-combine
         run: kced merge .github/artifacts/kong/*-kong.yaml -o .github/artifacts/kong/kong-combined.yaml
 
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: kong-configurations
+          path: .github/artifacts/kong/*.yaml
+
       #- name: Create PR for 
