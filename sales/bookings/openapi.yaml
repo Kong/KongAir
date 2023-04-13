@@ -24,49 +24,25 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties: 
-                  ticket_number:
-                    type: string
-                  flight:
-                    type: object
-                    properties: 
-                      number:
-                        type: string 
-                      route:
-                        type: object
-                        properties:
-                          origin: 
-                            type: string
-                          destination: 
-                            type: string
-                      scheduled_departure:
-                        type: string
-                        format: date-time
-                      scheduled_arrival:
-                        type: string
-                        format: date-time
-                  seat:
-                    type: string
-                required:
-                  - ticket_number
-                  - flight
+                type: array
+                items:
+                  $ref: '#/components/schemas/Booking'
               examples:
                 Example Bookings list response:
                   value: |
-                   {
-                    "ticket_number": "CDF3412",
-                    "seat": "32A",
-                    "flight": {
-                      "number": "KA924",
-                      "route": {
-                        "origin": "LHR",
-                        "destination": "SFO"
-                      },
-                      scheduled_departure: "2023-09-03T09:15:00Z",
-                      scheduled_arrival: "2023-09-03T14:23:00Z"
-                    }
-                   }
+                    [{
+                      "ticket_number": "CDF3412",
+                      "seat": "32A",
+                      "flight": {
+                        "number": "KA924",
+                        "route": {
+                          "origin": "LHR",
+                          "destination": "SFO"
+                        },
+                        scheduled_departure: "2023-09-03T09:15:00Z",
+                        scheduled_arrival: "2023-09-03T14:23:00Z"
+                      }
+                    }]
     post:
       tags:
         - sales
@@ -78,10 +54,7 @@ paths:
           content: 
             application/json:
               schema:
-                type: object
-                properties: 
-                  ticket_number:
-                    type: string 
+                $ref: '#/components/schemas/BookingResponse'
               examples:
                 Example new booking response body:
                   value: |
@@ -93,14 +66,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                flight_number:
-                  type: string
-                seat:
-                  type: string
-              required:
-                - flight_number
+              $ref: '#/components/schemas/BookingRequest'
             examples:
               Example new booking request body:
                 value: |
@@ -108,3 +74,50 @@ paths:
                    "flight_number": "KA924",
                    "seat": "32A"
                  }
+                
+components:
+  schemas:
+    Booking:
+      type: object
+      properties: 
+        ticket_number:
+          type: string
+        flight:
+          type: object
+          properties: 
+            number:
+              type: string 
+            route:
+              type: object
+              properties:
+                origin: 
+                  type: string
+                destination: 
+                  type: string
+            scheduled_departure:
+              type: string
+              format: date-time
+            scheduled_arrival:
+              type: string
+              format: date-time
+        seat:
+          type: string
+      required:
+        - ticket_number
+        - flight
+    BookingRequest:
+      type: object
+      properties:
+        flight_number:
+          type: string
+        seat:
+          type: string
+      required:
+        - flight_number
+    BookingResponse:
+      type: object
+      properties: 
+        ticket_number:
+          type: string 
+      required:
+        - ticket_number

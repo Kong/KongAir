@@ -74,5 +74,5 @@ components:
       required:
         - number
         - route
-        - scheduled-departure
-        - scheduled-arrival
+        - scheduled_departure
+        - scheduled_arrival
