@@ -1,0 +1,7 @@
+_format_version: "1.0"
+
+patches:
+  - format: deck
+    selector: $.services[?(@.name=="routes-service")]
+    values:
+      host: routes.kong-air.internal

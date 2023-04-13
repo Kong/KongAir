@@ -17,31 +17,35 @@ jobs:
 #        env:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  have-oas-changed:
-    name: Have OAS files changed
+  has-changes:
+    name: Have OAS or pipeline files changed
     runs-on: ubuntu-latest
 
     outputs:
-      are-changes: ${{ steps.changed-specs.outputs.spec }}
+      are-changes: ${{ steps.changed-files.outputs.files }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
       - uses: dorny/paths-filter@v2
-        id: changed-specs 
+        id: changed-files
         with:
           filters: |
-            spec:
+            files:
               - 'flight-data/flights/openapi.yaml'
+              - 'flight-data/flights/kong/patches.yaml'
               - 'flight-data/routes/openapi.yaml'
+              - 'flight-data/routes/kong/patches.yaml'
               - 'sales/bookings/opeanapi.yaml'
+              - 'sales/bookings/kong/patches.yaml'
+              - '.github/workflows/oas-to-kong.yaml'
 
   oas-to-kong:
     name: Convert OAS to Kong configurations
 
-    needs: have-oas-changed
-    if: ${{ needs.have-oas-changed.outputs.are-changes == 'true' }}
+    needs: has-changes
+    if: ${{ needs.has-changes.outputs.changed-files == 'true' }}
 
     runs-on: ubuntu-latest
 
@@ -59,21 +63,20 @@ jobs:
         # In two steps, convert the OpenAPI Spec to a Kong declarative configuration 
         #   and then patch the result with the internal hostname for the service
         run: |
-          kced openapi2kong -s flight-data/flights/openapi.yaml -o .github/artifacts/kong/flight-data-flights-kong.yaml
-          kced patch -s .github/artifacts/kong/flight-data-flights-kong.yaml --selector="$.services[0]" --value='host:\"flights-new.kong-air.internal\"' -o .github/artifacts/kong/flight-data-flights-kong.yaml
+          kced openapi2kong -s flight-data/flights/openapi.yaml | \
+            kced patch -o .github/artifacts/kong/flight-data-flights-kong.yaml flight-data/flights/kong/patches.yaml
 
       - name: Convert Routes API to Kong
         # In two steps, convert the OpenAPI Spec to a Kong declarative configuration 
         #   and then patch the result with the internal hostname for the service
         run: |
-          kced openapi2kong -s flight-data/routes/openapi.yaml -o .github/artifacts/kong/flight-data-routes-kong.yaml
-          kced patch -s .github/artifacts/kong/flight-data-routes-kong.yaml --selector="$.services[0]" --value='host:\"routes.kong-air.internal\"' -o .github/artifacts/kong/flight-data-routes-kong.yaml
-
+          kced openapi2kong -s flight-data/routes/openapi.yaml | \ 
+            kced patch -o .github/artifacts/kong/flight-data-routes-kong.yaml flight-data/flights/kong/patches.yaml
 
       - name: Convert Bookings API to Kong
         run: |
-          kced openapi2kong -s sales/bookings/openapi.yaml -o .github/artifacts/kong/sales-bookings-kong.yaml
-          kced patch -s .github/artifacts/kong/sales-bookings-kong.yaml --selector="$.services[0]" --value='host:\"bookings.kong-air.internal\"' -o .github/artifacts/kong/sales-bookings-kong.yaml
+          kced openapi2kong -s sales/bookings/openapi.yaml | \ 
+            kced patch -o .github/artifacts/kong/sales-bookings-kong.yaml 'sales/bookings/kong/patches.yaml'
 
       - name: Combine Kong Configurations
         id: kong-combine
@@ -90,4 +93,3 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           title: Kong Gateway combined configuration change 
-          base: main
