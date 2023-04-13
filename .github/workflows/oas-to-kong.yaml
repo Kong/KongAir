@@ -69,7 +69,7 @@ jobs:
         # In two steps, convert the OpenAPI Spec to a Kong declarative configuration 
         #   and then patch the result with the data in the kong/patches.yaml 
         run: |
-          kced openapi2kong -s flight-data/routes/openapi.yaml | kced patch -o .github/artifacts/kong/flight-data-routes-kong.yaml flight-data/flights/kong/patches.yaml
+          kced openapi2kong -s flight-data/routes/openapi.yaml | kced patch -o .github/artifacts/kong/flight-data-routes-kong.yaml flight-data/routes/kong/patches.yaml
 
       - name: Convert Bookings API to Kong
         # In two steps, convert the OpenAPI Spec to a Kong declarative configuration 
