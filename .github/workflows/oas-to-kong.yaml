@@ -45,7 +45,7 @@ jobs:
     name: Convert OAS to Kong configurations
 
     needs: has-changes
-    if: ${{ needs.has-changes.outputs.changed-files == 'true' }}
+    if: ${{ needs.has-changes.outputs.are-changes == 'true' }}
 
     runs-on: ubuntu-latest
 

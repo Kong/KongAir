@@ -4,4 +4,4 @@ patches:
   - format: deck
     selector: $.services[?(@.name=="flights-service")]
     values:
-      host: flights.kong-air.internal
+      host: flights-a.kong-air.internal
