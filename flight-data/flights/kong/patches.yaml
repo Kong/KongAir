@@ -1,0 +1,7 @@
+_format_version: "1.0"
+
+patches:
+  - format: deck
+    selector: $.services[?(@.name=="flights-service")]
+    values:
+      host: flights.kong-air.internal
