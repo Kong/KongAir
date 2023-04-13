@@ -20,6 +20,7 @@ paths:
         A Route is a pairing between origin and destination airport codes.
       tags:
       - flight-data
+      - routes
       operationId: get-routes
       parameters:
         - name: origin 
