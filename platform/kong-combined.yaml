@@ -6,48 +6,45 @@ _ignore:
     info:
     - command: openapi2kong
       input: flight-data/flights/openapi.yaml
-      output: .github/artifacts/kong/flight-data-flights-kong.yaml
+      output: '-'
       uuid-base: ""
       version: kceD v0.1.11 (347b296)
     - command: patch
-      input: .github/artifacts/kong/flight-data-flights-kong.yaml
+      input: '-'
       output: .github/artifacts/kong/flight-data-flights-kong.yaml
-      selector: $.services[0]
-      values:
-        host: flights.kong-air.internal
+      patchfiles:
+      - flight-data/flights/kong/patches.yaml
       version: kceD v0.1.11 (347b296)
   - filename: .github/artifacts/kong/flight-data-routes-kong.yaml
     info:
     - command: openapi2kong
       input: flight-data/routes/openapi.yaml
-      output: .github/artifacts/kong/flight-data-routes-kong.yaml
+      output: '-'
       uuid-base: ""
       version: kceD v0.1.11 (347b296)
     - command: patch
-      input: .github/artifacts/kong/flight-data-routes-kong.yaml
+      input: '-'
       output: .github/artifacts/kong/flight-data-routes-kong.yaml
-      selector: $.services[0]
-      values:
-        host: routes.kong-air.internal
+      patchfiles:
+      - flight-data/flights/kong/patches.yaml
       version: kceD v0.1.11 (347b296)
   - filename: .github/artifacts/kong/sales-bookings-kong.yaml
     info:
     - command: openapi2kong
       input: sales/bookings/openapi.yaml
-      output: .github/artifacts/kong/sales-bookings-kong.yaml
+      output: '-'
       uuid-base: ""
       version: kceD v0.1.11 (347b296)
     - command: patch
-      input: .github/artifacts/kong/sales-bookings-kong.yaml
+      input: '-'
       output: .github/artifacts/kong/sales-bookings-kong.yaml
-      selector: $.services[0]
-      values:
-        host: bookings.kong-air.internal
+      patchfiles:
+      - sales/bookings/kong/patches.yaml
       version: kceD v0.1.11 (347b296)
   output: platform/kong-combined.yaml
   version: kceD v0.1.11 (347b296)
 services:
-- host: flights.kong-air.internal
+- host: flights-a.kong-air.internal
   id: 0cef4d36-9c39-5ac2-9d9f-190d8ea8a252
   name: flights-service
   path: /
@@ -66,7 +63,7 @@ services:
     strip_path: false
     tags: []
   tags: []
-- host: routes.kong-air.internal
+- host: api.kong-air.com
   id: 5bbc0ad8-3b7c-5dfe-a676-b28f30523a6f
   name: routes-service
   path: /
