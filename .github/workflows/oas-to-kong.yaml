@@ -60,7 +60,7 @@ jobs:
         #   and then patch the result with the internal hostname for the service
         run: |
           kced openapi2kong -s flight-data/flights/openapi.yaml -o .github/artifacts/kong/flight-data-flights-kong.yaml
-          kced patch -s .github/artifacts/kong/flight-data-flights-kong.yaml --selector="$.services[0]" --value='host:\"flights.kong-air.internal\"' -o .github/artifacts/kong/flight-data-flights-kong.yaml
+          kced patch -s .github/artifacts/kong/flight-data-flights-kong.yaml --selector="$.services[0]" --value='host:\"flights-new.kong-air.internal\"' -o .github/artifacts/kong/flight-data-flights-kong.yaml
 
       - name: Convert Routes API to Kong
         # In two steps, convert the OpenAPI Spec to a Kong declarative configuration 
@@ -68,6 +68,7 @@ jobs:
         run: |
           kced openapi2kong -s flight-data/routes/openapi.yaml -o .github/artifacts/kong/flight-data-routes-kong.yaml
           kced patch -s .github/artifacts/kong/flight-data-routes-kong.yaml --selector="$.services[0]" --value='host:\"routes.kong-air.internal\"' -o .github/artifacts/kong/flight-data-routes-kong.yaml
+
 
       - name: Convert Bookings API to Kong
         run: |
