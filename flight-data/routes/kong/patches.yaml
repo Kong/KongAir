@@ -3,4 +3,4 @@ _format_version: "1.0"
 patches:
   - selector: $.services[?(@.name=="routes-service")]
     values:
-      host: routes.kong-air.internal
+      host: ip-10-0-43-1.us-east-2.compute.internal
