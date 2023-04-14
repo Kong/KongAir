@@ -40,6 +40,7 @@ jobs:
               - 'sales/bookings/opeanapi.yaml'
               - 'sales/bookings/kong/patches.yaml'
               - '.github/workflows/oas-to-kong.yaml'
+              - 'platform/kong/patches.yaml'
 
   oas-to-kong:
     name: Convert OAS to Kong configurations
@@ -80,7 +81,7 @@ jobs:
       - name: Combine Kong Configurations
         id: kong-combine
         run: |
-          kced merge .github/artifacts/kong/*-kong.yaml | kced patch -o platform/kong-combined.yaml platform/kong/patches.yaml
+          kced merge .github/artifacts/kong/*-kong.yaml | kced patch -o platform/kong/kong-combined.yaml platform/kong/patches.yaml
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
