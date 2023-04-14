@@ -55,5 +55,5 @@ jobs:
           title: "PRD! Staged changes for Kong Gateway PRD deployment"
           branch: "PRD/kong"
           lables: "PRD,kong"
-          body: "Merging this PR will result in the following changes deployed to PRD\n\n${{ env.$DECK_DIFF }}"
+          body: "Merging this PR will result in the following changes deployed to PRD \n\n $DECK_DIFF"
 
