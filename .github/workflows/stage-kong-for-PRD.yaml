@@ -40,20 +40,21 @@ jobs:
 
       - name: deck diff
         id: deck-diff
+        # deck diff results in a multi-line output, which requires some 
+        #  bash gymnastics to handle and pass through to the next job.
+        #  See: https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#example-of-a-multiline-string
         run: |
           EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-          echo "DECK_DIFF<<$EOF" >> $GITHUB_ENV
+          echo "DIFF<<$EOF" >> $GITHUB_ENV
           deck diff -s PRD/kong/kong-combined.yaml --konnect-runtime-group-name KongAir-PRD --konnect-token ${{ secrets.KONNECT_PAT }} >> $GITHUB_ENV
           echo "$EOF" >> $GITHUB_ENV
 
-      # - name: Echo
-      #   run: echo $DECK_DIFF
-          #echo ${{ steps.deck-diff.outputs.diff }} 
       - name: Create PR to stage changes for the Kong Gateway in production
         uses: peter-evans/create-pull-request@v5
         with:
           title: "PRD! Staged changes for Kong Gateway PRD deployment"
           branch: "PRD/kong"
-          lables: "PRD,kong"
-          body: "Merging this PR will result in the following changes deployed to PRD \n\n $DECK_DIFF"
+          labels: "PRD,kong"
+          body: |
+            "Merging this PR will result in the following changes deployed to PRD \n\n $DIFF"
 
