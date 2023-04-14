@@ -40,7 +40,5 @@ jobs:
           title: "PRD! Staged changes for Kong Gateway PRD deployment"
           branch: "PRD/kong"
           lables: "PRD,kong"
-          body: |
-            Merging this PR will result in the following changes to the PRD Kong Gateway:
-            ${{ steps.deck-diff.outputs.stdout }}
+          body: ${{ steps.deck-diff.outputs.stdout }}
 
