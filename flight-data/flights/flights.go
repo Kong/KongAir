@@ -1,14 +1,22 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/Kong/KongAir/flight-data/flights/api"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
-	//var port = flag.Int("port", 8080, "Port for test HTTP server")
-	//flag.Parse()
+	// set default port number to 8080
+	port := "8080"
+
+	// check if a port number was provided on the command line
+	if len(os.Args) > 1 {
+		port = os.Args[1]
+	}
 
 	//swagger, err = api.GetSwagger()
 	//if err != nil {
@@ -28,5 +36,5 @@ func main() {
 	api.RegisterHandlers(e, flightService)
 
 	// Start server
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", port)))
 }
