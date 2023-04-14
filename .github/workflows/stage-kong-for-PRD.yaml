@@ -1,0 +1,40 @@
+name: Stage Kong changes for PRD in a PR
+
+on:
+  push:
+    branches:
+      - main
+      - workflow/**
+    paths:
+      - platform/kong/kong-combined.yaml
+      - .github/workflows/stage-kong-for-prd.yaml
+
+jobs:
+  stage-kong-for-prd:
+    name: Stage Kong changes for PRD
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup deck
+        uses: kong/setup-deck@v1
+        with:
+          deck-version: '1.19.1'
+          wrapper: true
+
+      - name: stage combined file for PRD
+        run: cp platform/kong/kong-combined.yaml PRD/kong
+      - name: deck diff
+        id: deck-diff
+        run: |
+          deck diff -s platform/kong-combined.yaml \
+              --konnect-runtime-group-name KongAir-PRD \
+              --konnect-token ${{ secrets.KONNECT_PAT }}
+
+      - name: Create PR to stage changes for the Kong Gateway in production
+        uses: peter-evans/create-pull-request@v5
+        with:
+          title: Kong Gateway combined configuration change 
+          body: echo '${{ steps.deck-diff.outputs.stdout }}'

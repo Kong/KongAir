@@ -1,6 +1,4 @@
-# In the future, add ability to manage multiple environments with promotion capabilities.
-#  For now, this is a very simplistic example
-name: Deploy Kong 
+name: Deploy Kong changes to PRD
 
 on:
   push:
@@ -8,12 +6,12 @@ on:
       - main
       - workflow/**
     paths:
-      - platform/kong-combined.yaml
-      - .github/workflows/deploy-kong.yaml
+      - PRD/kong/kong-combined.yaml
+      - .github/workflows/deploy-kong-PRD.yaml
 
 jobs:
   deploy-kong:
-    name: Deploy Kong 
+    name: Deploy Kong to PRD
     runs-on: ubuntu-latest
 
     steps:
@@ -26,8 +24,8 @@ jobs:
           deck-version: '1.19.1'
           wrapper: false
 
-      - name: deck diff
+      - name: deck sync
         run: |
-          deck diff -s platform/kong-combined.yaml \
-              --konnect-runtime-group-name default \
+          deck sync -s PRD/kong/kong-combined.yaml \
+              --konnect-runtime-group-name KongAir-PRD \
               --konnect-token ${{ secrets.KONNECT_PAT }}
