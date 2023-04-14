@@ -1,11 +1,11 @@
 _format_version: "3.0"
 services:
-- host: flights.kong-air.internal
+- host: ip-10-0-43-1.us-east-2.compute.internal
   id: 0cef4d36-9c39-5ac2-9d9f-190d8ea8a252
   name: flights-service
   path: /
   plugins: []
-  port: 443
+  port: 8080
   protocol: https
   routes:
   - id: 7b2dbd94-ec5b-5ae8-b6d5-4c8b16ce0b06
@@ -19,12 +19,12 @@ services:
     strip_path: false
     tags: []
   tags: []
-- host: routes.kong-air.internal
+- host: ip-10-0-43-1.us-east-2.compute.internal
   id: 5bbc0ad8-3b7c-5dfe-a676-b28f30523a6f
   name: routes-service
   path: /
   plugins: []
-  port: 443
+  port: 8081
   protocol: https
   routes:
   - id: 89f28ad3-74db-5149-8fa5-f7fffbfda79c
