@@ -52,7 +52,7 @@ jobs:
       - name: Create PR to stage changes for the Kong Gateway in production
         uses: peter-evans/create-pull-request@v5
         with:
-          title: "PRD! Staged changes for Kong Gateway PRD deployment"
+          title: "❗PRD❗: Staged changes for Kong Gateway PRD deployment"
           branch: "PRD/kong"
           labels: "PRD,kong"
           body: "Merging this PR will result in the following changes deployed to PRD \n\n ```\n${{env.DIFF}}\n```"
