@@ -1,1 +1,70 @@
 _format_version: "3.0"
+services:
+- host: flights.kong-air.internal
+  id: 0cef4d36-9c39-5ac2-9d9f-190d8ea8a252
+  name: flights-service
+  path: /
+  plugins: []
+  port: 443
+  protocol: https
+  routes:
+  - id: 7b2dbd94-ec5b-5ae8-b6d5-4c8b16ce0b06
+    methods:
+    - GET
+    name: flights-service_get-flights
+    paths:
+    - ~/flights$
+    plugins: []
+    regex_priority: 200
+    strip_path: false
+    tags: []
+  tags: []
+- host: routes.kong-air.internal
+  id: 5bbc0ad8-3b7c-5dfe-a676-b28f30523a6f
+  name: routes-service
+  path: /
+  plugins: []
+  port: 443
+  protocol: https
+  routes:
+  - id: 89f28ad3-74db-5149-8fa5-f7fffbfda79c
+    methods:
+    - GET
+    name: routes-service_get-routes
+    paths:
+    - ~/routes$
+    plugins: []
+    regex_priority: 200
+    strip_path: false
+    tags: []
+  tags: []
+- host: bookings.kong-air.internal
+  id: 22e1521b-9b91-5d2f-917b-4463066f1aed
+  name: bookings-service
+  path: /
+  plugins: []
+  port: 443
+  protocol: https
+  routes:
+  - id: 9bd2c85f-5d13-5910-838c-9fad63e8a54d
+    methods:
+    - GET
+    name: bookings-service_get-bookings
+    paths:
+    - ~/bookings$
+    plugins: []
+    regex_priority: 200
+    strip_path: false
+    tags: []
+  - id: 4e2f555e-980c-5241-a640-9f0a67ab6693
+    methods:
+    - POST
+    name: bookings-service_post-booking
+    paths:
+    - ~/bookings$
+    plugins: []
+    regex_priority: 200
+    strip_path: false
+    tags: []
+  tags: []
+upstreams: []
