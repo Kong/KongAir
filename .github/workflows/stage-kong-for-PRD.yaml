@@ -30,7 +30,7 @@ jobs:
       - name: deck diff
         id: deck-diff
         run: |
-          deck diff -s platform/kong-combined.yaml \
+          deck diff -s PRD/kong/kong-combined.yaml \
               --konnect-runtime-group-name KongAir-PRD \
               --konnect-token ${{ secrets.KONNECT_PAT }}
 
