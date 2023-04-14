@@ -30,10 +30,7 @@ jobs:
       - name: deck diff
         id: deck-diff
         run: |
-          echo "diff=abc" >> $GITHUB_OUTPUT
-          # echo "diff=$(deck diff -s PRD/kong/kong-combined.yaml \
-          #     --konnect-runtime-group-name KongAir-PRD \
-          #     --konnect-token ${{ secrets.KONNECT_PAT }})\n" >> $GITHUB_OUTPUT
+          echo "diff=$(deck diff -s PRD/kong/kong-combined.yaml --konnect-runtime-group-name KongAir-PRD --konnect-token ${{ secrets.KONNECT_PAT }})" >> $GITHUB_OUTPUT
 
       - name: Create PR to stage changes for the Kong Gateway in production
         uses: peter-evans/create-pull-request@v5
