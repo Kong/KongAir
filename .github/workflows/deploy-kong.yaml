@@ -25,5 +25,7 @@ jobs:
           deck-version: '1.19.1'
           wrapper: false
 
-      - name: debug
-        run: deck version
+      - name: deck diff
+        run: deck diff -s platform/kong-combined.yaml \
+              --konnect-runtime-group-name default \
+              --konnect-token ${{ secrets.KONNECT_PAT }}
