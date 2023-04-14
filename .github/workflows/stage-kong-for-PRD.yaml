@@ -38,8 +38,7 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           title: "PRD! Staged changes for Kong Gateway PRD deployment"
-          branch: prd/kong
-          base: main
+          branch: "prd/kong"
           body: |
             Merging this PR will result in the following changes to the PRD Kong Gateway:
 
