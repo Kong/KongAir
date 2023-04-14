@@ -37,5 +37,11 @@ jobs:
       - name: Create PR to stage changes for the Kong Gateway in production
         uses: peter-evans/create-pull-request@v5
         with:
-          title: Kong Gateway combined configuration change 
-          body: echo '${{ steps.deck-diff.outputs.stdout }}'
+          title: "PRD! Staged changes for Kong Gateway PRD deployment"
+          branch: prd/kong
+          base: main
+          body: |
+            Merging this PR will result in the following changes to the PRD Kong Gateway:
+
+            ${{ steps.deck-diff.outputs.stdout }}
+
