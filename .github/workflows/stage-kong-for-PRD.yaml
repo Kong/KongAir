@@ -22,7 +22,7 @@ jobs:
         uses: kong/setup-deck@v1
         with:
           deck-version: '1.19.1'
-          wrapper: true
+          wrapper: false
 
       - name: stage combined file for PRD
         run: cp platform/kong/kong-combined.yaml PRD/kong/kong-combined.yaml
@@ -30,9 +30,9 @@ jobs:
       - name: deck diff
         id: deck-diff
         run: |
-          deck diff -s PRD/kong/kong-combined.yaml \
+          echo "diff=$(deck diff -s PRD/kong/kong-combined.yaml \
               --konnect-runtime-group-name KongAir-PRD \
-              --konnect-token ${{ secrets.KONNECT_PAT }}
+              --konnect-token ${{ secrets.KONNECT_PAT }})\n" >> $GITHUB_OUTPUT
 
       - name: Create PR to stage changes for the Kong Gateway in production
         uses: peter-evans/create-pull-request@v5
@@ -40,5 +40,5 @@ jobs:
           title: "PRD! Staged changes for Kong Gateway PRD deployment"
           branch: "PRD/kong"
           lables: "PRD,kong"
-          body: ${{ steps.deck-diff.outputs.stdout }}
+          body: "Merging this PR will result in the following changes deployed to PRD\n${{ steps.deck-diff.outputs.diff }}"
 
