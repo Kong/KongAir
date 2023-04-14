@@ -1,7 +1,6 @@
 _format_version: "1.0"
 
 patches:
-  - format: deck
-    selector: $.services[?(@.name=="flights-service")]
+  - selector: $.services[?(@.name=="flights-service")]
     values:
       host: flights-a.kong-air.internal
