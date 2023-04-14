@@ -1,0 +1,28 @@
+# In the future, add ability to manage multiple environments with promotion capabilities.
+#  For now, this is a very simplistic example
+name: Deploy Kong 
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - platform/kong-combined.yaml
+
+jobs:
+  deploy-kong:
+    name: Deploy Kong 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup deck
+        uses: kong/setup-deck@v1
+        with:
+          deck-version: '1.19.1'
+          wrapper: false
+
+      - name: debug
+        run: deck version
