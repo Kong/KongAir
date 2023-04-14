@@ -7,7 +7,7 @@ on:
       - workflow/**
     paths:
       - platform/kong/kong-combined.yaml
-      - .github/workflows/stage-kong-for-prd.yaml
+      - .github/workflows/stage-kong-for-PRD.yaml
 
 jobs:
   stage-kong-for-prd:
@@ -25,7 +25,7 @@ jobs:
           wrapper: true
 
       - name: stage combined file for PRD
-        run: cp platform/kong/kong-combined.yaml PRD/kong/
+        run: cp platform/kong/kong-combined.yaml PRD/kong/kong-combined.yaml
 
       - name: deck diff
         id: deck-diff
