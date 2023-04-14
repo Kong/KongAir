@@ -44,7 +44,7 @@ _ignore:
   output: platform/kong-combined.yaml
   version: kceD v0.1.11 (347b296)
 services:
-- host: flights-a.kong-air.internal
+- host: flights.kong-air.internal
   id: 0cef4d36-9c39-5ac2-9d9f-190d8ea8a252
   name: flights-service
   path: /
