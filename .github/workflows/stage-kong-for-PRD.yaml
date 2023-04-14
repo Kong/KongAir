@@ -10,6 +10,17 @@ on:
       - .github/workflows/stage-kong-for-PRD.yaml
 
 jobs:
+
+#  this job is useful to debug workflows, see https://github.com/mheap/debug-artifact
+#  debug-artifacts:
+  name: Upload Debug Artifacts
+  runs-on: ubuntu-latest
+  steps:
+    - name: Upload Debug Artifacts
+      uses: mheap/debug-artifact@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   stage-kong-for-prd:
     name: Stage Kong changes for PRD
     runs-on: ubuntu-latest
@@ -30,7 +41,7 @@ jobs:
       - name: deck diff
         id: deck-diff
         run: |
-          echo "diff=$(deck diff -s PRD/kong/kong-combined.yaml --konnect-runtime-group-name KongAir-PRD --konnect-token ${{ secrets.KONNECT_PAT }})" 
+          echo "diff='$(deck diff -s PRD/kong/kong-combined.yaml --konnect-runtime-group-name KongAir-PRD --konnect-token ${{ secrets.KONNECT_PAT }})'" 
           #>> $GITHUB_OUTPUT
 
       - name: Create PR to stage changes for the Kong Gateway in production
