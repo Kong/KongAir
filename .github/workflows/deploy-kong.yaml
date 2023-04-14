@@ -26,6 +26,7 @@ jobs:
           wrapper: false
 
       - name: deck diff
-        run: deck diff -s platform/kong-combined.yaml \
+        run: |
+          deck diff -s platform/kong-combined.yaml \
               --konnect-runtime-group-name default \
               --konnect-token ${{ secrets.KONNECT_PAT }}
