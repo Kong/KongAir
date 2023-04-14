@@ -9,6 +9,7 @@ on:
       - workflow/**
     paths:
       - platform/kong-combined.yaml
+      - .github/workflows/deploy-kong.yaml
 
 jobs:
   deploy-kong:
