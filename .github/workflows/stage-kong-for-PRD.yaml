@@ -25,7 +25,8 @@ jobs:
           wrapper: true
 
       - name: stage combined file for PRD
-        run: cp platform/kong/kong-combined.yaml PRD/kong
+        run: cp platform/kong/kong-combined.yaml PRD/kong/
+
       - name: deck diff
         id: deck-diff
         run: |
