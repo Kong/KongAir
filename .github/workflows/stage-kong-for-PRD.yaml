@@ -12,14 +12,14 @@ on:
 jobs:
 
 #  this job is useful to debug workflows, see https://github.com/mheap/debug-artifact
-  debug-artifacts:
-    name: Upload Debug Artifacts
-    runs-on: ubuntu-latest
-    steps:
-      - name: Upload Debug Artifacts
-        uses: mheap/debug-artifact@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#  debug-artifacts:
+#    name: Upload Debug Artifacts
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Upload Debug Artifacts
+#        uses: mheap/debug-artifact@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   stage-kong-for-prd:
     name: Stage Kong changes for PRD
@@ -41,14 +41,19 @@ jobs:
       - name: deck diff
         id: deck-diff
         run: |
-          echo "diff='$(deck diff -s PRD/kong/kong-combined.yaml --konnect-runtime-group-name KongAir-PRD --konnect-token ${{ secrets.KONNECT_PAT }})'" 
-          #>> $GITHUB_OUTPUT
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "DECK_DIFF<<$EOF" >> $GITHUB_ENV
+          deck diff -s PRD/kong/kong-combined.yaml --konnect-runtime-group-name KongAir-PRD --konnect-token ${{ secrets.KONNECT_PAT }} >> $GITHUB_ENV
+          echo "$EOF" >> $GITHUB_ENV
 
+      # - name: Echo
+      #   run: echo $DECK_DIFF
+          #echo ${{ steps.deck-diff.outputs.diff }} 
       - name: Create PR to stage changes for the Kong Gateway in production
         uses: peter-evans/create-pull-request@v5
         with:
           title: "PRD! Staged changes for Kong Gateway PRD deployment"
           branch: "PRD/kong"
           lables: "PRD,kong"
-          body: "Merging this PR will result in the following changes deployed to PRD\n\n${{ steps.deck-diff.outputs.diff }}"
+          body: "Merging this PR will result in the following changes deployed to PRD\n\n$DECK_DIFF"
 
