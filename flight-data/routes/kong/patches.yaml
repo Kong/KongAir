@@ -5,3 +5,4 @@ patches:
     values:
       host: ip-10-0-43-1.us-east-2.compute.internal
       port: 8081
+      protocol: http
