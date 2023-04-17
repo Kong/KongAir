@@ -3,6 +3,6 @@ _format_version: "1.0"
 patches:
   - selector: $.services[?(@.name=="flights-service")]
     values:
-      host: ip-10-0-43-1.us-east-2.compute.internal
+      host: abc.us-east-2.compute.internal
       port: 8080
       protocol: http
