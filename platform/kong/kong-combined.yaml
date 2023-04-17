@@ -1,6 +1,6 @@
 _format_version: "3.0"
 services:
-- host: abc.us-east-2.compute.internal
+- host: ip-10-0-43-1.us-east-2.compute.internal
   id: 0cef4d36-9c39-5ac2-9d9f-190d8ea8a252
   name: flights-service
   path: /
