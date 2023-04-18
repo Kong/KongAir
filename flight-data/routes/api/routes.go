@@ -16,6 +16,15 @@ func NewRouteService() *RouteService {
 	rv := RouteService{}
 	rv.Routes = []models.Route{
 		{Origin: "LHR", Destination: "JFK"},
+		{Origin: "LHR", Destination: "SFO"},
+		{Origin: "LHR", Destination: "DXB"},
+		{Origin: "LHR", Destination: "HKG"},
+		{Origin: "LHR", Destination: "BOM"},
+		{Origin: "LHR", Destination: "HND"},
+		{Origin: "LHR", Destination: "CPT"},
+		{Origin: "LHR", Destination: "SYD"},
+		{Origin: "LHR", Destination: "SIN"},
+		{Origin: "LHR", Destination: "LAX"},
 	}
 	return &rv
 }
