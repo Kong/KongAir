@@ -25,18 +25,6 @@ func NewFlight(number, destination, origin string, scheduledArrival, scheduledDe
 	}
 }
 func generateSampleFlights() []models.Flight {
-	/*
-			London (LHR) to New York (JFK)
-		London (LHR) to Los Angeles (LAX)
-		London (LHR) to Dubai (DXB)
-		London (LHR) to Hong Kong (HKG)
-		London (LHR) to Mumbai (BOM)
-		London (LHR) to Tokyo (HND)
-		London (LHR) to Cape Town (CPT)
-		London (LHR) to Sydney (SYD)
-		London (LHR) to San Francisco (SFO)
-		London (LHR) to Singapore (SIN)
-	*/
 	flights := []models.Flight{
 		NewFlight("KA0284",
 			"LHR", "JFK",
