@@ -2,6 +2,8 @@ _format_version: "3.0"
 plugins:
 - config:
     account_email: '{vault://aws-us-east-2/KongAir/PRD/kong/acme/account_email}'
+    domains:
+    - api.kong-air.com
   name: acme
 services:
 - host: ip-10-0-43-1.us-east-2.compute.internal
