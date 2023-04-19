@@ -1,6 +1,4 @@
 _format_version: "1.0"
 
+# Any final patches the Platform team may want to apply should go here
 patches:
-  - selector: $
-    remove: 
-      - _ignore
