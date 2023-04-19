@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - workflow/**
     paths:
       - PRD/kong/kong.yaml
       - .github/workflows/deploy-kong-PRD.yaml
