@@ -2,3 +2,5 @@ plugins:
 - name: acme
   config: 
     account_email: "{vault://aws-us-east-2/KongAir/PRD/kong/acme/account_email}"
+    domains:
+      - "api.kong-air.com"
