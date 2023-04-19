@@ -4,9 +4,8 @@ on:
   push:
     branches:
       - main
-      - workflow/**
     paths:
-      - PRD/kong/kong-combined.yaml
+      - PRD/kong/kong.yaml
       - .github/workflows/deploy-kong-PRD.yaml
 
 jobs:
@@ -37,6 +36,6 @@ jobs:
 
       - name: deck sync
         run: |
-          deck sync -s PRD/kong/kong-combined.yaml \
+          deck sync -s PRD/kong/kong.yaml \
               --konnect-runtime-group-name KongAir-PRD \
               --konnect-token ${{ secrets.KONNECT_PAT }}

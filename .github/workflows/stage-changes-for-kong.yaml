@@ -1,9 +1,10 @@
-name: OAS to Kong
+name: Stage changes for Kong
 
 on:
   push:
     branches:
       - main
+      - workflow/**
     paths-ignore:
       - 'PRD/**'
 
@@ -20,7 +21,7 @@ jobs:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   has-changes:
-    name: Have OAS or pipeline files changed
+    name: Have specs, configurations, or pipeline files changed
     runs-on: ubuntu-latest
 
     outputs:
@@ -35,14 +36,14 @@ jobs:
         with:
           filters: |
             files:
+              - '.github/workflows/stage-changes-for-kong.yaml'
               - 'flight-data/flights/openapi.yaml'
-              - 'flight-data/flights/kong/patches.yaml'
+              - 'flight-data/flights/kong/**'
               - 'flight-data/routes/openapi.yaml'
-              - 'flight-data/routes/kong/patches.yaml'
+              - 'flight-data/routes/kong/**'
               - 'sales/bookings/opeanapi.yaml'
-              - 'sales/bookings/kong/patches.yaml'
-              - '.github/workflows/oas-to-kong.yaml'
-              - 'platform/kong/patches.yaml'
+              - 'sales/bookings/kong/**'
+              - 'platform/kong/**'
 
   oas-to-kong:
     name: Convert OAS to Kong configurations
@@ -59,7 +60,7 @@ jobs:
       - name: Setup kced 
         uses: rspurgeon/setup-kced@v1
         with:
-          kced-version: '0.1.11'
+          kced-version: '0.1.12'
           wrapper: false
 
       - name: Convert Flights API to Kong
@@ -81,17 +82,26 @@ jobs:
           kced openapi2kong -s sales/bookings/openapi.yaml | kced patch -o .github/artifacts/kong/sales-bookings-kong.yaml sales/bookings/kong/patches.yaml
 
       - name: Combine Kong Configurations
-        id: kong-combine
+        # Combine all the previous OAS->Kong configurations into one and put it in a well known place
         run: |
-          kced merge .github/artifacts/kong/*-kong.yaml | kced patch -o platform/kong/kong-combined.yaml platform/kong/patches.yaml
+          kced merge .github/artifacts/kong/*-kong.yaml -o .github/artifacts/kong/kong-combined.yaml
+
+      - name: Platform Team Kong Additions
+        # The platform team has their own things to add to the final Kong configuration
+        # The platform/kong/.generated/kong.yaml is the final product and is stored in the repository
+        # Storing the generated file in the repo is intentional, it should help with PR reviews, transparency, and debugging
+        run: |
+          kced merge .github/artifacts/kong/kong-combined.yaml platform/kong/plugins/* platform/kong/vaults/* | kced patch -o platform/kong/.generated/kong.yaml platform/kong/patches.yaml
 
       - name: Upload Artifacts
+        # Artifacts are the files that are built along the way of the pipeline but are not committed to the repo
         uses: actions/upload-artifact@v3
         with:
           name: kong-configurations
           path: .github/artifacts/kong/*.yaml
 
       - name: Create PR for changed Kong Gateway Configuration
+        # The only file that should be changed for this PR is platform/kong/.generated/kong.yaml
         uses: peter-evans/create-pull-request@v5
         with:
-          title: Kong Gateway combined configuration change 
+          title: Stage Kong Gateway Configuration

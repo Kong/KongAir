@@ -6,7 +6,7 @@ on:
       - main
       - workflow/**
     paths:
-      - platform/kong/kong-combined.yaml
+      - platform/kong/.generated/kong.yaml
       - .github/workflows/stage-kong-for-PRD.yaml
 
 jobs:
@@ -36,7 +36,7 @@ jobs:
           wrapper: false
 
       - name: stage combined file for PRD
-        run: cp platform/kong/kong-combined.yaml PRD/kong/kong-combined.yaml
+        run: cp platform/kong/.generated/kong.yaml PRD/kong/kong.yaml
 
       - name: deck diff
         id: deck-diff
@@ -46,7 +46,7 @@ jobs:
         run: |
           EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
           echo "DIFF<<$EOF" >> $GITHUB_ENV
-          deck diff -s PRD/kong/kong-combined.yaml --konnect-runtime-group-name KongAir-PRD --konnect-token ${{ secrets.KONNECT_PAT }} >> $GITHUB_ENV
+          deck diff -s PRD/kong/kong.yaml --konnect-runtime-group-name KongAir-PRD --konnect-token ${{ secrets.KONNECT_PAT }} >> $GITHUB_ENV
           echo "$EOF" >> $GITHUB_ENV
 
       - name: Create PR to stage changes for the Kong Gateway in production
