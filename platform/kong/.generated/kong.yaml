@@ -75,10 +75,13 @@ services:
   tags: []
 - name: acme-dummy-service
   routes:
-  - hosts: api.kong-air.com
+  - hosts:
+    - api.kong-air.com
     name: acme-dummy-route
-    paths: /.well-known/acme-challenge
-    protocols: http
+    paths:
+    - /.well-known/acme-challenge
+    protocols:
+    - http
   url: http://127.0.0.1:65535
 upstreams: []
 vaults:
