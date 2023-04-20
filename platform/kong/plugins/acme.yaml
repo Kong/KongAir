@@ -1,3 +1,14 @@
+_format_version: "3.0"
+
+services:
+- name: "acme-dummy-service"
+  url: "http://127.0.0.1:65535"
+  routes:
+  - name: "acme-dummy-route"
+    hosts: "api.kong-air.com"
+    protocols: http
+    paths: "/.well-known/acme-challenge"
+
 plugins:
 - name: acme
   config: 
