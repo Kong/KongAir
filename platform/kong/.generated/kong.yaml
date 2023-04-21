@@ -21,6 +21,8 @@ services:
     paths:
     - ~/flights$
     plugins: []
+    protocols:
+    - https
     regex_priority: 200
     strip_path: false
     tags: []
@@ -40,6 +42,8 @@ services:
     paths:
     - ~/routes$
     plugins: []
+    protocols:
+    - https
     regex_priority: 200
     strip_path: false
     tags: []
@@ -59,6 +63,8 @@ services:
     paths:
     - ~/bookings$
     plugins: []
+    protocols:
+    - https
     regex_priority: 200
     strip_path: false
     tags: []
@@ -69,6 +75,8 @@ services:
     paths:
     - ~/bookings$
     plugins: []
+    protocols:
+    - https
     regex_priority: 200
     strip_path: false
     tags: []
