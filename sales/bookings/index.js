@@ -61,6 +61,6 @@ app.use((err, _, res) => {
 const port = process.argv[2] || 3000;
 
 app.listen(port, () => {
-  console.log('Booking service is running on port ${port}');
+  console.log(`Booking service is running on port ${port}`);
 });
 
