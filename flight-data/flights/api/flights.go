@@ -8,6 +8,7 @@ import (
 
 	"github.com/Kong/KongAir/flight-data/flights/api/models"
 	"github.com/labstack/echo/v4"
+    "net/http"
 )
 
 func NewFlight(number, destination, origin string, scheduledArrival, scheduledDeparture time.Time) models.Flight {
@@ -20,8 +21,8 @@ func NewFlight(number, destination, origin string, scheduledArrival, scheduledDe
 			Destination: stringPtr(destination),
 			Origin:      stringPtr(origin),
 		},
-		ScheduledArrival:   timePtr(scheduledArrival),
-		ScheduledDeparture: timePtr(scheduledDeparture),
+		ScheduledArrival:   scheduledArrival,
+		ScheduledDeparture: scheduledDeparture,
 	}
 }
 func generateSampleFlights() []models.Flight {
@@ -94,3 +95,12 @@ func (s *FlightService) GetFlights(ctx echo.Context, params models.GetFlightsPar
 	}
 	return nil
 }
+func (s *FlightService) GetFlightByNumber(ctx echo.Context, flightNumber string) error {
+	for _, flight := range s.Flights {
+		if flight.Number == flightNumber {
+			return ctx.JSON(http.StatusOK, flight)
+		}
+	}
+	return ctx.JSON(http.StatusNotFound, map[string]string{"message": "Flight not found"})
+}
+
