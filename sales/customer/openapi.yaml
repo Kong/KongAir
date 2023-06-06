@@ -1,0 +1,115 @@
+---
+openapi: 3.0.0
+info:
+  contact:
+    name: Kong, Inc.
+  description: |
+    KongAir Customer Information service provides customer information 
+    (payment methods, current bookings, contact info, frequent flyer, etc...) 
+  version: 0.1.0
+  title: Customer Information Service
+
+servers:
+- url: https://api.kong-air.com
+  description: KongAir API Server
+
+paths:
+  "/customer/{custId}":
+    parameters:
+    - schema:
+        type: string
+      name: custId
+      in: path
+      required: true
+      description: Customer ID
+    get:
+      summary: Fetch a customers information 
+      description: Fetch a customers information 
+      tags:
+      - sales
+      - customer
+      operationId: get-cust-info
+      responses:
+        '200':
+          $ref: '#/components/responses/CustomerSingle'
+        '404':
+          description: Customer Not Found
+
+components:
+  responses:
+    CustomerSingle:
+      description: A get action response for a single Customer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Customer'
+  schemas:
+    Booking: 
+      type: object
+      properties: 
+        ticket_number:
+          type: string
+        flight:
+          type: object
+          properties:
+            number:
+              type: string
+            route:
+              type: object
+              properties:
+                origin:
+                  type: string
+                destination:
+                  type: string
+            scheduled_departure:
+              type: string
+              format: date-time
+            scheduled_arrival:
+              type: string
+              format: date-time
+        seat:
+          type: string
+      required:
+        - ticket_number
+        - flight
+    PaymentMethod:
+      type: object
+      properties:
+        id:
+          type: string
+        card_number:
+          type: string
+        card_holder_name:
+          type: string
+        expiration-date:
+          type: string
+    CustomerInformation:
+      type: object
+      properties:
+        address:
+          type: string
+        phone_number:
+          type: string
+        email:
+          type: string
+        frequent_flier_number:
+          type: string
+        payment_methods:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentMethod'
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        bookings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Booking'
+        seat:
+          type: string
+        information:
+          $ref: '#/components/schemas/CustomerInformation'
