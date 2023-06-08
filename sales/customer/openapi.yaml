@@ -109,7 +109,5 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Booking'
-        seat:
-          type: string
         information:
           $ref: '#/components/schemas/CustomerInformation'

@@ -43,6 +43,8 @@ paths:
                         scheduled_arrival: "2023-09-03T14:23:00Z"
                       }
                     }]
+        '401':
+          description: Unauthorized
     post:
       tags:
         - sales

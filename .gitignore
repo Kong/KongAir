@@ -2,3 +2,6 @@
 .vscode/
 go-apiops*/
 deck-*/
+kong-quickstart.*
+kong.env
+kong.yaml
