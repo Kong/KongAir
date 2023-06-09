@@ -107,6 +107,38 @@ paths:
                   message:
                     type: string
 
+  "/flights/{flightNumber}/details":
+    get:
+      summary: Fetch more details about a flight
+      description: Fetch more details about a flight
+      tags:
+      - flight-data
+      operationId: get-flight-details
+      parameters:
+      - name: flightNumber
+        in: path
+        description: The flight number
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response with the requested flight details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlightDetails'
+        '404':
+          description: Flight not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
 components:
   schemas:
     Flight:
@@ -132,3 +164,17 @@ components:
         - route
         - scheduled_departure
         - scheduled_arrival
+    FlightDetails:
+      type: object
+      properties:
+        flight_number:
+          type: string
+        in_flight_entertainment:
+          type: boolean
+        meal_options:
+          type: array
+          items:
+            type: string
+        aircraft_type:
+          type: string
+

@@ -20,6 +20,14 @@ type Flight struct {
 	ScheduledDeparture time.Time `json:"scheduled_departure"`
 }
 
+// FlightDetails defines model for FlightDetails.
+type FlightDetails struct {
+	AircraftType          string   `json:"aircraft_type,omitempty"`
+	FlightNumber          string   `json:"flight_number,omitempty"`
+	InFlightEntertainment bool     `json:"in_flight_entertainment,omitempty"`
+	MealOptions           []string `json:"meal_options,omitempty"`
+}
+
 // GetFlightsParams defines parameters for GetFlights.
 type GetFlightsParams struct {
 	// Date Filter by date (defaults to current day)

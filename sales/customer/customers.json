@@ -2,6 +2,7 @@
   {
     "id": "1",
     "name": "Jane Smith",
+    "username": "jsmith",
     "bookings": [
       {
         "ticket_number": "1234567890",
@@ -35,6 +36,7 @@
   {
     "id": "2",
     "name": "John Doe",
+    "username": "jdoe",
     "bookings": [
       {
         "ticket_number": "1234567890",
@@ -61,6 +63,40 @@
           "card_number": "****-****-****-8453",
           "card_holder_name": "John Doe",
           "expiration_date": "09/27"
+        }
+      ]
+    }
+  },
+  {
+    "id": "3",
+    "name": "Danny Freese",
+    "username": "dfreese",
+    "bookings": [
+      {
+        "ticket_number": "ABC123488",
+        "flight": {
+          "number": "K123",
+          "route": {
+            "origin": "JFK",
+            "destination": "LAX"
+          },
+          "scheduled_departure": "2023-06-06T10:00:00Z",
+          "scheduled_arrival": "2023-06-06T14:00:00Z"
+        },
+        "seat": "5A"
+      }
+    ],
+    "information": {
+      "address": "567 Street St",
+      "phone_number": "555-1234",
+      "email": "danny@example.com",
+      "frequent_flier_number": "FF987abc",
+      "payment_methods": [
+        {
+          "id": "PM984",
+          "card_number": "****-****-****-9734",
+          "card_holder_name": "Danny F",
+          "expiration_date": "09/28"
         }
       ]
     }

@@ -11,6 +11,79 @@ import (
     "net/http"
 )
 
+func stringPtr(str string) *string {
+	return &str
+}
+func boolPtr(b bool) *bool {
+  return &b
+}
+
+func generateSampleFlightDetails() []models.FlightDetails {
+	details := []models.FlightDetails{
+		{
+			AircraftType:          "Boeing 777",
+			FlightNumber:          "KA0284",
+			InFlightEntertainment: true,
+			MealOptions:           []string{"Chicken", "Fish", "Vegetarian"},
+		},
+		{
+			AircraftType:          "Airbus A380",
+			FlightNumber:          "KA0285",
+			InFlightEntertainment: false,
+			MealOptions:           []string{"Vegetarian", "Beef"},
+		},
+		{
+			AircraftType:          "Boeing 777",
+			FlightNumber:          "KA0286",
+			InFlightEntertainment: true,
+			MealOptions:           []string{"Chicken", "Fish", "Vegetarian"},
+		},
+		{
+			AircraftType:          "Airbus A380",
+			FlightNumber:          "KA0287",
+			InFlightEntertainment: false,
+			MealOptions:           []string{"Vegetarian", "Beef"},
+		},
+		{
+			AircraftType:          "Boeing 777",
+			FlightNumber:          "KA0288",
+			InFlightEntertainment: true,
+			MealOptions:           []string{"Chicken", "Fish", "Vegetarian"},
+		},
+		{
+			AircraftType:          "Airbus A380",
+			FlightNumber:          "KA0289",
+			InFlightEntertainment: false,
+			MealOptions:           []string{"Vegetarian", "Beef"},
+		},
+		{
+			AircraftType:          "Boeing 777",
+			FlightNumber:          "KA0290",
+			InFlightEntertainment: true,
+			MealOptions:           []string{"Chicken", "Fish", "Vegetarian"},
+		},
+		{
+			AircraftType:          "Airbus A380",
+			FlightNumber:          "KA0291",
+			InFlightEntertainment: false,
+			MealOptions:           []string{"Vegetarian", "Beef"},
+		},
+		{
+			AircraftType:          "Boeing 777",
+			FlightNumber:          "KA0292",
+			InFlightEntertainment: true,
+			MealOptions:           []string{"Chicken", "Fish", "Vegetarian"},
+		},
+		{
+			AircraftType:          "Airbus A380",
+			FlightNumber:          "KA0293",
+			InFlightEntertainment: false,
+			MealOptions:           []string{"Vegetarian", "Beef"},
+		},
+	}
+	return details
+}
+
 func NewFlight(number, destination, origin string, scheduledArrival, scheduledDeparture time.Time) models.Flight {
 	return models.Flight{
 		Number: number,
@@ -71,20 +144,15 @@ func generateSampleFlights() []models.Flight {
 	return flights
 }
 
-func stringPtr(str string) *string {
-	return &str
-}
-func timePtr(t time.Time) *time.Time {
-	return &t
-}
-
 type FlightService struct {
 	Flights []models.Flight
+  FlightDetails []models.FlightDetails
 }
 
 func NewFlightService() *FlightService {
 	rv := FlightService{}
 	rv.Flights = generateSampleFlights()
+  rv.FlightDetails = generateSampleFlightDetails()
 	return &rv
 }
 
@@ -104,3 +172,11 @@ func (s *FlightService) GetFlightByNumber(ctx echo.Context, flightNumber string)
 	return ctx.JSON(http.StatusNotFound, map[string]string{"message": "Flight not found"})
 }
 
+func (s *FlightService) GetFlightDetails(ctx echo.Context, flightNumber string) error {
+	for _, flight := range s.FlightDetails { 
+		if flight.FlightNumber == flightNumber {
+			return ctx.JSON(http.StatusOK, flight)
+		}
+	}
+	return ctx.JSON(http.StatusNotFound, map[string]string{"message": "Flight not found"})
+}

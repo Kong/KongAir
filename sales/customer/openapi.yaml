@@ -14,14 +14,7 @@ servers:
   description: KongAir API Server
 
 paths:
-  "/customer/{custId}":
-    parameters:
-    - schema:
-        type: string
-      name: custId
-      in: path
-      required: true
-      description: Customer ID
+  "/customer":
     get:
       summary: Fetch a customers information 
       description: Fetch a customers information 
@@ -102,6 +95,8 @@ components:
       type: object
       properties:
         id:
+          type: string
+        username:
           type: string
         name:
           type: string
