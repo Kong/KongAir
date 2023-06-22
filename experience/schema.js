@@ -39,7 +39,7 @@ const typeDefs = gql`
 
   type MyInfo {
     address: String!
-    phoneNumber: String!
+    phone_number: String!
     email: String!
     frequentFlierNumber: String
     paymentMethods: [PaymentMethod!]!
@@ -54,4 +54,3 @@ const typeDefs = gql`
 `;
 
 module.exports = typeDefs;
-

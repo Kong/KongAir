@@ -1,55 +1,30 @@
 const { ApolloServer } = require('@apollo/server');
-const { startStandaloneServer } = require("@apollo/server/standalone");
+const { startStandaloneServer } = require('@apollo/server/standalone');
+
 const typeDefs = require('./schema');
-const axios = require('axios')
-const { CustomerAPI } = require('./customer-api');
+const resolvers = require('./resolvers');
 
-const resolvers = {
-  Query: {
-    me(parent, args, contextValue, info) {
-      const config = {
-        headers: {
-         Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIn0.eyJ1c2VybmFtZSI6Impkb2UifQ"
-        }
-      }
-      axios.get('http://localhost:8082/customer', config)
-        .then((res) => {
-          console.log(res.data);
-        });
-
-      return {
-        name: 'John Doe',
-        username: 'jdoe'
-      }
-    }
- }
-};
-
-const server = new ApolloServer({
-  typeDefs,
-  resolvers});
+const CustomerAPI = require('./datasources/customer-api');
 
 async function startApolloServer() {
+  const server = new ApolloServer({ typeDefs, resolvers });
 
   const { url } = await startStandaloneServer(server, {
-    context: async ( { res } ) => {
+    context: async ( { req } ) => {
       const { cache } = server;
       return {
         dataSources: {
-          customerAPI: new CustomerAPI({ cache, res }),
-        }
-      }
-    }
-    //context: async ({ req, res }) => {
-    //  //throw new GraphQLError('User not authenticated');
-    //  return { req };
-    //},
+          customerAPI: new CustomerAPI( req, { cache } ),
+        },
+      };
+    },
   });
 
   console.log(`
-    🚀  Server is running!
+    🚀  Server is running
     📭  Query at ${url}
   `);
 }
 
 startApolloServer();
+
