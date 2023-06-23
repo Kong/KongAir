@@ -5,6 +5,7 @@ const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
 
 const CustomerAPI = require('./datasources/customer-api');
+const BookingsAPI = require('./datasources/bookings-api');
 
 async function startApolloServer() {
   const server = new ApolloServer({ typeDefs, resolvers });
@@ -15,6 +16,7 @@ async function startApolloServer() {
       return {
         dataSources: {
           customerAPI: new CustomerAPI( req, { cache } ),
+          bookingsAPI: new BookingsAPI( req, { cache } ),
         },
       };
     },

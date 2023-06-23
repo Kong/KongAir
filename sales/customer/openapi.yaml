@@ -4,8 +4,8 @@ info:
   contact:
     name: Kong, Inc.
   description: |
-    KongAir Customer Information service provides customer information 
-    (payment methods, current bookings, contact info, frequent flyer, etc...) 
+    KongAir Customer Information service provides customer information
+    (payment methods, contact info, frequent flyer, etc...)
   version: 0.1.0
   title: Customer Information Service
 
@@ -16,8 +16,8 @@ servers:
 paths:
   "/customer":
     get:
-      summary: Fetch a customers information 
-      description: Fetch a customers information 
+      summary: Fetch a customers information
+      description: Fetch a customers information
       tags:
       - sales
       - customer
@@ -37,40 +37,12 @@ components:
           schema:
             $ref: '#/components/schemas/Customer'
   schemas:
-    Booking: 
-      type: object
-      properties: 
-        ticket_number:
-          type: string
-        flight:
-          type: object
-          properties:
-            number:
-              type: string
-            route:
-              type: object
-              properties:
-                origin:
-                  type: string
-                destination:
-                  type: string
-            scheduled_departure:
-              type: string
-              format: date-time
-            scheduled_arrival:
-              type: string
-              format: date-time
-        seat:
-          type: string
-      required:
-        - ticket_number
-        - flight
     PaymentMethod:
       type: object
       properties:
         id:
           type: string
-        card_number:
+        redacted_card_number:
           type: string
         card_holder_name:
           type: string
@@ -100,9 +72,5 @@ components:
           type: string
         name:
           type: string
-        bookings:
-          type: array
-          items:
-            $ref: '#/components/schemas/Booking'
         information:
           $ref: '#/components/schemas/CustomerInformation'

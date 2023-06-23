@@ -4,6 +4,7 @@ const YAML = require('yamljs');
 const path = require('path');
 const openapiValidator = require('express-openapi-validator');
 const axios = require('axios'); // HTTP client
+const fs = require('fs');
 
 const app = express();
 app.use(express.json());
@@ -13,6 +14,14 @@ const openApiSpecPath = path.join(__dirname, 'openapi.yaml');
 const openApiDocument = YAML.load(openApiSpecPath);
 
 let bookings = {}; // An object to store bookings per user
+
+// Load the bookings.json file at startup
+try {
+  const data = fs.readFileSync(path.join(__dirname, 'bookings.json'), 'utf8');
+  bookings = JSON.parse(data);
+} catch (err) {
+  console.error(`Error reading file from disk: ${err}`);
+}
 
 // Middleware to validate Requests and Responses per the OAS
 app.use(
@@ -56,7 +65,7 @@ app.use((req, res, next) => {
 app.get('/bookings', (req, res) => {
   console.log(`bookings request for ${req.user}`);
   const userBookings = bookings[req.user];
-  if (!userBookings) 
+  if (!userBookings)
     return res.json([]); // Return empty array if no bookings for this user
   res.json(userBookings);
 });
@@ -75,6 +84,16 @@ app.post('/bookings', async (req, res, next) => {
     if (!bookings[req.user]) bookings[req.user] = [];
 
     bookings[req.user].push(newBooking);
+
+    // Write bookings to file
+    // WARN: Async write, not safe for concurrent requests
+    fs.writeFile(path.join(__dirname, 'bookings.json'), JSON.stringify(bookings), (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+    });
+
     res.status(201).json({ ticket_number: newBooking.ticket_number });
   } catch (error) {
     if (error.response && error.response.status === 404) {

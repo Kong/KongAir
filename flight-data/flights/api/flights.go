@@ -157,11 +157,7 @@ func NewFlightService() *FlightService {
 }
 
 func (s *FlightService) GetFlights(ctx echo.Context, params models.GetFlightsParams) error {
-	err := ctx.JSON(200, s.Flights)
-	if err != nil {
-		return err
-	}
-	return nil
+	return ctx.JSON(http.StatusOK, s.Flights)
 }
 func (s *FlightService) GetFlightByNumber(ctx echo.Context, flightNumber string) error {
 	for _, flight := range s.Flights {
@@ -173,7 +169,7 @@ func (s *FlightService) GetFlightByNumber(ctx echo.Context, flightNumber string)
 }
 
 func (s *FlightService) GetFlightDetails(ctx echo.Context, flightNumber string) error {
-	for _, flight := range s.FlightDetails { 
+	for _, flight := range s.FlightDetails {
 		if flight.FlightNumber == flightNumber {
 			return ctx.JSON(http.StatusOK, flight)
 		}

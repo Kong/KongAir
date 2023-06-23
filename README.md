@@ -14,4 +14,5 @@ Over time this repository will grow to include additional functionality, includi
 
 ## Examples
 
-* The [OAS to Kong](https://github.com/Kong/KongAir/blob/main/.github/workflows/oas-to-kong.yaml) workflow converts multiple team's OpenAPI Specs to Kong declarative configurations, merges multiple files into a single configuration, and patches the resulting file with internal hostnames. 
+* The [OAS to Kong](https://github.com/Kong/KongAir/blob/main/.github/workflows/oas-to-kong.yaml) workflow converts multiple team's OpenAPI Specs to Kong declarative configurations, merges multiple files into a single configuration, and patches the resulting file with internal hostnames.
+

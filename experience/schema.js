@@ -5,10 +5,10 @@ const typeDefs = gql`
     # An 'experience' API that allows a client app to pick and choose what data
     # it wants to retrieve for the current user. The user's identity will be
     # provided in Authorization headers
-    me: Customer!
+    me: Me!
   }
 
-  type Customer {
+  type Me {
     name: String!
     username: String!
     bookings: [Booking!]!
@@ -21,10 +21,14 @@ const typeDefs = gql`
     seat: String!
   }
 
-  type Flight {
-    number: String!
+  type Route {
     origin: String!
     destination: String!
+  }
+
+  type Flight {
+    number: String!
+    route: Route!
     scheduled_departure: String!
     scheduled_arrival: String!
     details: FlightDetails!
@@ -41,15 +45,15 @@ const typeDefs = gql`
     address: String!
     phone_number: String!
     email: String!
-    frequentFlierNumber: String
-    paymentMethods: [PaymentMethod!]!
+    frequent_flier_number: String
+    payment_methods: [PaymentMethod!]!
   }
 
   type PaymentMethod {
     id: ID!
-    redactedCardNumber: String!
-    cardholderName: String!
-    expirationDate: String!
+    redacted_card_number: String!
+    card_holder_name: String!
+    expiration_date: String!
   }
 `;
 

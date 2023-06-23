@@ -4,7 +4,8 @@
   "description": "KongAir bookings service",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
