@@ -6,6 +6,8 @@ const resolvers = require('./resolvers');
 
 const CustomerAPI = require('./datasources/customer-api');
 const BookingsAPI = require('./datasources/bookings-api');
+const RoutesAPI = require('./datasources/routes-api');
+const FlightsAPI = require('./datasources/flights-api');
 
 async function startApolloServer() {
   const server = new ApolloServer({ typeDefs, resolvers });
@@ -17,6 +19,8 @@ async function startApolloServer() {
         dataSources: {
           customerAPI: new CustomerAPI( req, { cache } ),
           bookingsAPI: new BookingsAPI( req, { cache } ),
+          routesAPI: new RoutesAPI( { cache } ),
+          flightsAPI: new FlightsAPI( { cache } ),
         },
       };
     },

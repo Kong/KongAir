@@ -5,10 +5,15 @@ const resolvers = {
     me: (_, __, { dataSources }) => dataSources.customerAPI.getCustomer()
   },
   Me: {
-    name: (parent) => parent.name,
-    username: (parent) => parent.username,
-    information: (parent) => parent.information,
     bookings: (_, __, { dataSources }) => dataSources.bookingsAPI.getBookings()
+  },
+  Flight: {
+    route: (parent, _, { dataSources }) => {
+      return dataSources.routesAPI.getRoute(parent.route_id);
+    },
+    details: (parent, _, { dataSources }) => {
+      return dataSources.flightsAPI.getFlightDetails(parent.number);
+    }
   },
 };
 

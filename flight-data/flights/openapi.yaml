@@ -14,7 +14,7 @@ servers:
 paths:
   "/flights":
     get:
-      summary: Get KongAir planned flights 
+      summary: Get KongAir planned flights
       description: |
         Returns all the scheduled flights for a given day
       tags:
@@ -31,7 +31,7 @@ paths:
             format: date
       responses:
         '200':
-          description: Successful respone with scheduled flights 
+          description: Successful respone with scheduled flights
           content:
             application/json:
               schema:
@@ -44,19 +44,13 @@ paths:
                    [
                       {
                         "number": "KD924",
-                        "route": {
-                          "origin": "LHR",
-                          "destination": "SFO"
-                        },
+                        "route_id": "LHR-SFO",
                         "scheduled_departure": "2024-03-20T09:12:28Z",
                         "scheduled_arrival": "2024-03-20T19:12:28Z"
                       },
                       {
                         "number": "KD925",
-                        "route": {
-                          "origin": "SFO",
-                          "destination": "LHR"
-                        },
+                        "route_id": "SFO-LHR",
                         "scheduled_departure": "2024-03-21T09:12:28Z",
                         "scheduled_arrival": "2024-03-21T19:12:28Z"
                       }
@@ -90,10 +84,7 @@ paths:
                   value: |
                     {
                       "number": "KD924",
-                      "route": {
-                        "origin": "LHR",
-                        "destination": "SFO"
-                      },
+                      "route_id": "LHR-SFO",
                       "scheduled_departure": "2024-03-20T09:12:28Z",
                       "scheduled_arrival": "2024-03-20T19:12:28Z"
                     }
@@ -143,16 +134,11 @@ components:
   schemas:
     Flight:
       type: object
-      properties: 
+      properties:
         number:
           type: string
-        route:
-          type: object
-          properties:
-            origin: 
-              type: string
-            destination: 
-              type: string
+        route_id:
+          type: string
         scheduled_departure:
           type: string
           format: date-time
@@ -161,7 +147,7 @@ components:
           format: date-time
       required:
         - number
-        - route
+        - route_id
         - scheduled_departure
         - scheduled_arrival
     FlightDetails:
@@ -177,4 +163,8 @@ components:
             type: string
         aircraft_type:
           type: string
-
+      required:
+        - flight_number
+        - in_flight_entertainment
+        - mean_options
+        - aircraft_type

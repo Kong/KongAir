@@ -21,17 +21,20 @@ const typeDefs = gql`
     seat: String!
   }
 
-  type Route {
-    origin: String!
-    destination: String!
-  }
-
   type Flight {
     number: String!
+    route_id: String!
     route: Route!
     scheduled_departure: String!
     scheduled_arrival: String!
     details: FlightDetails!
+  }
+
+  type Route {
+    id: String!
+    origin: String!
+    destination: String!
+    avg_duration: Int!
   }
 
   type FlightDetails {

@@ -12,6 +12,30 @@ servers:
   description: KongAir API Server
 
 paths:
+  "/routes/{id}":
+    get:
+      summary: Request a specific KongAir route by id (LHR-SIN)
+      description: |
+        Returns a specific route from a given Route ID
+      tags:
+      - flight-data
+      operationId: get-route
+      parameters:
+        - name: id
+          in: path
+          description: String route ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with the found Route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+        '404':
+          description: Route not found
   "/routes":
     get:
       summary: Request all the KongAir routes
@@ -22,7 +46,7 @@ paths:
       - flight-data
       operationId: get-routes
       parameters:
-        - name: origin 
+        - name: origin
           in: query
           description: filter by origin
           required: false
@@ -39,24 +63,32 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Route'        
+                  $ref: '#/components/schemas/Route'
               examples:
                 lhr-sfo:
                   value: |
                    [{
+                      "id": "LHR-SFO",
                       "origin": "LHR",
-                      "destination": "SFO"
+                      "destination": "SFO",
+                      "avg_duration": 660
                     }]
 
 components:
   schemas:
     Route:
       type: object
-      properties: 
-        origin: 
+      properties:
+        id:
           type: string
-        destination: 
+        origin:
           type: string
+        destination:
+          type: string
+        avg_duration:
+          type: integer
       required:
+        - id
         - origin
         - destination
+        - avg_duration

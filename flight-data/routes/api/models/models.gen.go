@@ -5,7 +5,9 @@ package models
 
 // Route defines model for Route.
 type Route struct {
+	AvgDuration int    `json:"avg_duration"`
 	Destination string `json:"destination"`
+	Id          string `json:"id"`
 	Origin      string `json:"origin"`
 }
 
