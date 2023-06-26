@@ -1,7 +1,7 @@
 const { RESTDataSource } = require('@apollo/datasource-rest');
 
 class BookingsAPI extends RESTDataSource {
-  baseURL = 'http://localhost:8082/';
+  baseURL = process.env.BOOKINGS_SVC_BASE_URL;
 
   constructor(req, options) {
     super(options);

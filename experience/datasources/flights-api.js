@@ -1,7 +1,7 @@
 const { RESTDataSource } = require('@apollo/datasource-rest');
 
 class FlightsAPI extends RESTDataSource {
-  baseURL = 'http://localhost:8080/';
+  baseURL = process.env.FLIGHTS_SVC_BASE_URL;
 
   getFlights() {
     return this.get('flights');

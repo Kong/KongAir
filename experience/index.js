@@ -9,6 +9,8 @@ const BookingsAPI = require('./datasources/bookings-api');
 const RoutesAPI = require('./datasources/routes-api');
 const FlightsAPI = require('./datasources/flights-api');
 
+require('dotenv').config()
+
 async function startApolloServer() {
   const server = new ApolloServer({ typeDefs, resolvers });
 

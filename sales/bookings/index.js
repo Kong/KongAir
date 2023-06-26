@@ -6,6 +6,8 @@ const openapiValidator = require('express-openapi-validator');
 const axios = require('axios'); // HTTP client
 const fs = require('fs');
 
+require('dotenv').config();
+
 const app = express();
 app.use(express.json());
 
@@ -72,7 +74,10 @@ app.get('/bookings', (req, res) => {
 
 app.post('/bookings', async (req, res, next) => {
   try {
-    const flightResponse = await axios.get(`http://localhost:8080/flights/${req.body.flight_number}`);
+    console.log(process.env.FLIGHT_SVC_ENDPOINT);
+
+    const flightResponse = await axios.get(
+      `${process.env.FLIGHT_SVC_ENDPOINT}${req.body.flight_number}`);
 
     const newBooking = {
       ticket_number: Math.random().toString(36).substr(2, 10).toUpperCase(),

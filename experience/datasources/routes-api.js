@@ -1,7 +1,7 @@
 const { RESTDataSource } = require('@apollo/datasource-rest');
 
 class RoutesAPI extends RESTDataSource {
-  baseURL = 'http://localhost:8081/';
+  baseURL = process.env.ROUTES_SVC_BASE_URL;
 
   getRoutes() {
     return this.get('routes');
