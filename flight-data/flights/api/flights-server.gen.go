@@ -27,6 +27,9 @@ type ServerInterface interface {
 	// Get a specific flight by flight number
 	// (GET /flights/{flightNumber})
 	GetFlightByNumber(ctx echo.Context, flightNumber string) error
+	// Fetch more details about a flight
+	// (GET /flights/{flightNumber}/details)
+	GetFlightDetails(ctx echo.Context, flightNumber string) error
 }
 
 // ServerInterfaceWrapper converts echo contexts to parameters.
@@ -68,6 +71,22 @@ func (w *ServerInterfaceWrapper) GetFlightByNumber(ctx echo.Context) error {
 	return err
 }
 
+// GetFlightDetails converts echo context to params.
+func (w *ServerInterfaceWrapper) GetFlightDetails(ctx echo.Context) error {
+	var err error
+	// ------------- Path parameter "flightNumber" -------------
+	var flightNumber string
+
+	err = runtime.BindStyledParameterWithLocation("simple", false, "flightNumber", runtime.ParamLocationPath, ctx.Param("flightNumber"), &flightNumber)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter flightNumber: %s", err))
+	}
+
+	// Invoke the callback with all the unmarshalled arguments
+	err = w.Handler.GetFlightDetails(ctx, flightNumber)
+	return err
+}
+
 // This is a simple interface which specifies echo.Route addition functions which
 // are present on both echo.Echo and echo.Group, since we want to allow using
 // either of them for path registration
@@ -98,27 +117,29 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 
 	router.GET(baseURL+"/flights", wrapper.GetFlights)
 	router.GET(baseURL+"/flights/:flightNumber", wrapper.GetFlightByNumber)
+	router.GET(baseURL+"/flights/:flightNumber/details", wrapper.GetFlightDetails)
 
 }
 
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/6xWW4/bRBT+K6MDDyDl4qSLRP1WBAtVq4K6fWKzQrP2sTPFnpmeOQ5Yq/x3NBevszgJ",
-	"2RUvyWh87uf7PvsBCtNao1Gzg/wBXLHFVobjdaPqLfuTJWORWGG41117j+RP3FuEHByT0jXsZ0CmY5x6",
-	"lOhYacnK6KNuhlStjj3az4Ybc/8ZC/bGvsKya7D8QxKpnWy8X2WolQw5lJJxzqpFmE3zjK4lWkncEV7q",
-	"7JvDL50iLCG/HWYwdHw89LFa7yYd+dBKVyYNqiBl46DgndH1G0UiLsIJh7RTBQpLZqdKdIK3KB5TiCqZ",
-	"VYZEcvV9KG58uiHITQwCM9ghuZgoW6wWWViERS2tghxeLbJFBjOwkrdhh8sU3p9r5Gm1H5E70k7IpjlT",
-	"mBS12qEWpew3GkJGCsB4W0IOPyOnOkNqki0ykoP89t/ZrlXDSOK+F35p4psSK9k17AQbUXREqNnn+Bb8",
-	"cCGHLx1SDzPQssW06bSfVk4wcBQ73Ic5ekPY33k4OGu0iwhfZ5n/K4xm1GE40tpGFaG15WcXgY9/y9Y2",
-	"0eOneH5c7nvlgt9ONp3Pc7vRQoiH8CvEJiFuA7nYwLsfX6+vNjB7fBhQ6J8N9v4ysip6vP/l42jvHx5Q",
-	"MlrcXP+6gWSwHyMfwXW0X2frq3n2ar7OPmWv89U6X3//+2FJE+hP3FajW/BKWU+3/N2zWg4NnW05DOUl",
-	"La9e1vJq2vJG3210UJcRioqxDRD5mrCCHL5ajhK9TPq8TOI8CqQkkn1Uk6dMuemKAp2rukZEyKL4S/F2",
-	"ys9YRte2kvrIxUFGhG2k1geWM2BZe1pCvJmXkiXc+QCDTiwf4uFDWOL+v2VDOIuFqlSRsiShUF444kXC",
-	"wxnZ+KH/MAjzWfX4tMWnQQeZ8HI3qsRhB3D4AmDq8HBlJ9XCKU/y/18vRJCAQ70INDgtE1PCnBaIc+qw",
-	"T9FeogvPFoX9hBuXUOICCrjEAf+e8ltFx4/o9uu7yq4uWM9Y1tPPnRadkzVe9D0zLTYtWBsWlel0eYSW",
-	"U67c9xM8n2CoD4a0O86Lge9vfnsbPhRCoI4ayGHLbF2+XEqrFn8aXc+lokVh/Ltw/08AAAD//ztMfX5F",
-	"CgAA",
+	"H4sIAAAAAAAC/9xWTY/bNhD9K8S0hxaQba2zBRrdUqRugiySYjenrhcGLY1sphKpDEduDUP/vSBF2d6V",
+	"7HjTHopcbEKcj8eZ9zjcQWrKymjUbCHZgU3XWEq/nBVqtWa3qshUSKzQf9d1uURyK95WCAlYJqVX0ERA",
+	"pmZcqGxw04XO6gKzhSRSG1k4q9xQKRkSyCTjiFWJEJ1zzbCSxDXhpc4OFX6uFWEGyX0H/gjqcPQhuA/7",
+	"4Gb5CVN2yNoivUaWqrD9WklFKcmcF63jQFVyH2BxpqhKL4IRakZiqXSJmo9sl8YUKLUzLlEWC1OxMtoD",
+	"UIylHQwbPkgiue2V6TGq0xh8Qr1PGD05cL9ijT9QbhykDG1KyrtCAu+MXr1SJNqKWmGRNipFUZHZqAyt",
+	"4DWKfVNEHsxyQyK4uuYrLly6LshdGwQi2CDZNlE8vhrHrgKmQi0rBQm8GMfjGCKoJK99tSYhvFuvkPto",
+	"b5Fr0lbIojgDTIqV2qAWmdzONfiMJF2Etxkk8BtywOlTkyyRkSwk90+zzVTBSGK5FY7p4ocMc1kXbAUb",
+	"kdZEqNnl+NF3ChL4XCNtIQItSwzyCIwuZU84g4Ljra+jM4TmwZHDVkbbltXTOHZ/qdEciCirqlCpP9rk",
+	"k3WYd4B/y7IqWo9f2/W+uTfKer+NLGqX536uhRA7/yvEPMh0DomYw7vXL6fXc4j2m5102+2bN7eju9mH",
+	"Y4MBQbe203h6PYpfjKbxx/hlcjVNpj//MewYNN9zuzq4ea8m+gLyn04jv5t9GN28uX0e8quvQ37VRz7X",
+	"D3PtlX8gxv66+J4whwS+mxzGwyTMhkkYDP07pIme8PauTlO0Nq8L0RIIxV+K1321tDDqspS0bZXRiVpU",
+	"hdT6yDIClit7uKRGmWQJDy5Ap9rJrl28971ovixiYStMVa7SkCXIVjkZtx9CW8+I+Jft++62PKvlj2t8",
+	"HLQTrbt8Dpo9PgEcX85MNR637KR2rXKS++/VK7wgj9Xr2X9atOcV+3VyfbZWmx7XL6H4BZS2gdNuCrgu",
+	"oeU9W107ruPrC8p9gPX4AVGitXI19HRoBmfrk7kReGZY5KbW2YDM+txfbnv8fK7iJtnhQTSovBlyuhal",
+	"IRTBVMilqR2cULmTOuveWt+GzJ5Dx+7k/5aVXcn/5+y8hCMniOniIG2GmdENlle/v/XvQ9/4mgpIYM1c",
+	"2WQykZUa/2n0aiQVjVPjnkDNPwEAAP//dVw4PSoNAAA=",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

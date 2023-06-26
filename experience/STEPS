@@ -1,0 +1,5 @@
+Steps to prep this repo:
+
+npm install apollo-server graphql
+
+

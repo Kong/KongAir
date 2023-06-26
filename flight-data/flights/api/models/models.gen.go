@@ -11,13 +11,18 @@ import (
 
 // Flight defines model for Flight.
 type Flight struct {
-	Number string `json:"number"`
-	Route  struct {
-		Destination *string `json:"destination,omitempty"`
-		Origin      *string `json:"origin,omitempty"`
-	} `json:"route"`
+	Number             string    `json:"number"`
+	RouteId            string    `json:"route_id"`
 	ScheduledArrival   time.Time `json:"scheduled_arrival"`
 	ScheduledDeparture time.Time `json:"scheduled_departure"`
+}
+
+// FlightDetails defines model for FlightDetails.
+type FlightDetails struct {
+	AircraftType          string    `json:"aircraft_type"`
+	FlightNumber          string    `json:"flight_number"`
+	InFlightEntertainment bool      `json:"in_flight_entertainment"`
+	MealOptions           *[]string `json:"meal_options,omitempty"`
 }
 
 // GetFlightsParams defines parameters for GetFlights.

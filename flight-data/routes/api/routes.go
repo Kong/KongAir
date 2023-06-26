@@ -15,16 +15,16 @@ type RouteService struct {
 func NewRouteService() *RouteService {
 	rv := RouteService{}
 	rv.Routes = []models.Route{
-		{Origin: "LHR", Destination: "JFK"},
-		{Origin: "LHR", Destination: "SFO"},
-		{Origin: "LHR", Destination: "DXB"},
-		{Origin: "LHR", Destination: "HKG"},
-		{Origin: "LHR", Destination: "BOM"},
-		{Origin: "LHR", Destination: "HND"},
-		{Origin: "LHR", Destination: "CPT"},
-		{Origin: "LHR", Destination: "SYD"},
-		{Origin: "LHR", Destination: "SIN"},
-		{Origin: "LHR", Destination: "LAX"},
+    {Id: "LHR-JFK", Origin: "LHR", Destination: "JFK", AvgDuration: 470},
+    {Id: "LHR-SFO", Origin: "LHR", Destination: "SFO", AvgDuration: 660},
+    {Id: "LHR-DXB", Origin: "LHR", Destination: "DXB", AvgDuration: 420},
+    {Id: "LHR-HKG", Origin: "LHR", Destination: "HKG", AvgDuration: 745},
+    {Id: "LHR-BOM", Origin: "LHR", Destination: "BOM", AvgDuration: 540},
+    {Id: "LHR-HND", Origin: "LHR", Destination: "HND", AvgDuration: 830},
+    {Id: "LHR-CPT", Origin: "LHR", Destination: "CPT", AvgDuration: 700},
+    {Id: "LHR-SYD", Origin: "LHR", Destination: "SYD", AvgDuration: 1320},
+    {Id: "LHR-SIN", Origin: "LHR", Destination: "SIN", AvgDuration: 800},
+    {Id: "LHR-LAX", Origin: "LHR", Destination: "LAX", AvgDuration: 675},
 	}
 	return &rv
 }
@@ -35,4 +35,16 @@ func (s *RouteService) GetRoutes(ctx echo.Context, params models.GetRoutesParams
 		return err
 	}
 	return nil
+}
+func (s *RouteService) GetRoute(ctx echo.Context, id string) error {
+  for _, route := range s.Routes {
+    if route.Id == id {
+      err := ctx.JSON(200, route)
+      if err != nil {
+        return err
+      }
+      return nil
+    }
+  }
+  return ctx.JSON(404, nil)
 }

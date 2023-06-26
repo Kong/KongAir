@@ -24,6 +24,9 @@ type ServerInterface interface {
 	// Request all the KongAir routes
 	// (GET /routes)
 	GetRoutes(ctx echo.Context, params GetRoutesParams) error
+	// Request a specific KongAir route by id (LHR-SIN)
+	// (GET /routes/{id})
+	GetRoute(ctx echo.Context, id string) error
 }
 
 // ServerInterfaceWrapper converts echo contexts to parameters.
@@ -46,6 +49,22 @@ func (w *ServerInterfaceWrapper) GetRoutes(ctx echo.Context) error {
 
 	// Invoke the callback with all the unmarshalled arguments
 	err = w.Handler.GetRoutes(ctx, params)
+	return err
+}
+
+// GetRoute converts echo context to params.
+func (w *ServerInterfaceWrapper) GetRoute(ctx echo.Context) error {
+	var err error
+	// ------------- Path parameter "id" -------------
+	var id string
+
+	err = runtime.BindStyledParameterWithLocation("simple", false, "id", runtime.ParamLocationPath, ctx.Param("id"), &id)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter id: %s", err))
+	}
+
+	// Invoke the callback with all the unmarshalled arguments
+	err = w.Handler.GetRoute(ctx, id)
 	return err
 }
 
@@ -78,22 +97,25 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 	}
 
 	router.GET(baseURL+"/routes", wrapper.GetRoutes)
+	router.GET(baseURL+"/routes/:id", wrapper.GetRoute)
 
 }
 
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/4xTvXLUMBB+Fc1C6dgX6NylATIwA5OU8RWKvPYpyJKyuz7wZO7dGUk25OcKKstaSfv9",
-	"7ROYMMXg0QtD+wRsDjjpvLwJs2BaRAoRSSzm7R5ZrNdig0+/skSEFljI+hFOFQSyoz1XOlVA+Dhbwh7a",
-	"u+1c9eLBfbXdCvcPaARO6Zr1Q1hbG7KxtIavwY9XllTGyYqRjtagihSOtkdWckBFOFoWJOwVlWPbrcFZ",
-	"ZHWP8gvRqwJGad+rZ3CUthQDCUMFYsUlXGu329INKjgicQF0We/qXZYgotfRQgsf68t6BxVELYesXlNg",
-	"pOWI8pbUDcpMnpV2rhB4idqyMjMRenHLc3IS1OCWuvNXRY50UKuobZL+P1kqE3rkukueJMNz8bqHFj6j",
-	"FNqZCekJBYmhvXuNfrBOkNT9ov66m6IAjzPSAhV4PWVvt2JJW1LBCk58Nk/rhibSS/pnWbIRQ6AJTvsU",
-	"Ko7BcxH1w26XPiZ4QZ/11TE6azKZ5oFLaPG3nqIrN9yBLrjk66jdnJ6+e+q8UqpbgXbQqg6+fbnpoFoL",
-	"z+Qr1dtP3zvovDrtO5+jfobae8IBWnjX/Bu5Zp23pgzbG7rppZcS387GIPMwO5WmCVlUGF5nfXUr45in",
-	"SdOSo1WOb9HaMkWbtaLHZCoMzo4Huei1aNhnCGm2zju+PXL14zrPBBJUMJODFg4ikdum0dHWP4MfL7Sl",
-	"2oRk2ulPAAAA//83zryIdwQAAA==",
+	"H4sIAAAAAAAC/5yU34/jNBDH/xVr4AGkbFPgdA95W+kEVCBA28dNhbzJJJ0jsb3jSY+oyv+ObCf9dT3u",
+	"4Kmpxx7PfL+f8REq2ztr0IiH4gi+2mOv4+eTHQTDh2PrkIUwLutD+2c9sBayJvyX0SEUQEawRYYpgxq9",
+	"kLnd4IXJtCFO9d1ly9TSvRNTBoyvAzHWUDyH46fN15dl18XtsiWTfXmPlcAUUpFpbLikRl8xuVQl/GJN",
+	"+0isYtNeeeQDVagc2wPV6JXsUTG25AUZa8Vp23Kq6Qi9ekH5gGhUqk1pU6uL6pQmdpbFQwZC0oW65tu2",
+	"6TbI4IDsU0HfrdardZTFodGOoIAf4lIGTss+WpGnMsJni/JxU08oAxuvdNelBq6rJq+qgRmNdONlc2JV",
+	"042r0jwmOcJGrZymYMcXdqkqW6NflcGUQE8Mbmoo4CeU1HbshHWPguyheL6tvqFOkNXLqE5mBzzgdUAe",
+	"IQOj++jtEkzoBhVIsPd3GZsXNLMew38vYzSisdzDtAugeWeNT6J+v16Hn8oaQRP11c51VMVm8vc+8Y1/",
+	"69516US35wef+Drobgipn4+lUUqVQHUJhSrh15+fHrY//l5CNgdSB6fgOXCha4peHbtkPYTfvl2XRk27",
+	"0sSRuSPH14wNFPBVfp75fB74PE37RxJNaZ4vbNkOVYXeN0OnFrHUB5L97YjMJsdShr7XPEYiXwf0ciJy",
+	"QZEXIkS3gQVoOmr38lBr0bALOWbW8yPV0+eBV95hRQ1VKbNq2PZKq5YOaGaoN+/+Bc7PsbmNRM3JN+8W",
+	"NMNknsmMD9X55RIe8NKW21fu/9F3zvcF7v5HNxs7mNnIQMab9Zs7kkcJjJW0+1N+nw25sjxMN9XqmzgT",
+	"m9++/TQBIS3y4b4dS87HPzbxMUWGDAbuoIC9iPNFnmtHq7+saR808aqyYdqnfwIAAP//hNa45v0GAAA=",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

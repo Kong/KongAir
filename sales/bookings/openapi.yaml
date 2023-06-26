@@ -3,7 +3,7 @@
 openapi: 3.0.0
 
 info:
-  description: KongAir Bookings service provides customers the ability to book and retrieve flight bookings on KongAir 
+  description: KongAir Bookings service provides customers the ability to book and retrieve flight bookings on KongAir
   version: 0.1.0
   title: Bookings Service
 
@@ -15,7 +15,7 @@ paths:
   "/bookings":
     get:
       tags:
-      - sales 
+      - sales
       summary: Get a customers current bookings
       operationId: get-bookings
       responses:
@@ -35,14 +35,13 @@ paths:
                       "seat": "32A",
                       "flight": {
                         "number": "KA924",
-                        "route": {
-                          "origin": "LHR",
-                          "destination": "SFO"
-                        },
-                        scheduled_departure: "2023-09-03T09:15:00Z",
-                        scheduled_arrival: "2023-09-03T14:23:00Z"
+                        "route_id": "LHR-SFO",
+                        "scheduled_departure": "2023-09-03T09:15:00Z",
+                        "scheduled_arrival": "2023-09-03T14:23:00Z"
                       }
                     }]
+        '401':
+          description: Unauthorized
     post:
       tags:
         - sales
@@ -51,7 +50,7 @@ paths:
       responses:
         '201':
           description: Booking Created Successfully
-          content: 
+          content:
             application/json:
               schema:
                 $ref: '#/components/schemas/BookingResponse'
@@ -74,26 +73,21 @@ paths:
                    "flight_number": "KA924",
                    "seat": "32A"
                  }
-                
+
 components:
   schemas:
     Booking:
       type: object
-      properties: 
+      properties:
         ticket_number:
           type: string
         flight:
           type: object
-          properties: 
+          properties:
             number:
-              type: string 
-            route:
-              type: object
-              properties:
-                origin: 
-                  type: string
-                destination: 
-                  type: string
+              type: string
+            route_id:
+              type: string
             scheduled_departure:
               type: string
               format: date-time
@@ -116,8 +110,8 @@ components:
         - flight_number
     BookingResponse:
       type: object
-      properties: 
+      properties:
         ticket_number:
-          type: string 
+          type: string
       required:
         - ticket_number
