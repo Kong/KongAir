@@ -4,8 +4,9 @@
   "description": "KongAir bookings service",
   "main": "index.js",
   "scripts": {
-    "test": "test",
-    "dev": "nodemon index.js"
+    "test": "jest",
+    "dev": "nodemon app.js",
+    "start": "node app.js ${KONG_AIR_BOOKINGS_PORT}"
   },
   "repository": {
     "type": "git",
@@ -24,5 +25,9 @@
     "express-openapi-validator": "^5.0.4",
     "jsonwebtoken": "^9.0.0",
     "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "supertest": "^6.3.3"
   }
 }
