@@ -60,7 +60,15 @@ paths:
                    {
                     "ticket_number": "CDF3412"
                    }
-
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found, likely for the flight_number given
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: Not found
       requestBody:
         content:
           application/json:
