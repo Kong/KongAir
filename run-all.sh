@@ -17,11 +17,13 @@ echo $! > ./flight-data/flights/flights.pid
 echo "Flights process:" $(cat ./flight-data/flights/flights.pid)
 
 echo "Running customer service"
+(cd ./sales/customer && make build)
 node ./sales/customer/main.js "$KONG_AIR_CUSTOMER_PORT" > /tmp/customer.log 2>&1 &
 echo $! > ./sales/customer/customer.pid
 echo "Customer process:" $(cat ./sales/customer/customer.pid)
 
 echo "Running bookings service"
+(cd ./sales/bookings && make build)
 node ./sales/bookings/main.js "$KONG_AIR_BOOKINGS_PORT" > /tmp/bookings.log 2>&1 &
 echo $! > ./sales/bookings/bookings.pid
 echo "Bookings process:" $(cat ./sales/bookings/bookings.pid)

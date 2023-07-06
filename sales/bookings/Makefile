@@ -7,6 +7,9 @@ check-dependencies:
 test: check-dependencies
 	npm run test
 
+build: check-dependencies
+	npm install
+
 run: check-dependencies
 	node main.js ${KONG_AIR_BOOKINGS_PORT}
 
