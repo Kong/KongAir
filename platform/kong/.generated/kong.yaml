@@ -38,6 +38,18 @@ services:
     regex_priority: 100
     strip_path: false
     tags: []
+  - id: 08020aa2-6106-59ec-903a-3459e7cbb629
+    methods:
+    - GET
+    name: flights-service_get-flight-details
+    paths:
+    - ~/flights/(?<flightnumber>[^#?/]+)/details$
+    plugins: []
+    protocols:
+    - https
+    regex_priority: 100
+    strip_path: false
+    tags: []
   tags: []
 - host: ip-10-0-43-1.us-east-2.compute.internal
   id: 5bbc0ad8-3b7c-5dfe-a676-b28f30523a6f
@@ -57,6 +69,18 @@ services:
     protocols:
     - https
     regex_priority: 200
+    strip_path: false
+    tags: []
+  - id: 831bf89a-08be-5dbd-bcd2-aa2348d784d3
+    methods:
+    - GET
+    name: routes-service_get-route
+    paths:
+    - ~/routes/(?<id>[^#?/]+)$
+    plugins: []
+    protocols:
+    - https
+    regex_priority: 100
     strip_path: false
     tags: []
   tags: []
@@ -106,11 +130,11 @@ services:
     - GET
     name: customer-information-service_get-cust-info
     paths:
-    - ~/customer/(?<custid>[^#?/]+)$
+    - ~/customer$
     plugins: []
     protocols:
     - https
-    regex_priority: 100
+    regex_priority: 200
     strip_path: false
     tags: []
   tags: []
