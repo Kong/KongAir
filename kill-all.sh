@@ -2,30 +2,42 @@
 
 source PORTS.env
 
-echo "Killing routes service"
 if [[ -f "./flight-data/routes/routes.pid" ]];
 then
-kill -15 $(cat ./flight-data/routes/routes.pid)
-rm -f ./flight-data/routes/routes.pid
+  pid=$(cat ./flight-data/routes/routes.pid)
+  echo "Killing routes service $pid"
+  kill $pid
+  rm -f ./flight-data/routes/routes.pid
+else
+  echo "No routes service pid found"
 fi
 
-echo "Killing flgiths service"
 if [[ -f "./flight-data/flights/flights.pid" ]];
 then
-kill -15 $(cat ./flight-data/flights/flights.pid)
-rm -f ./flight-data/flights/flights.pid
+  pid=$(cat ./flight-data/flights/flights.pid)
+  echo "Killing flights service $pid"
+  kill $pid
+  rm -f ./flight-data/flights/flights.pid
+else
+  echo "No flights service pid found"
 fi
 
-echo "Killing customer service"
 if [[ -f "./sales/customer/customer.pid" ]];
 then
-kill -15 $(cat ./sales/customer/customer.pid)
-rm -f ./sales/customer/customer.pid
+  pid=$(cat ./sales/customer/customer.pid)
+  echo "Killing customer service $pid"
+  kill $pid
+  rm -f ./sales/customer/customer.pid
+else
+  echo "No customer service pid found"
 fi
 
-echo "Killing bookings service"
 if [[ -f "./sales/bookings/bookings.pid" ]];
 then
-kill -15 $(cat ./sales/bookings/bookings.pid)
-rm -f ./sales/bookings/bookings.pid
+  pid=$(cat ./sales/bookings/bookings.pid)
+  echo "Killing bookings service $pid"
+  kill $pid
+  rm -f ./sales/bookings/bookings.pid
+else
+  echo "No bookings service pid found"
 fi
