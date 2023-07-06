@@ -89,7 +89,7 @@ services:
   name: bookings-service
   path: /
   plugins: []
-  port: 8083
+  port: 8082
   protocol: http
   routes:
   - id: 9bd2c85f-5d13-5910-838c-9fad63e8a54d
@@ -122,7 +122,7 @@ services:
   name: customer-information-service
   path: /
   plugins: []
-  port: 8082
+  port: 8083
   protocol: http
   routes:
   - id: 5984bb2d-328e-5785-a06a-f639c3a59d94
