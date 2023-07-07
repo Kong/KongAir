@@ -25,10 +25,3 @@ The [bookings](/sales/bookings/) service manages customer flight bookings and de
 services.
 * The [experience](experience/) team uses GraphQL and builds "experience" APIs to drive applications. The experience
 APIs aggregate the other KongAir REST APIs to make a dynamic unified API for applications.
-
-## APIOps Examples
-
-* The [OAS to Kong](https://github.com/Kong/KongAir/blob/main/.github/workflows/oas-to-kong.yaml) workflow
-converts multiple team's OpenAPI Specs to Kong declarative configurations, merges multiple files into a single configuration,
-and patches the resulting file with internal hostnames.
-
