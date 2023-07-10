@@ -4,7 +4,7 @@ openapi: 3.0.0
 
 info:
   description: KongAir Routes service provides the registered routes KongAir flies between origin and destination airports
-  version: 1.0.0
+  version: 0.1.0
   title: Routes Service
 
 servers:
