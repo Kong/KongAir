@@ -1,4 +1,4 @@
-## Kong Air's experience API
+## KongAir's experience API
 
 A GraphQL API implemented in Apollo server,
 designed to aggregate the KongAir REST APIs to help drive end user
