@@ -3,6 +3,10 @@
 Provides the KongAir flights information including
 flight number and other details.
 
+### Specification
+
+The API specification can be found in the [openapi.yaml](openapi.yaml) file.
+
 ### usage
 
 The repository provides a `Makefile` with common usage.
