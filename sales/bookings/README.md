@@ -1,7 +1,6 @@
 ## Customer Bookings API
 
-Provides the KongAir customer bookings service including
-payment methods, contact info, frequent flyer, etc...
+Provides the KongAir customer bookings service.
 
 Customers are identified by a JWT bearer token. This server is coded
 as an example only, and only accepts unsigned tokens. **For
