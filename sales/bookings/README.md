@@ -2,6 +2,8 @@
 
 Provides the KongAir customer bookings service.
 
+The API specification can be found in the [openapi.yaml](openapi.yaml) file.
+
 Customers are identified by a JWT bearer token. This server is coded
 as an example only, and only accepts unsigned tokens. **For
 production use cases, proper token signing should be utilized.**
