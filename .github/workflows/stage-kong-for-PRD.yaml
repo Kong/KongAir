@@ -32,7 +32,7 @@ jobs:
       - name: Setup deck
         uses: kong/setup-deck@v1
         with:
-          deck-version: '1.19.1'
+          deck-version: '1.24.0'
           wrapper: false
 
       - name: stage combined file for PRD
@@ -40,7 +40,7 @@ jobs:
 
       - name: deck diff
         id: deck-diff
-        # deck diff results in a multi-line output, which requires some 
+        # deck diff results in a multi-line output, which requires some
         #  bash gymnastics to handle and pass through to the next job.
         #  See: https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#example-of-a-multiline-string
         run: |

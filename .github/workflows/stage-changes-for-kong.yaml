@@ -60,47 +60,47 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup kced 
-        uses: rspurgeon/setup-kced@v1
+      - name: Setup deck
+        uses: kong/setup-deck@v1
         with:
-          kced-version: '0.1.12'
+          deck-version: '1.24.0'
           wrapper: false
 
       - name: Convert Flights API to Kong
-        # In two steps, convert the OpenAPI Spec to a Kong declarative configuration 
-        #   and then patch the result with the data in the kong/patches.yaml 
+        # In two steps, convert the OpenAPI Spec to a Kong declarative configuration
+        #   and then patch the result with the data in the kong/patches.yaml
         run: |
-          kced openapi2kong -s flight-data/flights/openapi.yaml | kced patch -o .github/artifacts/kong/flight-data-flights-kong.yaml flight-data/flights/kong/patches.yaml
+          deck file openapi2kong -s flight-data/flights/openapi.yaml | deck file patch -o .github/artifacts/kong/flight-data-flights-kong.yaml flight-data/flights/kong/patches.yaml
 
       - name: Convert Routes API to Kong
-        # In two steps, convert the OpenAPI Spec to a Kong declarative configuration 
-        #   and then patch the result with the data in the kong/patches.yaml 
+        # In two steps, convert the OpenAPI Spec to a Kong declarative configuration
+        #   and then patch the result with the data in the kong/patches.yaml
         run: |
-          kced openapi2kong -s flight-data/routes/openapi.yaml | kced patch -o .github/artifacts/kong/flight-data-routes-kong.yaml flight-data/routes/kong/patches.yaml
+          deck file openapi2kong -s flight-data/routes/openapi.yaml | deck file patch -o .github/artifacts/kong/flight-data-routes-kong.yaml flight-data/routes/kong/patches.yaml
 
       - name: Convert Bookings API to Kong
-        # In two steps, convert the OpenAPI Spec to a Kong declarative configuration 
-        #   and then patch the result with the data in the kong/patches.yaml 
+        # In two steps, convert the OpenAPI Spec to a Kong declarative configuration
+        #   and then patch the result with the data in the kong/patches.yaml
         run: |
-          kced openapi2kong -s sales/bookings/openapi.yaml | kced patch -o .github/artifacts/kong/sales-bookings-kong.yaml sales/bookings/kong/patches.yaml
+          deck file openapi2kong -s sales/bookings/openapi.yaml | deck file patch -o .github/artifacts/kong/sales-bookings-kong.yaml sales/bookings/kong/patches.yaml
 
       - name: Convert Customers API to Kong
-        # In two steps, convert the OpenAPI Spec to a Kong declarative configuration 
-        #   and then patch the result with the data in the kong/patches.yaml 
+        # In two steps, convert the OpenAPI Spec to a Kong declarative configuration
+        #   and then patch the result with the data in the kong/patches.yaml
         run: |
-          kced openapi2kong -s sales/customer/openapi.yaml | kced patch -o .github/artifacts/kong/sales-customer-kong.yaml sales/customer/kong/patches.yaml
+          deck file openapi2kong -s sales/customer/openapi.yaml | deck file patch -o .github/artifacts/kong/sales-customer-kong.yaml sales/customer/kong/patches.yaml
 
       - name: Combine Kong Configurations
         # Combine all the previous OAS->Kong configurations into one and put it in a well known place
         run: |
-          kced merge .github/artifacts/kong/*-kong.yaml -o .github/artifacts/kong/kong-combined.yaml
+          deck merge .github/artifacts/kong/*-kong.yaml -o .github/artifacts/kong/kong-combined.yaml
 
       - name: Platform Team Kong Additions
         # The platform team has their own things to add to the final Kong configuration
         # The platform/kong/.generated/kong.yaml is the final product and is stored in the repository
         # Storing the generated file in the repo is intentional, it should help with PR reviews, transparency, and debugging
         run: |
-          kced merge .github/artifacts/kong/kong-combined.yaml platform/kong/plugins/* platform/kong/vaults/* | kced patch -o platform/kong/.generated/kong.yaml platform/kong/patches.yaml
+          deck file merge .github/artifacts/kong/kong-combined.yaml platform/kong/plugins/* platform/kong/vaults/* | deck file patch -o platform/kong/.generated/kong.yaml platform/kong/patches.yaml
 
       - name: Upload Artifacts
         # Artifacts are the files that are built along the way of the pipeline but are not committed to the repo
