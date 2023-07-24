@@ -93,7 +93,7 @@ jobs:
       - name: Combine Kong Configurations
         # Combine all the previous OAS->Kong configurations into one and put it in a well known place
         run: |
-          deck merge .github/artifacts/kong/*-kong.yaml -o .github/artifacts/kong/kong-combined.yaml
+          deck file merge .github/artifacts/kong/*-kong.yaml -o .github/artifacts/kong/kong-combined.yaml
 
       - name: Platform Team Kong Additions
         # The platform team has their own things to add to the final Kong configuration
