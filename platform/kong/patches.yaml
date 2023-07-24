@@ -3,7 +3,8 @@ _format_version: "1.0"
 # Any final patches the Platform team may want to apply should go here
 patches:
   # Ensure all real routes are only serving https
-  - selector: $.services[*].routes[?(@.name != "acme-dummy-route")]
+  - selectors:
+    - $.services[*].routes[?(@.name != "acme-dummy-route")]
     values:
-      protocols: 
+      protocols:
       - https
