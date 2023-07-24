@@ -67,28 +67,38 @@ jobs:
           wrapper: false
 
       - name: Convert Flights API to Kong
-        # In two steps, convert the OpenAPI Spec to a Kong declarative configuration
+        # In multiple steps, convert the OpenAPI Spec to a Kong declarative configuration
         #   and then patch the result with the data in the kong/patches.yaml
+        #   and apply some tags
         run: |
-          deck file openapi2kong -s flight-data/flights/openapi.yaml | deck file patch -o .github/artifacts/kong/flight-data-flights-kong.yaml flight-data/flights/kong/patches.yaml
+          deck file openapi2kong -s flight-data/flights/openapi.yaml | \
+            deck file patch flight-data/flights/kong/patches.yaml | \
+            deck file add-tags -o .github/artifacts/kong/flight-data-flights-kong.yaml --selector "$.services[*]" --selector "$.services[*].routes[*]" flight-data
+
 
       - name: Convert Routes API to Kong
         # In two steps, convert the OpenAPI Spec to a Kong declarative configuration
         #   and then patch the result with the data in the kong/patches.yaml
         run: |
-          deck file openapi2kong -s flight-data/routes/openapi.yaml | deck file patch -o .github/artifacts/kong/flight-data-routes-kong.yaml flight-data/routes/kong/patches.yaml
+          deck file openapi2kong -s flight-data/routes/openapi.yaml | \
+            deck file patch flight-data/routes/kong/patches.yaml | \
+            deck file add-tags -o .github/artifacts/kong/flight-data-routes-kong.yaml --selector "$.services[*]" --selector "$.services[*].routes[*]" flight-data
 
       - name: Convert Bookings API to Kong
         # In two steps, convert the OpenAPI Spec to a Kong declarative configuration
         #   and then patch the result with the data in the kong/patches.yaml
         run: |
-          deck file openapi2kong -s sales/bookings/openapi.yaml | deck file patch -o .github/artifacts/kong/sales-bookings-kong.yaml sales/bookings/kong/patches.yaml
+          deck file openapi2kong -s sales/bookings/openapi.yaml | \
+            deck file patch  sales/bookings/kong/patches.yaml | \
+            deck file add-tags -o .github/artifacts/kong/sales-bookings-kong.yaml --selector "$.services[*]" --selector "$.services[*].routes[*]" sales
 
       - name: Convert Customers API to Kong
         # In two steps, convert the OpenAPI Spec to a Kong declarative configuration
         #   and then patch the result with the data in the kong/patches.yaml
         run: |
-          deck file openapi2kong -s sales/customer/openapi.yaml | deck file patch -o .github/artifacts/kong/sales-customer-kong.yaml sales/customer/kong/patches.yaml
+          deck file openapi2kong -s sales/customer/openapi.yaml | \
+            deck file patch sales/customer/kong/patches.yaml | \
+            deck file add-tags -o .github/artifacts/kong/sales-customer-kong.yaml --selector "$.services[*]" --selector "$.services[*].routes[*]" sales
 
       - name: Combine Kong Configurations
         # Combine all the previous OAS->Kong configurations into one and put it in a well known place
