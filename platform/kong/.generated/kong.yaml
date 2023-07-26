@@ -1,4 +1,24 @@
 _format_version: "3.0"
+_plugin_configs:
+  default-jwt:
+    config:
+      enabled: true
+    name: jwt
+consumer_groups:
+- name: gold
+- name: lifetime
+- name: platinum
+- name: silver
+consumers:
+- groups:
+  - name: platinum
+  username: dfreese
+- groups:
+  - name: gold
+  username: jdoe
+- groups:
+  - name: silver
+  username: jsmith
 plugins:
 - config:
     account_email: '{vault://aws-us-east-2/KongAir/PRD/kong/acme/account_email}'
@@ -25,7 +45,8 @@ services:
     - https
     regex_priority: 200
     strip_path: false
-    tags: []
+    tags:
+    - flight-data
   - id: 3210c3ed-9976-500d-ac03-07eaac972ad0
     methods:
     - GET
@@ -37,7 +58,8 @@ services:
     - https
     regex_priority: 100
     strip_path: false
-    tags: []
+    tags:
+    - flight-data
   - id: 08020aa2-6106-59ec-903a-3459e7cbb629
     methods:
     - GET
@@ -49,8 +71,10 @@ services:
     - https
     regex_priority: 100
     strip_path: false
-    tags: []
-  tags: []
+    tags:
+    - flight-data
+  tags:
+  - flight-data
 - host: ip-10-0-43-1.us-east-2.compute.internal
   id: 5bbc0ad8-3b7c-5dfe-a676-b28f30523a6f
   name: routes-service
@@ -70,7 +94,8 @@ services:
     - https
     regex_priority: 200
     strip_path: false
-    tags: []
+    tags:
+    - flight-data
   - id: 831bf89a-08be-5dbd-bcd2-aa2348d784d3
     methods:
     - GET
@@ -82,8 +107,10 @@ services:
     - https
     regex_priority: 100
     strip_path: false
-    tags: []
-  tags: []
+    tags:
+    - flight-data
+  tags:
+  - flight-data
 - host: ip-10-0-43-1.us-east-2.compute.internal
   id: 22e1521b-9b91-5d2f-917b-4463066f1aed
   name: bookings-service
@@ -103,7 +130,8 @@ services:
     - https
     regex_priority: 200
     strip_path: false
-    tags: []
+    tags:
+    - sales
   - id: 4e2f555e-980c-5241-a640-9f0a67ab6693
     methods:
     - POST
@@ -115,8 +143,10 @@ services:
     - https
     regex_priority: 200
     strip_path: false
-    tags: []
-  tags: []
+    tags:
+    - sales
+  tags:
+  - sales
 - host: ip-10-0-43-1.us-east-2.compute.internal
   id: 690e812e-2873-566a-b02f-d03e0bf8ff69
   name: customer-information-service
@@ -136,8 +166,10 @@ services:
     - https
     regex_priority: 200
     strip_path: false
-    tags: []
-  tags: []
+    tags:
+    - sales
+  tags:
+  - sales
 - name: acme-dummy-service
   routes:
   - hosts:
