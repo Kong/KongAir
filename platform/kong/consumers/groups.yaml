@@ -1,0 +1,11 @@
+consumer_groups:
+  - name: silver
+    consumers:
+      - jdoe
+  - name: gold
+    consumers:
+      - jsmith
+  - name: platinum
+    consumers:
+      - dfreese
+  - name: lifetime
