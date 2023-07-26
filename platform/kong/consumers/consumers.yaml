@@ -1,5 +1,10 @@
 consumers:
-  - username: dfreese
-  - username: jdoe
-  - username: jsmith
-
+- username: dfreese
+  groups:
+  - name: platinum
+- username: jdoe
+  groups:
+  - name: gold
+- username: jsmith
+  groups:
+  - name: silver
