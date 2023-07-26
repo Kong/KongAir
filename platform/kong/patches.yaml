@@ -8,3 +8,11 @@ patches:
     values:
       protocols:
       - https
+  # Add default settings for plugin configs
+  - selectors:
+    - $._plugin_configs
+    values:
+      default-jwt:
+        name: jwt
+        config:
+          enabled: true
