@@ -1,0 +1,5 @@
+consumer_groups:
+- name: gold
+- name: lifetime
+- name: platinum
+- name: silver

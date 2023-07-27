@@ -73,7 +73,8 @@ jobs:
         run: |
           deck file openapi2kong -s flight-data/flights/openapi.yaml | \
             deck file patch flight-data/flights/kong/patches.yaml | \
-            deck file add-tags -o .github/artifacts/kong/flight-data-flights-kong.yaml --selector "$.services[*]" --selector "$.services[*].routes[*]" flight-data
+            deck file add-tags -o .github/artifacts/kong/flight-data-flights-kong.yaml \
+              --selector "$.services[*]" --selector "$.services[*].routes[*]" flight-data
 
 
       - name: Convert Routes API to Kong
@@ -82,7 +83,8 @@ jobs:
         run: |
           deck file openapi2kong -s flight-data/routes/openapi.yaml | \
             deck file patch flight-data/routes/kong/patches.yaml | \
-            deck file add-tags -o .github/artifacts/kong/flight-data-routes-kong.yaml --selector "$.services[*]" --selector "$.services[*].routes[*]" flight-data
+            deck file add-tags -o .github/artifacts/kong/flight-data-routes-kong.yaml \
+              --selector "$.services[*]" --selector "$.services[*].routes[*]" flight-data
 
       - name: Convert Bookings API to Kong
         # In two steps, convert the OpenAPI Spec to a Kong declarative configuration
@@ -90,7 +92,8 @@ jobs:
         run: |
           deck file openapi2kong -s sales/bookings/openapi.yaml | \
             deck file patch  sales/bookings/kong/patches.yaml | \
-            deck file add-tags -o .github/artifacts/kong/sales-bookings-kong.yaml --selector "$.services[*]" --selector "$.services[*].routes[*]" sales
+            deck file add-tags -o .github/artifacts/kong/sales-bookings-kong.yaml \
+              --selector "$.services[*]" --selector "$.services[*].routes[*]" sales
 
       - name: Convert Customers API to Kong
         # In two steps, convert the OpenAPI Spec to a Kong declarative configuration
@@ -98,19 +101,29 @@ jobs:
         run: |
           deck file openapi2kong -s sales/customer/openapi.yaml | \
             deck file patch sales/customer/kong/patches.yaml | \
-            deck file add-tags -o .github/artifacts/kong/sales-customer-kong.yaml --selector "$.services[*]" --selector "$.services[*].routes[*]" sales
+            deck file add-tags -o .github/artifacts/kong/sales-customer-kong.yaml --selector "$.services[*]" \
+              --selector "$.services[*].routes[*]" sales
 
       - name: Combine Kong Configurations
         # Combine all the previous OAS->Kong configurations into one and put it in a well known place
         run: |
-          deck file merge .github/artifacts/kong/*-kong.yaml -o .github/artifacts/kong/kong-combined.yaml
+          deck file merge \
+            .github/artifacts/kong/*-kong.yaml -o .github/artifacts/kong/kong-combined.yaml
 
       - name: Platform Team Kong Additions
-        # The platform team has their own things to add to the final Kong configuration
+        # The platform team has their own things to add to the final Kong configuration.
+        # The platform-kong-base.yaml is a base file for any platform defaults. It will "win" over
+        # any settings in the domain teams Kong configurations.
         # The platform/kong/.generated/kong.yaml is the final product and is stored in the repository
-        # Storing the generated file in the repo is intentional, it should help with PR reviews, transparency, and debugging
+        # Storing the generated file in the repo is intentional, it should help with PR reviews, transparency, and debugging.
         run: |
-          deck file merge .github/artifacts/kong/kong-combined.yaml platform/kong/plugins/* platform/kong/vaults/* | deck file patch -o platform/kong/.generated/kong.yaml platform/kong/patches.yaml
+          deck file merge \
+            .github/artifacts/kong/kong-combined.yaml \
+            platform/kong/platform-kong-base.yaml     \
+            platform/kong/consumers/*                 \
+            platform/kong/plugins/*                   \
+            platform/kong/vaults/* |                  \
+          deck file patch -o platform/kong/.generated/kong.yaml platform/kong/patches.yaml
 
       - name: Upload Artifacts
         # Artifacts are the files that are built along the way of the pipeline but are not committed to the repo
