@@ -1,9 +1,9 @@
 _format_version: "3.0"
 _plugin_configs:
   default-jwt:
-    config:
-      enabled: true
-    name: jwt
+    key_claim_name: iss
+    maximum_expiration: 86400
+    secret_is_base64: false
 consumer_groups:
 - name: gold
 - name: lifetime
@@ -151,7 +151,10 @@ services:
   id: 690e812e-2873-566a-b02f-d03e0bf8ff69
   name: customer-information-service
   path: /
-  plugins: []
+  plugins:
+  - _config: default-jwt
+    enabled: true
+    name: jwt
   port: 8083
   protocol: http
   routes:
@@ -180,6 +183,8 @@ services:
     protocols:
     - http
   url: http://127.0.0.1:65535
+tags:
+- platform-repo-managed
 upstreams: []
 vaults:
 - config:
