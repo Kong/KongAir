@@ -18,5 +18,3 @@ patches:
       default-jwt:
         key_claim_name: "iss"
         secret_is_base64: false
-        maximum_expiration: 86400
-
