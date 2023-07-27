@@ -137,7 +137,12 @@ services:
   id: 22e1521b-9b91-5d2f-917b-4463066f1aed
   name: bookings-service
   path: /
-  plugins: []
+  plugins:
+  - _config: default-jwt
+    enabled: true
+    name: jwt
+    tags:
+    - platform-repo-managed
   port: 8082
   protocol: http
   routes:
