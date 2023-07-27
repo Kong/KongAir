@@ -36,6 +36,7 @@ jobs:
 
       - name: deck sync
         run: |
-          deck sync -s PRD/kong/kong.yaml \
+          deck sync --select-tags platform-repo-managed \
+              -s PRD/kong/kong.yaml \
               --konnect-runtime-group-name KongAir-PRD \
               --konnect-token ${{ secrets.KONNECT_PAT }}
