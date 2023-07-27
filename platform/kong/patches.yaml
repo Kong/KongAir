@@ -20,14 +20,3 @@ patches:
         secret_is_base64: false
         maximum_expiration: 86400
 
-  # Tag all entities that are managed by the platform
-  # team process so we can isolate entities that may be
-  # created using other means on the system. For example,
-  # consumer credentials may be defined elsewhere and we
-  # don't want deck to sync or diff off them in this process
-  - selectors:
-    - $
-    values:
-      tags:
-        - platform-repo-managed
-

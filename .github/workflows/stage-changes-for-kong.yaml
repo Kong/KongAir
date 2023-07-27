@@ -113,9 +113,16 @@ jobs:
       - name: Platform Team Kong Additions
         # The platform team has their own things to add to the final Kong configuration.
         # The platform-kong-base.yaml is a base file for any platform defaults. It will "win" over
-        # any settings in the domain teams Kong configurations.
-        # The platform/kong/.generated/kong.yaml is the final product and is stored in the repository
-        # Storing the generated file in the repo is intentional, it should help with PR reviews, transparency, and debugging.
+        #   any settings in the domain teams Kong configurations.
+        # Then the platform adds in some objects like plugins, consumers, vaults, etc..
+        # Also the platform/kong/patches.yaml is used to patch anything from the upstream
+        #   team configurations
+        # And finally a tag is added to everything managed in this process to allow
+        #   the deck tool to isolate what is managed here from entities that may be managed
+        #   elsewhere or by other tools
+        # The platform/kong/.generated/kong.yaml is the final product and is stored in the repository.
+        #   Storing the generated file in the repo is intentional,
+        #   it should help with PR reviews, transparency, and debugging.
         run: |
           deck file merge \
             .github/artifacts/kong/kong-combined.yaml \
@@ -123,7 +130,11 @@ jobs:
             platform/kong/consumers/*                 \
             platform/kong/plugins/*                   \
             platform/kong/vaults/* |                  \
-          deck file patch -o platform/kong/.generated/kong.yaml platform/kong/patches.yaml
+          deck file patch \
+            platform/kong/patches.yaml |
+          deck file add-tags \
+            -o platform/kong/.generated/kong.yaml \
+            "platform-repo-managed"
 
       - name: Upload Artifacts
         # Artifacts are the files that are built along the way of the pipeline but are not committed to the repo
