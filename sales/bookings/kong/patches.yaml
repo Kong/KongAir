@@ -7,3 +7,7 @@ patches:
       host: ip-10-0-43-1.us-east-2.compute.internal
       port: 8082
       protocol: http
+      plugins:
+        - name: jwt
+          _config: default-jwt
+          enabled: true
