@@ -2,17 +2,20 @@ _format_version: "1.0"
 
 # Any final patches the Platform team may want to apply should go here
 patches:
+
   # Ensure all real routes are only serving https
   - selectors:
     - $.services[*].routes[?(@.name != "acme-dummy-route")]
     values:
       protocols:
       - https
-  # Add default settings for plugin configs
+
+  # Add defaults for plugin configurations that the teams
+  # can use easily
   - selectors:
     - $._plugin_configs
     values:
       default-jwt:
-        name: jwt
-        config:
-          enabled: true
+        key_claim_name: "iss"
+        secret_is_base64: false
+        maximum_expiration: 86400

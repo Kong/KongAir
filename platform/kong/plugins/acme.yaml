@@ -5,16 +5,16 @@ services:
   url: "http://127.0.0.1:65535"
   routes:
   - name: "acme-dummy-route"
-    hosts: 
+    hosts:
     - "api.kong-air.com"
-    protocols: 
+    protocols:
     - "http"
-    paths: 
+    paths:
     - "/.well-known/acme-challenge"
 
 plugins:
 - name: acme
-  config: 
+  config:
     account_email: "{vault://aws-us-east-2/KongAir/PRD/kong/acme/account_email}"
     domains:
       - "api.kong-air.com"
