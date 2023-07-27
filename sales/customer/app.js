@@ -20,32 +20,21 @@ app.use(
   }),
 );
 
-// Middleware to decode JWT and set req.user : NOTE does not verify any signature
 app.use((req, res, next) => {
-  // Extract token from Authorization header
-  const authHeader = req.headers.authorization;
+  // Extract username from X-Consumer-Username header
+  const usernameHeader = req.headers['x-consumer-username'];
 
-  if (authHeader) {
-    let token = authHeader.split(' ')[1]; // Authorization: Bearer <token>
-
-    // We are currently using unsigned tokens, so if the token does not end with a period, add one
-    if (!token.endsWith('.')) {
-      token += '.';
-    }
-
-    // Decode the token (without verification)
-    const decoded = jwt.decode(token);
-
+  if (usernameHeader) {
     // If a valid username is found, set it in the req object and continue
-    if (decoded && typeof decoded.username === 'string') {
-      req.user = decoded.username;
+    if (typeof usernameHeader === 'string') {
+      req.user = usernameHeader;
       next();
     } else {
       // If there is no valid username, reject the request
       res.status(401).end();
     }
   } else {
-    // If there is no token, reject the request
+    // If there is no username, reject the request
     res.status(401).end();
   }
 });
