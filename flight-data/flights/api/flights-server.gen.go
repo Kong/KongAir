@@ -30,6 +30,9 @@ type ServerInterface interface {
 	// Fetch more details about a flight
 	// (GET /flights/{flightNumber}/details)
 	GetFlightDetails(ctx echo.Context, flightNumber string) error
+	// Health check endpoint for Kubernetes
+	// (GET /health)
+	GetHealth(ctx echo.Context) error
 }
 
 // ServerInterfaceWrapper converts echo contexts to parameters.
@@ -87,6 +90,15 @@ func (w *ServerInterfaceWrapper) GetFlightDetails(ctx echo.Context) error {
 	return err
 }
 
+// GetHealth converts echo context to params.
+func (w *ServerInterfaceWrapper) GetHealth(ctx echo.Context) error {
+	var err error
+
+	// Invoke the callback with all the unmarshalled arguments
+	err = w.Handler.GetHealth(ctx)
+	return err
+}
+
 // This is a simple interface which specifies echo.Route addition functions which
 // are present on both echo.Echo and echo.Group, since we want to allow using
 // either of them for path registration
@@ -118,28 +130,31 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 	router.GET(baseURL+"/flights", wrapper.GetFlights)
 	router.GET(baseURL+"/flights/:flightNumber", wrapper.GetFlightByNumber)
 	router.GET(baseURL+"/flights/:flightNumber/details", wrapper.GetFlightDetails)
+	router.GET(baseURL+"/health", wrapper.GetHealth)
 
 }
 
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/9xWTY/bNhD9K8S0hxaQba2zBRrdUqRugiySYjenrhcGLY1sphKpDEduDUP/vSBF2d6V",
-	"7HjTHopcbEKcj8eZ9zjcQWrKymjUbCHZgU3XWEq/nBVqtWa3qshUSKzQf9d1uURyK95WCAlYJqVX0ERA",
-	"pmZcqGxw04XO6gKzhSRSG1k4q9xQKRkSyCTjiFWJEJ1zzbCSxDXhpc4OFX6uFWEGyX0H/gjqcPQhuA/7",
-	"4Gb5CVN2yNoivUaWqrD9WklFKcmcF63jQFVyH2BxpqhKL4IRakZiqXSJmo9sl8YUKLUzLlEWC1OxMtoD",
-	"UIylHQwbPkgiue2V6TGq0xh8Qr1PGD05cL9ijT9QbhykDG1KyrtCAu+MXr1SJNqKWmGRNipFUZHZqAyt",
-	"4DWKfVNEHsxyQyK4uuYrLly6LshdGwQi2CDZNlE8vhrHrgKmQi0rBQm8GMfjGCKoJK99tSYhvFuvkPto",
-	"b5Fr0lbIojgDTIqV2qAWmdzONfiMJF2Etxkk8BtywOlTkyyRkSwk90+zzVTBSGK5FY7p4ocMc1kXbAUb",
-	"kdZEqNnl+NF3ChL4XCNtIQItSwzyCIwuZU84g4Ljra+jM4TmwZHDVkbbltXTOHZ/qdEciCirqlCpP9rk",
-	"k3WYd4B/y7IqWo9f2/W+uTfKer+NLGqX536uhRA7/yvEPMh0DomYw7vXL6fXc4j2m5102+2bN7eju9mH",
-	"Y4MBQbe203h6PYpfjKbxx/hlcjVNpj//MewYNN9zuzq4ea8m+gLyn04jv5t9GN28uX0e8quvQ37VRz7X",
-	"D3PtlX8gxv66+J4whwS+mxzGwyTMhkkYDP07pIme8PauTlO0Nq8L0RIIxV+K1321tDDqspS0bZXRiVpU",
-	"hdT6yDIClit7uKRGmWQJDy5Ap9rJrl28971ovixiYStMVa7SkCXIVjkZtx9CW8+I+Jft++62PKvlj2t8",
-	"HLQTrbt8Dpo9PgEcX85MNR637KR2rXKS++/VK7wgj9Xr2X9atOcV+3VyfbZWmx7XL6H4BZS2gdNuCrgu",
-	"oeU9W107ruPrC8p9gPX4AVGitXI19HRoBmfrk7kReGZY5KbW2YDM+txfbnv8fK7iJtnhQTSovBlyuhal",
-	"IRTBVMilqR2cULmTOuveWt+GzJ5Dx+7k/5aVXcn/5+y8hCMniOniIG2GmdENlle/v/XvQ9/4mgpIYM1c",
-	"2WQykZUa/2n0aiQVjVPjnkDNPwEAAP//dVw4PSoNAAA=",
+	"H4sIAAAAAAAC/9xX32/bNhD+V4jbHjZAthU3BVa9dWizFgmaIenT4sCgpZPFViJV8uhNCPy/D6Qo/4hk",
+	"x2n6MOzFJqT78fHu+8jTA6SqqpVESQaSBzBpgRX3y4tSLAtyq1qrGjUJ9M+lrRao3YqaGiEBQ1rIJawj",
+	"0MoSzkU2+NKFzmyJ2ZxrLVa8dFa50hUnSCDjhCMSFUJ0zDXDmmuyGk91dqjwmxUaM0juOvA7UIejD8G9",
+	"3wRXiy+YkkPWFukdEhel6deKC51qntO8dRyoSu4DzI8UVch5MEJJqIkLWaGkHduFUiVy6Ywr5OVc1SSU",
+	"9AAEYWUGw4YHXGve9Mq0j+owBp9QbhJGjzbcr9jabyhXDlKGJtXCu0ICl0ou3wrN2ooaZlCvRIqs1mol",
+	"MjSMCmSbprA8mOVKs+Dqmi+odOm6ILdtEIhghdq0ieLx2Th2FVA1Sl4LSODVOB7HEEHNqfDVmoTwbr1E",
+	"6qO9QbJaGsbL8ggwzpZihZJlvJlJ8Bk1dxE+ZpDAH0gBp0+teYWE2kBy9zjbhSgJNVs0zDGd/ZJhzm1J",
+	"hpFiqdUaJbkcv/pOQQLfLOoGIpC8wiCPwOiK94QzKDhqfB2dIazvHTlMraRpWT2NY/eXKkmBiLyuS5H6",
+	"rU2+GIf5AfAfXtVl6/G+XW+aeyWM91vx0ro8dzPJGHvwv4zNgkxnkLAZXL57Mz2fQbR52Um3fX314WZ0",
+	"e3G9azAg6NZ2Gk/PR/Gr0TT+HL9JzqbJ9Le/hh2D5ntuZ1s377WOnkD++jDy24vr0dWHm+chP/s+5Gd9",
+	"5DN5P5Ne+VtibI6LnzXmkMBPk+31MAl3wyRcDP0zZB094u2tTVM0JrclawmE7G9BRV8tLQxbVVw3rTI6",
+	"UbO65FLuWEZAfGm2h9Qo48Th3gXoVDt5aBeffC/WT4uYmRpTkYs0ZAmyFU7G7YPQ1iMi/r351J2WR7X8",
+	"ucD9oJ1o3eGz1ezuDmD3cCZtcbdlB7VrhJPcj1cv84LcVa9n/2HRHlfs98n12Vpd97h+CsVPoLQJnHa3",
+	"gOsSGtqw1bXjPD4/odxbWPsDRIXG8OXQ6LAevFsf3RuBZ4pYrqzMBmTW5/6i6fHzuYqbZNuBaFB5F0hp",
+	"wSqlkQVTxhfKOjihcgd11s1a/w+ZPYeO3c5fysqu5P9xdp7CkcPELJCXVBwk4HuZ1UpIYlRwYjpcBH6S",
+	"C3NnG4AZ4mTNeIiPH9oUL+z7fkXbdDsHMCRwfTn4WfNkfcPwy4QJm2lcx1//cHxWduFfCnMbaZ8KbaVZ",
+	"WmD6lWHXOj/62wVqiYRBFq57wwdCN0+8/fOj/yzwere6hAQKotokkwmvxfirkssRF3qcKjf5rv8NAAD/",
+	"/ykOwQQhDwAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

@@ -150,6 +150,10 @@ func NewFlightService() *FlightService {
 	return &rv
 }
 
+func (s *FlightService) GetHealth(ctx echo.Context) error {
+  return ctx.JSON(http.StatusOK, map[string]string{"status": "OK"})
+}
+
 func (s *FlightService) GetFlights(ctx echo.Context, params models.GetFlightsParams) error {
 	return ctx.JSON(http.StatusOK, s.Flights)
 }
