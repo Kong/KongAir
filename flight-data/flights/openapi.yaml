@@ -14,13 +14,29 @@ servers:
 paths:
   /health:
     get:
-      summary: Health check endpoint
-      description: Endpoint that returns 200 OK when the service is healthy.
+      summary: Health check endpoint for Kubernetes
+      description: Endpoint that returns the service health status.
       responses:
         '200':
           description: Service is healthy
-        '503':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "OK"
+        '500':
           description: Service is unhealthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "unhealthy"
   "/flights":
     get:
       summary: Get KongAir planned flights
