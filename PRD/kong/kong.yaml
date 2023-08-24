@@ -91,6 +91,20 @@ services:
     tags:
     - flight-data
     - platform-repo-managed
+  - id: a5023323-0468-5a77-baf2-13578fec61b0
+    methods:
+    - GET
+    name: flights-service_health_get
+    paths:
+    - ~/health$
+    plugins: []
+    protocols:
+    - https
+    regex_priority: 200
+    strip_path: false
+    tags:
+    - flight-data
+    - platform-repo-managed
   tags:
   - flight-data
   - platform-repo-managed
@@ -102,6 +116,20 @@ services:
   port: 8081
   protocol: http
   routes:
+  - id: 4da7a5e5-9e69-59af-a6c3-46a675c5bac6
+    methods:
+    - GET
+    name: routes-service_health_get
+    paths:
+    - ~/health$
+    plugins: []
+    protocols:
+    - https
+    regex_priority: 200
+    strip_path: false
+    tags:
+    - flight-data
+    - platform-repo-managed
   - id: 89f28ad3-74db-5149-8fa5-f7fffbfda79c
     methods:
     - GET
@@ -174,6 +202,20 @@ services:
     tags:
     - sales
     - platform-repo-managed
+  - id: 1a619e4f-651d-550d-ae30-79f4bf45a080
+    methods:
+    - GET
+    name: bookings-service_health_get
+    paths:
+    - ~/health$
+    plugins: []
+    protocols:
+    - https
+    regex_priority: 200
+    strip_path: false
+    tags:
+    - sales
+    - platform-repo-managed
   tags:
   - sales
   - platform-repo-managed
@@ -196,6 +238,20 @@ services:
     name: customer-information-service_get-cust-info
     paths:
     - ~/customer$
+    plugins: []
+    protocols:
+    - https
+    regex_priority: 200
+    strip_path: false
+    tags:
+    - sales
+    - platform-repo-managed
+  - id: 37cbdca9-74d9-51ec-ab8b-008d96f9bd75
+    methods:
+    - GET
+    name: customer-information-service_health_get
+    paths:
+    - ~/health$
     plugins: []
     protocols:
     - https
