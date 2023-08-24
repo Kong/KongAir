@@ -24,7 +24,17 @@ module.exports = function (bookingsStore) {
     }),
   );
 
+  // Health check endpoint
+  app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'OK' });
+  });
+
   app.use((req, res, next) => {
+
+    if (req.path === '/health') {
+      return next();
+    }
+
     // Extract username from X-Consumer-Username header
     const usernameHeader = req.headers['x-consumer-username'];
 
@@ -82,8 +92,13 @@ module.exports = function (bookingsStore) {
   });
 
   // Error handler
-  app.use((err, _, res, __) => {
-    // format error
+  app.use((err, req, res, next) => {
+    // If it's the health check path, provide a clear response
+    if (req.path === '/health') {
+      return res.status(503).json({ status: 'unhealthy' });
+    }
+
+    // format error for other paths
     res.status(err.status || 500).json({
       message: err.message,
       errors: err.errors,
