@@ -12,6 +12,55 @@ servers:
   description: KongAir API Server
 
 paths:
+  /health:
+    get:
+      summary: Health check endpoint for Kubernetes
+      description: Endpoint that returns the service health status.
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "OK"
+        '500':
+          description: Service is unhealthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "unhealthy"
+  "/routes/{id}":
+    get:
+      summary: Request a specific KongAir route by id (LHR-SIN)
+      description: |
+        Returns a specific route from a given Route ID
+      tags:
+      - flight-data
+      operationId: get-route
+      parameters:
+        - name: id
+          in: path
+          description: String route ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with the found Route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+        '404':
+          description: Route not found
   "/routes":
     get:
       summary: Request all the KongAir routes
@@ -49,30 +98,6 @@ paths:
                       "destination": "SFO",
                       "avg_duration": 660
                     }]
-  "/routes/{id}":
-    get:
-      summary: Request a specific KongAir route by id (LHR-SIN)
-      description: |
-        Returns a specific route from a given Route ID
-      tags:
-      - flight-data
-      operationId: get-route
-      parameters:
-        - name: id
-          in: path
-          description: String route ID
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response with the found Route
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Route'
-        '404':
-          description: Route not found
 
 components:
   schemas:

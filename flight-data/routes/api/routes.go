@@ -6,6 +6,7 @@ package api
 import (
 	"github.com/Kong/KongAir/flight-data/routes/api/models"
 	"github.com/labstack/echo/v4"
+  "net/http"
 )
 
 type RouteService struct {
@@ -27,6 +28,10 @@ func NewRouteService() *RouteService {
     {Id: "LHR-LAX", Origin: "LHR", Destination: "LAX", AvgDuration: 675},
 	}
 	return &rv
+}
+
+func (s *RouteService) GetHealth(ctx echo.Context) error {
+  return ctx.JSON(http.StatusOK, map[string]string{"status": "OK"})
 }
 
 func (s *RouteService) GetRoutes(ctx echo.Context, params models.GetRoutesParams) error {
