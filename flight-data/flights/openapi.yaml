@@ -12,6 +12,15 @@ servers:
   description: KongAir API Server
 
 paths:
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Endpoint that returns 200 OK when the service is healthy.
+      responses:
+        '200':
+          description: Service is healthy
+        '503':
+          description: Service is unhealthy
   "/flights":
     get:
       summary: Get KongAir planned flights
