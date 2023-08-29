@@ -27,6 +27,11 @@ paths:
                   status:
                     type: string
                     example: "OK"
+          headers:
+           hostname:
+             description: "The hostname of the machine fulfilling the request."
+             schema:
+               type: string
         '500':
           description: Service is unhealthy
           content:
@@ -57,6 +62,11 @@ paths:
       responses:
         '200':
           description: Successful respone with scheduled flights
+          headers:
+           hostname:
+             description: "The hostname of the machine fulfilling the request."
+             schema:
+               type: string
           content:
             application/json:
               schema:
@@ -100,6 +110,11 @@ paths:
       responses:
         '200':
           description: Successful response with the requested flight
+          headers:
+           hostname:
+             description: "The hostname of the machine fulfilling the request."
+             schema:
+               type: string
           content:
             application/json:
               schema:
@@ -141,6 +156,11 @@ paths:
       responses:
         '200':
           description: Successful response with the requested flight details
+          headers:
+           hostname:
+             description: "The hostname of the machine fulfilling the request."
+             schema:
+               type: string
           content:
             application/json:
               schema:
