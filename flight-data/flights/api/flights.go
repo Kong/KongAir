@@ -8,7 +8,8 @@ import (
 
 	"github.com/Kong/KongAir/flight-data/flights/api/models"
 	"github.com/labstack/echo/v4"
-    "net/http"
+  "net/http"
+  "os"
 )
 
 func stringPtr(str string) *string {
@@ -151,26 +152,55 @@ func NewFlightService() *FlightService {
 }
 
 func (s *FlightService) GetHealth(ctx echo.Context) error {
+
+	hostname, err := os.Hostname()
+	if err != nil {
+		return err
+	}
+  ctx.Response().Header().Set("Hostname", hostname)
+
   return ctx.JSON(http.StatusOK, map[string]string{"status": "OK"})
 }
 
 func (s *FlightService) GetFlights(ctx echo.Context, params models.GetFlightsParams) error {
+
+	hostname, err := os.Hostname()
+	if err != nil {
+		return err
+	}
+  ctx.Response().Header().Set("Hostname", hostname)
+
 	return ctx.JSON(http.StatusOK, s.Flights)
 }
 func (s *FlightService) GetFlightByNumber(ctx echo.Context, flightNumber string) error {
+
 	for _, flight := range s.Flights {
 		if flight.Number == flightNumber {
+	    hostname, err := os.Hostname()
+	    if err != nil {
+	    	return err
+	    }
+      ctx.Response().Header().Set("Hostname", hostname)
 			return ctx.JSON(http.StatusOK, flight)
 		}
 	}
+
+  // Include the hostname header in the response
 	return ctx.JSON(http.StatusNotFound, map[string]string{"message": "Flight not found"})
 }
 
 func (s *FlightService) GetFlightDetails(ctx echo.Context, flightNumber string) error {
+
 	for _, flight := range s.FlightDetails {
 		if flight.FlightNumber == flightNumber {
+	    hostname, err := os.Hostname()
+	    if err != nil {
+	    	return err
+	    }
+      ctx.Response().Header().Set("Hostname", hostname)
 			return ctx.JSON(http.StatusOK, flight)
 		}
 	}
+
 	return ctx.JSON(http.StatusNotFound, map[string]string{"message": "Flight not found"})
 }
