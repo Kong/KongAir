@@ -39,7 +39,7 @@ plugins:
     - api.kong-air.com
     renew_threshold_days: 30
   enabled: true
-  id: 718B1DE9-2785-490E-BBEB-35BDF29F0244
+  id: 85c9d396-5330-11ee-8c99-0242ac120002
   name: acme
   tags:
   - platform-repo-managed
