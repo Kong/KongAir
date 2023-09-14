@@ -17,5 +17,6 @@ plugins:
   enabled: true
   config:
     account_email: "{vault://aws-us-east-2/KongAir/PRD/kong/acme/account_email}"
+    renew_threshold_days: 30
     domains:
       - "api.kong-air.com"
