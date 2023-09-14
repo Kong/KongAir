@@ -37,8 +37,8 @@ plugins:
     account_email: '{vault://aws-us-east-2/KongAir/PRD/kong/acme/account_email}'
     domains:
     - api.kong-air.com
+  enabled: true
   name: acme
-  enabled: false
   tags:
   - platform-repo-managed
 services:
