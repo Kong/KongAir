@@ -38,6 +38,7 @@ plugins:
     domains:
     - api.kong-air.com
   name: acme
+  enabled: false
   tags:
   - platform-repo-managed
 services:
