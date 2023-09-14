@@ -14,7 +14,7 @@ services:
 
 plugins:
 - name: acme
-  enabled: false
+  enabled: true
   config:
     account_email: "{vault://aws-us-east-2/KongAir/PRD/kong/acme/account_email}"
     domains:
