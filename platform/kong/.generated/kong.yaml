@@ -37,6 +37,7 @@ plugins:
     account_email: '{vault://aws-us-east-2/KongAir/PRD/kong/acme/account_email}'
     domains:
     - api.kong-air.com
+    renew_threshold_days: 30
   enabled: true
   name: acme
   tags:
