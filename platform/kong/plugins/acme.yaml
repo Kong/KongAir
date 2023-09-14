@@ -14,7 +14,7 @@ services:
 
 plugins:
 - name: acme
-  id: "9615f645-331e-421a-969e-bc4325529811"
+  id: "718B1DE9-2785-490E-BBEB-35BDF29F0244"
   enabled: true
   config:
     account_email: "{vault://aws-us-east-2/KongAir/PRD/kong/acme/account_email}"
