@@ -44,7 +44,7 @@ plugins:
   tags:
   - platform-repo-managed
 services:
-- host: ip-10-0-43-1.us-east-2.compute.internal
+- host: flights.kongair
   id: 0cef4d36-9c39-5ac2-9d9f-190d8ea8a252
   name: flights-service
   path: /
@@ -111,7 +111,7 @@ services:
   tags:
   - flight-data
   - platform-repo-managed
-- host: ip-10-0-43-1.us-east-2.compute.internal
+- host: routes.kongair
   id: 5bbc0ad8-3b7c-5dfe-a676-b28f30523a6f
   name: routes-service
   path: /
@@ -164,7 +164,7 @@ services:
   tags:
   - flight-data
   - platform-repo-managed
-- host: ip-10-0-43-1.us-east-2.compute.internal
+- host: bookings.kongair
   id: 22e1521b-9b91-5d2f-917b-4463066f1aed
   name: bookings-service
   path: /
@@ -222,7 +222,7 @@ services:
   tags:
   - sales
   - platform-repo-managed
-- host: ip-10-0-43-1.us-east-2.compute.internal
+- host: customer.kongair
   id: 690e812e-2873-566a-b02f-d03e0bf8ff69
   name: customer-information-service
   path: /
