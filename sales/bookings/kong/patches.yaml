@@ -4,7 +4,7 @@ patches:
   - selectors:
     - $.services[?(@.name=="bookings-service")]
     values:
-      host: ip-10-0-43-1.us-east-2.compute.internal
+      host: bookings.kongair
       port: 8082
       protocol: http
       plugins:

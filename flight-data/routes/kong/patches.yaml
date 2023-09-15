@@ -4,6 +4,6 @@ patches:
   - selectors:
     - $.services[?(@.name=="routes-service")]
     values:
-      host: ip-10-0-43-1.us-east-2.compute.internal
+      host: routes.kongair
       port: 8081
       protocol: http

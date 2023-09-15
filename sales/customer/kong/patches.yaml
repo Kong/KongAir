@@ -4,7 +4,7 @@ patches:
   - selectors:
     - $.services[?(@.name=="customer-information-service")]
     values:
-      host: ip-10-0-43-1.us-east-2.compute.internal
+      host: customer.kongair
       port: 8083
       protocol: http
       plugins:
