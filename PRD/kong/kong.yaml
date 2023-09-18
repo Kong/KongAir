@@ -34,7 +34,7 @@ consumers:
   username: jsmith
 plugins:
 - config:
-    account_email: '{vault://aws-us-east-2/KongAir/PRD/kong/acme/account_email}'
+    account_email: '{vault://env/acme/account_email}'
     domains:
     - api.kong-air.com
     renew_threshold_days: 30
