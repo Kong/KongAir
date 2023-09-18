@@ -281,11 +281,3 @@ services:
   - platform-repo-managed
   url: http://127.0.0.1:65535
 upstreams: []
-vaults:
-- config:
-    region: us-east-2
-  description: KongAir AWS us-east-2 secrets
-  name: aws
-  prefix: aws-us-east-2
-  tags:
-  - platform-repo-managed
