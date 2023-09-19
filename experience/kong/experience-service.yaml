@@ -7,6 +7,9 @@ services:
     - _config: default-jwt
       enabled: true
       name: jwt
+    - name: graphql-proxy-cache-advanced
+      config:
+        strategy: memory
     port: 8084
     protocol: http
     routes:
