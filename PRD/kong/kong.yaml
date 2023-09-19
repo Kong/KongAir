@@ -266,6 +266,35 @@ services:
   tags:
   - sales
   - platform-repo-managed
+- host: experience.kongair
+  id: f1c41796-5c88-419b-a391-baa0c2f62f0d
+  name: experience-service
+  path: /
+  plugins:
+  - _config: default-jwt
+    enabled: true
+    name: jwt
+    tags:
+    - platform-repo-managed
+  port: 8084
+  protocol: http
+  routes:
+  - id: 52cc7a8f-8914-46aa-990d-ad07197d7fc9
+    methods:
+    - POST
+    name: experience-service_query
+    paths:
+    - ~/query$
+    plugins: []
+    protocols:
+    - https
+    regex_priority: 200
+    strip_path: false
+    tags:
+    - experience
+    - platform-repo-managed
+  tags:
+  - platform-repo-managed
 - name: acme-dummy-service
   routes:
   - hosts:
