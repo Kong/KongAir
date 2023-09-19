@@ -276,6 +276,11 @@ services:
     name: jwt
     tags:
     - platform-repo-managed
+  - config:
+      strategy: memory
+    name: graphql-proxy-cache-advanced
+    tags:
+    - platform-repo-managed
   port: 8084
   protocol: http
   routes:
