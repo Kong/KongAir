@@ -41,3 +41,13 @@ then
 else
   echo "No bookings service pid found"
 fi
+
+if [[ -f "./experience/experience.pid" ]];
+then
+  pid=$(cat ./experience/experience.pid)
+  echo "Killing experience service $pid"
+  kill $pid
+  rm -f ./experience/experience.pid
+else
+  echo "No experience service pid found"
+fi

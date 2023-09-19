@@ -41,3 +41,12 @@ echo "Bookings process ID:" $(cat ./bookings.pid)
 echo "------------------------------------"
 popd
 
+pushd ./experience
+echo "Running experience service"
+make build
+node ./index.js "$KONG_AIR_EXPERIENCE_PORT" > /tmp/experience.log 2>&1 &
+echo $! > ./experience.pid
+echo "Experience process ID:" $(cat ./experience.pid)
+echo "------------------------------------"
+popd
+
