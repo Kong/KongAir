@@ -10,6 +10,7 @@ services:
     - name: graphql-proxy-cache-advanced
       config:
         strategy: memory
+        cache_ttl: 15
     port: 8084
     protocol: http
     routes:
