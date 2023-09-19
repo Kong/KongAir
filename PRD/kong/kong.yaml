@@ -277,6 +277,7 @@ services:
     tags:
     - platform-repo-managed
   - config:
+      cache_ttl: 15
       strategy: memory
     name: graphql-proxy-cache-advanced
     tags:
