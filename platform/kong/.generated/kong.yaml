@@ -282,6 +282,15 @@ services:
     name: graphql-proxy-cache-advanced
     tags:
     - platform-repo-managed
+  - config:
+      limit:
+      - 1
+      sync_rate: -1
+      window_size:
+      - 5
+    name: graphql-rate-limiting-advanced
+    tags:
+    - platform-repo-managed
   port: 8084
   protocol: http
   routes:
