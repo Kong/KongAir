@@ -13,6 +13,7 @@ services:
         cache_ttl: 15
     - name: graphql-rate-limiting-advanced
       config:
+        namespace: experience
         limit:
         - 5
         window_size:

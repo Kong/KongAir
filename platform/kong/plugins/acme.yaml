@@ -22,4 +22,4 @@ plugins:
     domains:
       - "api.kong-air.com"
     storage_config:
-      kong: {}
+      kong: []
