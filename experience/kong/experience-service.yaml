@@ -14,7 +14,7 @@ services:
     - name: graphql-rate-limiting-advanced
       config:
         limit:
-        - 1
+        - 5
         window_size:
         - 5
         sync_rate: -1
