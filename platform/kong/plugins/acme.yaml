@@ -21,3 +21,5 @@ plugins:
     renew_threshold_days: 30
     domains:
       - "api.kong-air.com"
+    storage_config:
+      kong: {}
