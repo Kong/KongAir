@@ -285,6 +285,7 @@ services:
   - config:
       limit:
       - 5
+      namespace: experience
       sync_rate: -1
       window_size:
       - 5
