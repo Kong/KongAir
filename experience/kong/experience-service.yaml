@@ -13,11 +13,10 @@ services:
         cache_ttl: 15
     - name: graphql-rate-limiting-advanced
       config:
-        namespace: experience
         limit:
-        - 5
+        - 15
         window_size:
-        - 5
+        - 30
         sync_rate: -1
     port: 8084
     protocol: http
