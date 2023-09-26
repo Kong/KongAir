@@ -284,11 +284,10 @@ services:
     - platform-repo-managed
   - config:
       limit:
-      - 5
-      namespace: experience
+      - 15
       sync_rate: -1
       window_size:
-      - 5
+      - 30
     name: graphql-rate-limiting-advanced
     tags:
     - platform-repo-managed
