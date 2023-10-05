@@ -284,10 +284,10 @@ services:
     - platform-repo-managed
   - config:
       limit:
-      - 15
+      - 500
       sync_rate: -1
       window_size:
-      - 30
+      - 120
     name: graphql-rate-limiting-advanced
     tags:
     - platform-repo-managed
