@@ -14,9 +14,9 @@ services:
     - name: graphql-rate-limiting-advanced
       config:
         limit:
-        - 15
+        - 500
         window_size:
-        - 30
+        - 120
         sync_rate: -1
     port: 8084
     protocol: http
