@@ -1,7 +1,7 @@
 version: "3"
 
 networks:
-  kong-net:
+  kong-edu-net:
     external: true
 
 services:
@@ -11,7 +11,7 @@ services:
   hostname: experience.kongair
   restart: on-failure
   networks:
-    - kong-net
+    - kong-edu-net
   ports:
    - 5050:4000
 
@@ -21,7 +21,7 @@ services:
   hostname: customers.kongair
   restart: on-failure
   networks:
-    - kong-net
+    - kong-edu-net
   ports:
    - 5051:3000
 
@@ -31,7 +31,7 @@ services:
   hostname: flights.kongair
   restart: on-failure
   networks:
-    - kong-net
+    - kong-edu-net
   ports:
    - 5052:8080
 
@@ -41,7 +41,7 @@ services:
   hostname: routes.kongair
   restart: on-failure
   networks:
-    - kong-net
+    - kong-edu-net
   ports:
    - 5053:8080
 
@@ -51,6 +51,6 @@ services:
   hostname: bookings.kongair
   restart: on-failure
   networks:
-    - kong-net
+    - kong-edu-net
   ports:
    - 5054:3000
