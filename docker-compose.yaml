@@ -5,32 +5,52 @@ networks:
     external: true
 
 services:
+ kongair-experience:
+  image: kongedu/kongair-experience:1.0
+  container_name: kongair-experience
+  hostname: experience.kongair
+  restart: on-failure
+  networks:
+    - kong-net
+  ports:
+   - 5050:4000
+
+ kongair-customers:
+  image: kongedu/kongair-customers:1.0
+  container_name: kongair-customers
+  hostname: customers.kongair
+  restart: on-failure
+  networks:
+    - kong-net
+  ports:
+   - 5051:3000
+
  kongair-flights:
-  image: kongair-flights:1.0
+  image: kongedu/kongair-flights:1.0
   container_name: kongair-flights
   hostname: flights.kongair
   restart: on-failure
   networks:
     - kong-net
   ports:
-   - 8080:8080
+   - 5052:8080
 
  kongair-routes:
-  image: kongair-routes:1.0
+  image: kongedu/kongair-routes:1.0
   container_name: kongair-routes
   hostname: routes.kongair
   restart: on-failure
   networks:
     - kong-net
   ports:
-   - 8081:8080
+   - 5053:8080
 
  kongair-bookings:
-  image: kongair-bookings:1.0
+  image: kongedu/kongair-bookings:1.0
   container_name: kongair-bookings
   hostname: bookings.kongair
   restart: on-failure
   networks:
     - kong-net
   ports:
-   - 8082:3000
+   - 5054:3000
