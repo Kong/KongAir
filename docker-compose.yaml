@@ -2,7 +2,10 @@ version: "3"
 
 networks:
   kong-edu-net:
-    external: true
+    name: kong-edu-net
+    driver: bridge
+    external: false
+      
 
 services:
  kongair-experience:
