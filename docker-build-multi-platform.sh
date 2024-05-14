@@ -20,3 +20,4 @@ docker buildx build --platform linux/amd64,linux/arm64 -t $DOCKER_HUB_USERNAME/k
 
 # flight-data/routes
 docker buildx build --platform linux/amd64,linux/arm64 -t $DOCKER_HUB_USERNAME/kongair-routes:$TAG -f ./flight-data/routes/Dockerfile ./flight-data/routes --push
+
