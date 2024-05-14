@@ -1,10 +1,11 @@
 # Set Docker Hub username
 DOCKER_HUB_USERNAME="kongedu"
 TAG="2.0"
-# Ensure buildx is enabled
+
 docker buildx create --use
 
 # Build and push commands for each Dockerfile
+
 # experience
 docker buildx build --platform linux/amd64,linux/arm64 -t $DOCKER_HUB_USERNAME/kongair-experience:$TAG -f ./experience/Dockerfile ./experience --push
 
