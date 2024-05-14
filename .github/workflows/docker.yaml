@@ -3,8 +3,7 @@ name: Build Docker Images
 on:
   push:
     branches:
-      # - "main"
-      - "dd/docker-builds"
+      - "main"
     paths-ignore:
       - 'PRD/**'
       - 'platform/kong/.generated/kong.yaml'
