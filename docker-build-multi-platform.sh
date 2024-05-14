@@ -1,21 +1,21 @@
 # Set Docker Hub username
 DOCKER_HUB_USERNAME="kongedu"
-
+TAG="2.0"
 # Ensure buildx is enabled
 docker buildx create --use
 
-# Build commands for each Dockerfile
+# Build and push commands for each Dockerfile
 # experience
-docker buildx build --platform linux/amd64,linux/arm64 -t $DOCKER_HUB_USERNAME/kongair-experience:1.0 -f ./experience/Dockerfile ./experience --load
+docker buildx build --platform linux/amd64,linux/arm64 -t $DOCKER_HUB_USERNAME/kongair-experience:$TAG -f ./experience/Dockerfile ./experience --push
 
 # sales/bookings
-docker buildx build --platform linux/amd64,linux/arm64 -t $DOCKER_HUB_USERNAME/kongair-bookings:1.0 -f ./sales/bookings/Dockerfile ./sales/bookings --load
+docker buildx build --platform linux/amd64,linux/arm64 -t $DOCKER_HUB_USERNAME/kongair-bookings:$TAG -f ./sales/bookings/Dockerfile ./sales/bookings --push
 
 # sales/customer
-docker buildx build --platform linux/amd64,linux/arm64 -t $DOCKER_HUB_USERNAME/kongair-customers:1.0 -f ./sales/customer/Dockerfile ./sales/customer --load
+docker buildx build --platform linux/amd64,linux/arm64 -t $DOCKER_HUB_USERNAME/kongair-customers:$TAG -f ./sales/customer/Dockerfile ./sales/customer --push
 
 # flight-data/flights
-docker buildx build --platform linux/amd64,linux/arm64 -t $DOCKER_HUB_USERNAME/kongair-flights:1.0 -f ./flight-data/flights/Dockerfile ./flight-data/flights --load
+docker buildx build --platform linux/amd64,linux/arm64 -t $DOCKER_HUB_USERNAME/kongair-flights:$TAG-f ./flight-data/flights/Dockerfile ./flight-data/flights --push
 
 # flight-data/routes
-docker buildx build --platform linux/amd64,linux/arm64 -t $DOCKER_HUB_USERNAME/kongair-routes:1.0 -f ./flight-data/routes/Dockerfile ./flight-data/routes --load
+docker buildx build --platform linux/amd64,linux/arm64 -t $DOCKER_HUB_USERNAME/kongair-routes:$TAG -f ./flight-data/routes/Dockerfile ./flight-data/routes --push
