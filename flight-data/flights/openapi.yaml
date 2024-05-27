@@ -6,16 +6,25 @@ info:
   description: KongAir Flights service provides the scheduled flights for KongAir
   version: 0.1.0
   title: Flights Service
+  contact:
+    name: kong
 
 servers:
 - url: https://api.kong-air.com
   description: KongAir API Server
+ 
+ 
+tags:
+  - name: flight-data
 
 paths:
   /health:
     get:
+      operationId: getHealth
       summary: Health check endpoint for Kubernetes
       description: Endpoint that returns the service health status.
+      tags:
+      - flight-data
       responses:
         '200':
           description: Service is healthy
@@ -75,7 +84,7 @@ paths:
                   $ref: '#/components/schemas/Flight'
               examples:
                 Example Flights List:
-                  value: |
+                  value: 
                    [
                       {
                         "number": "KD924",
@@ -121,7 +130,7 @@ paths:
                 $ref: '#/components/schemas/Flight'
               examples:
                 Example Flight KD924:
-                  value: |
+                  value: 
                     {
                       "number": "KD924",
                       "route_id": "LHR-SFO",
