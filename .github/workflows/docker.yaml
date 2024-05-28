@@ -43,4 +43,4 @@ jobs:
           context: "${{ matrix.app.dir }}/${{ matrix.app.name }}"
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/kong/kongair-${{ matrix.app.name }}:latest
+          tags: ghcr.io/battlebyte/kongair-${{ matrix.app.name }}:latest
