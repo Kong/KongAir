@@ -13,9 +13,17 @@ servers:
 - url: https://api.kong-air.com
   description: KongAir API Server
 
+tags:
+  - name: sales
+  - name: customer
+
 paths:
   /health:
     get:
+      operationId: get-health
+      tags:
+        - sales
+        - customer
       summary: Health check endpoint for Kubernetes
       description: Endpoint that returns the service health status.
       responses:
