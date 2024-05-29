@@ -61,6 +61,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Start services
+        run: chmod +x run-all.sh && ./run-all.sh
 
       - name: Setup deck
         uses: kong/setup-deck@v1
