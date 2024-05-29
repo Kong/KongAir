@@ -7,7 +7,7 @@ info:
   version: 0.1.0
   title: Flights Service
   contact:
-    name: kong
+    name: Kong
 
 servers:
 - url: https://api.kong-air.com
