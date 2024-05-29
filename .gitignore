@@ -6,3 +6,4 @@ kong-quickstart.*
 kong.env
 kong.yaml
 *.pid
+.hypothesis/
