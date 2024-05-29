@@ -49,10 +49,10 @@ jobs:
               - 'sales/customer/kong/**'
               - 'experience/kong/**'
               - 'platform/kong/**'
-
-  oas-to-kong:
-    name: Convert OAS to Kong configurations
-
+        
+  contract-testing:
+    name: API contract testing
+    
     needs: has-changes
     if: ${{ needs.has-changes.outputs.are-changes == 'true' }}
 
@@ -73,18 +73,29 @@ jobs:
         with:
           schema: flight-data/routes/openapi.yaml
           base-url: http://localhost:8081
+      - name: Contract testing customer
+        uses: schemathesis/action@v1
+        with:
+          schema: sales/customer/openapi.yaml
+          base-url: http://localhost:8083
       - name: Contract testing bookings
         uses: schemathesis/action@v1
         with:
           schema: sales/bookings/openapi.yaml
           base-url: http://localhost:8082
           args: '-H "x-consumer-username: dfreese"'
-      - name: Contract testing customer
-        uses: schemathesis/action@v1
-        with:
-          schema: sales/customer/openapi.yaml
-          base-url: http://localhost:8083
-         
+
+  oas-to-kong:
+    name: Convert OAS to Kong configurations
+
+    needs: has-changes
+    if: ${{ needs.has-changes.outputs.are-changes == 'true' }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Setup deck
         uses: kong/setup-deck@v1
         with:
