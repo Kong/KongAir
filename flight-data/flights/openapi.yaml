@@ -84,7 +84,7 @@ paths:
                   $ref: '#/components/schemas/Flight'
               examples:
                 Example Flights List:
-                  value: 
+                  value: | 
                    [
                       {
                         "number": "KD924",
@@ -130,7 +130,7 @@ paths:
                 $ref: '#/components/schemas/Flight'
               examples:
                 Example Flight KD924:
-                  value: 
+                  value: | 
                     {
                       "number": "KD924",
                       "route_id": "LHR-SFO",

@@ -100,7 +100,7 @@ paths:
                   $ref: '#/components/schemas/Route'
               examples:
                 lhr-sfo:
-                  value: 
+                  value: |
                    [{
                       "id": "LHR-SFO",
                       "origin": "LHR",

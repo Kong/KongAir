@@ -63,7 +63,7 @@ paths:
                   $ref: '#/components/schemas/Booking'
               examples:
                 Example Bookings list response:
-                  value: 
+                  value: |
                     [{
                       "ticket_number": "CDF3412",
                       "seat": "32A",
@@ -91,7 +91,7 @@ paths:
                 $ref: '#/components/schemas/BookingResponse'
               examples:
                 Example new booking response body:
-                  value: 
+                  value: |
                    {
                     "ticket_number": "CDF3412"
                    }
@@ -111,7 +111,7 @@ paths:
               $ref: '#/components/schemas/BookingRequest'
             examples:
               Example new booking request body:
-                value: 
+                value: |
                  {
                    "flight_number": "KA924",
                    "seat": "32A"
