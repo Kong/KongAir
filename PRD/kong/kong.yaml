@@ -94,10 +94,10 @@ services:
     tags:
     - flight-data
     - platform-repo-managed
-  - id: a5023323-0468-5a77-baf2-13578fec61b0
+  - id: efa95f78-e940-5648-841e-6b71b6fa77ba
     methods:
     - GET
-    name: flights-service_health_get
+    name: flights-service_get-health
     paths:
     - ~/health$
     plugins: []
@@ -119,10 +119,10 @@ services:
   port: 8081
   protocol: http
   routes:
-  - id: 4da7a5e5-9e69-59af-a6c3-46a675c5bac6
+  - id: 4122cd9a-0251-5d88-be2d-676c0598e642
     methods:
     - GET
-    name: routes-service_health_get
+    name: routes-service_get-health
     paths:
     - ~/health$
     plugins: []
@@ -205,10 +205,10 @@ services:
     tags:
     - sales
     - platform-repo-managed
-  - id: 1a619e4f-651d-550d-ae30-79f4bf45a080
+  - id: 61beda28-88aa-5d73-af7c-b78d6a386e9d
     methods:
     - GET
-    name: bookings-service_health_get
+    name: bookings-service_get-health
     paths:
     - ~/health$
     plugins: []
@@ -249,10 +249,10 @@ services:
     tags:
     - sales
     - platform-repo-managed
-  - id: 37cbdca9-74d9-51ec-ab8b-008d96f9bd75
+  - id: daab72cb-8cea-5be5-a9b2-227c3a7ef607
     methods:
     - GET
-    name: customer-information-service_health_get
+    name: customer-information-service_get-health
     paths:
     - ~/health$
     plugins: []
