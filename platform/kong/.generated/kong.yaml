@@ -94,10 +94,10 @@ services:
     tags:
     - flight-data
     - platform-repo-managed
-  - id: 1bed3355-cd70-5616-a3bc-b44a92eeacf0
+  - id: efa95f78-e940-5648-841e-6b71b6fa77ba
     methods:
     - GET
-    name: flights-service_gethealth
+    name: flights-service_get-health
     paths:
     - ~/health$
     plugins: []
