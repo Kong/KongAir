@@ -68,6 +68,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Route'
+        '400':
+          description: Invalid format for parameter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid format for parameter id: error unescaping path parameter 'id': invalid URL escape \"%\""
         '404':
           description: Route not found
   "/routes":

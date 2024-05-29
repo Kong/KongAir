@@ -95,6 +95,26 @@ paths:
                    {
                     "ticket_number": "CDF3412"
                    }
+        '400':
+          description: Invalid JSON
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "{\"message\":\"Unexpected token '\"', \"#\" is not valid JSON\"}"
+        '415':
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "{\"message\":\"unsupported media type undefined\",\"errors\":[{\"path\":\"/bookings\",\"message\":\"unsupported media type undefined\"}]}"
         '401':
           description: Unauthorized
         '404':
