@@ -24,7 +24,7 @@ paths:
       description: Endpoint that returns the service health status.
       tags:
       - flight-data
-      operationId: get-health
+      operationId: getHealth
       responses:
         '200':
           description: Service is healthy
