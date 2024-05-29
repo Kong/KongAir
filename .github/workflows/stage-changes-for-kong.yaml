@@ -61,6 +61,54 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - name: Base OAS
+        run: |
+          git show HEAD~1:flight-data/flights/openapi.yaml > flight-data/flights/base.yaml
+          git show HEAD~1:flight-data/routes/openapi.yaml > flight-data/routes/base.yaml
+          git show HEAD~1:sales/bookings/openapi.yaml > sales/bookings/base.yaml
+          git show HEAD~1:sales/customer/openapi.yaml > sales/customer/base.yaml
+      - name: Check flights OAS breaking changes
+        uses: oasdiff/oasdiff-action/breaking@main
+        with:
+          base: flight-data/flights/base.yaml
+          revision: flight-data/flights/openapi.yaml
+      - name: Check routes OAS breaking changes
+        uses: oasdiff/oasdiff-action/breaking@main
+        with:
+          base: flight-data/routes/base.yaml
+          revision: flight-data/routes/openapi.yaml
+      - name: Check customer OAS breaking changes
+        uses: oasdiff/oasdiff-action/breaking@main
+        with:
+          base: sales/customer/base.yaml
+          revision: sales/customer/openapi.yaml
+      - name: Check bookings OAS breaking changes
+        uses: oasdiff/oasdiff-action/breaking@main
+        with:
+          base: sales/bookings/base.yaml
+          revision: sales/bookings/openapi.yaml
+      - name: Changelog flights OAS
+        uses: oasdiff/oasdiff-action/changelog@main
+        with:
+          base: flight-data/flights/base.yaml
+          revision: flight-data/flights/openapi.yaml
+      - name: Changelog routes OAS
+        uses: oasdiff/oasdiff-action/changelog@main
+        with:
+          base: flight-data/routes/base.yaml
+          revision: flight-data/routes/openapi.yaml
+      - name: Changelog customer OAS
+        uses: oasdiff/oasdiff-action/changelog@main
+        with:
+          base: sales/customer/base.yaml
+          revision: sales/customer/openapi.yaml
+      - name: Changelog bookings OAS
+        uses: oasdiff/oasdiff-action/changelog@main
+        with:
+          base: sales/bookings/base.yaml
+          revision: sales/bookings/openapi.yaml
       - name: Start services
         run: chmod +x run-all.sh && ./run-all.sh
       - name: Contract testing flights
