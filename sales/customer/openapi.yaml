@@ -58,9 +58,10 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/CustomerSingle'
+        '401':
+          description: Unauthorized
         '404':
           description: Customer Not Found
-
 components:
   responses:
     CustomerSingle:
