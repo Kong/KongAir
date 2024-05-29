@@ -20,7 +20,7 @@ tags:
 paths:
   /health:
     get:
-      operationId: getHealth
+      operationId: get-health
       summary: Health check endpoint for Kubernetes
       description: Endpoint that returns the service health status.
       tags:
