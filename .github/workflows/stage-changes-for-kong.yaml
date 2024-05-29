@@ -63,7 +63,27 @@ jobs:
         uses: actions/checkout@v3
       - name: Start services
         run: chmod +x run-all.sh && ./run-all.sh
-
+      - name: Contract testing flights
+        uses: schemathesis/action@v1
+        with:
+          schema: flight-data/flights/openapi.yaml
+          base-url: http://localhost:8000
+      - name: Contract testing routes
+        uses: schemathesis/action@v1
+        with:
+          schema: flight-data/routes/openapi.yaml
+          base-url: http://localhost:8001
+      - name: Contract testing bookings
+        uses: schemathesis/action@v1
+        with:
+          schema: sales/bookings/openapi.yaml
+          base-url: http://localhost:8002
+      - name: Contract testing customer
+        uses: schemathesis/action@v1
+        with:
+          schema: sales/bookings/openapi.yaml
+          base-url: http://localhost:8003
+         
       - name: Setup deck
         uses: kong/setup-deck@v1
         with:
