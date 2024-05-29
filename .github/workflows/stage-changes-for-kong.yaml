@@ -51,7 +51,7 @@ jobs:
               - 'platform/kong/**'
         
   contract-testing:
-    name: API contract testing
+    name: API contract tests
     
     needs: has-changes
     if: ${{ needs.has-changes.outputs.are-changes == 'true' }}
