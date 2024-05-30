@@ -99,6 +99,7 @@ jobs:
         with:
           base: flight-data/routes/base.yaml
           revision: flight-data/routes/openapi.yaml
+          output-to-file: flight-data/routes/changelog.txt
       - name: Changelog customer OAS
         uses: oasdiff/oasdiff-action/changelog@main
         with:
@@ -239,4 +240,4 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           title: Stage Kong Gateway Configuration
-          body: "${{ GITHUB_OUTPUT }}"
+          body-path: flight-data/routes/changelog.txt
