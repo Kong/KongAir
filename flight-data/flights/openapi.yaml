@@ -10,7 +10,7 @@ info:
     name: Kong
 
 servers:
-- url: https://api.kong-air.com
+- url: https://localhost:8080
   description: KongAir API Server
  
  
