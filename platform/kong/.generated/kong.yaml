@@ -38,6 +38,7 @@ plugins:
     domains:
     - api.kong-air.com
     renew_threshold_days: 30
+    storage: kong
   enabled: true
   id: 85c9d396-5330-11ee-8c99-0242ac120002
   name: acme
