@@ -45,5 +45,5 @@ jobs:
       - name: deck sync Kong EE
         run: |
             deck gateway sync --select-tag platform-repo-managed \
-                --kong-addr https://pqnbwkudd5puqbqwb-665dc2829c50d27a789d8fb1.labs.strigo.io:30501
+                --kong-addr https://pqnbwkudd5puqbqwb-665dc2829c50d27a789d8fb1.labs.strigo.io:30501 \
                 PRD/kong/kong.yaml
