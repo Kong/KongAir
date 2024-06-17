@@ -6,14 +6,25 @@ info:
   description: KongAir Flights service provides the scheduled flights for KongAir
   version: 0.1.0
   title: Flights Service
+  contact:
+    name: KongAir point of Contact
+    url: http://konghq.com
+    email: support@konghq.com.com
 
 servers:
 - url: https://api.kong-air.com
   description: KongAir API Server
 
+tags:
+- name: flight-data
+  description: Everything about flights
+
 paths:
   /health:
     get:
+      operationId: "gethealth"
+      tags:
+        - flight-data
       summary: Health check endpoint for Kubernetes
       description: Endpoint that returns the service health status.
       responses:
@@ -47,8 +58,8 @@ paths:
       summary: Get KongAir planned flights
       description: |
         Returns all the scheduled flights for a given day
-      tags:
-      - flight-data
+      tags: 
+        - flight-data
       operationId: get-flights
       parameters:
         - name: date
@@ -73,23 +84,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Flight'
-              examples:
-                Example Flights List:
-                  value: |
-                   [
-                      {
-                        "number": "KD924",
-                        "route_id": "LHR-SFO",
-                        "scheduled_departure": "2024-03-20T09:12:28Z",
-                        "scheduled_arrival": "2024-03-20T19:12:28Z"
-                      },
-                      {
-                        "number": "KD925",
-                        "route_id": "SFO-LHR",
-                        "scheduled_departure": "2024-03-21T09:12:28Z",
-                        "scheduled_arrival": "2024-03-21T19:12:28Z"
-                      }
-                   ]
 
   "/flights/{flightNumber}":
     get:
@@ -119,15 +113,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Flight'
-              examples:
-                Example Flight KD924:
-                  value: |
-                    {
-                      "number": "KD924",
-                      "route_id": "LHR-SFO",
-                      "scheduled_departure": "2024-03-20T09:12:28Z",
-                      "scheduled_arrival": "2024-03-20T19:12:28Z"
-                    }
         '404':
           description: Flight not found
           content:
