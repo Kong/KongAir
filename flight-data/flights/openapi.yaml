@@ -12,7 +12,7 @@ info:
     email: support@konghq.com.com
 
 servers:
-- url: https://api.kong-air.com
+- url: http://host.docker.internal
   description: KongAir API Server
 
 tags:
