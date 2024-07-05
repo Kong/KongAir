@@ -147,6 +147,22 @@ jobs:
           schema: sales/bookings/openapi.yaml
           base-url: http://localhost:8082
           args: '-H "x-consumer-username: dfreese"'
+          
+  security-test:
+    name: Security test the APIs with ZAP
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app:
+          - dir: flight-data
+            name: flights
+          - dir: flight-data
+            name: routes
+          - dir: sales
+            name: bookings
+          - dir: sales
+            name: customer
+    steps:
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.7.0
         with:
