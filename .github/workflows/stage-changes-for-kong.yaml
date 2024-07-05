@@ -96,7 +96,7 @@ jobs:
         if: steps.oasdiff.outputs.breaking != ''
         uses: JasonEtco/create-an-issue@v2
         env:
-          ISSUE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APP_NAME: ${{ matrix.app.name }}
           BREAKING_CHANGES: ${{ env.BREAKING_CHANGES }}
         with:
