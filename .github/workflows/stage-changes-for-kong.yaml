@@ -113,7 +113,7 @@ jobs:
         id: read_changelog
         run: |
           changelog_content=$(cat ${{ matrix.app.dir }}/${{ matrix.app.name }}/changelog.txt)
-          echo "::set-output name=content::$changelog_content"
+          echo "changelog_content=$changelog_content" >> $GITHUB_OUTPUT
         shell: bash
       
   contract-test:
@@ -270,5 +270,5 @@ jobs:
           body: |
             **Changelog for OpenAPI Specification:**
             
-            ${{ steps.read_changelog.outputs.content }}
+            ${{ steps.read_changelog.outputs.changelog_content }}
       
