@@ -93,7 +93,7 @@ jobs:
       - name: Set Env for Breaking Changes
         run: echo "BREAKING_CHANGES=${{ steps.oasdiff.outputs.breaking }}" >> $GITHUB_ENV
       - name: Create Issue on Breaking Change
-        if: steps.oasdiff.outputs.breaking != ''
+        if: steps.oasdiff.outputs.breaking != 'No breaking changes'
         uses: JasonEtco/create-an-issue@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
