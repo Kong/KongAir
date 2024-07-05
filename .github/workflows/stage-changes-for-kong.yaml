@@ -115,15 +115,7 @@ jobs:
           changelog_content=$(cat ${{ matrix.app.dir }}/${{ matrix.app.name }}/changelog.txt)
           echo "::set-output name=content::$changelog_content"
         shell: bash
-      - name: Create PR Comment with Changelog
-        id: create_comment
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          issue-number: ${{ steps.create_pr.outputs.pull-request-number }}
-          body: |
-            **Changelog for OpenAPI Specification:**
-            
-            ${{ steps.read_changelog.outputs.content }}
+      
       # Start the API implementation services and execute contract testing
       - name: Start services
         run: chmod +x run-all.sh && ./run-all.sh
@@ -264,4 +256,13 @@ jobs:
         with:
           title: Stage Kong Gateway Configuration
           #body-path: flight-data/routes/changelog.txt
+      - name: Create PR Comment with Changelog
+        id: create_comment
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ steps.create_pr.outputs.pull-request-number }}
+          body: |
+            **Changelog for OpenAPI Specification:**
+            
+            ${{ steps.read_changelog.outputs.content }}
       
