@@ -51,8 +51,8 @@ jobs:
               - 'experience/kong/**'
               - 'platform/kong/**'
         
-  contract-testing:
-    name: API contract tests
+  oas-break-diff:
+    name: Obtain OAS diff and breaking changes
     
     needs: has-changes
     if: ${{ needs.has-changes.outputs.are-changes == 'true' }}
@@ -116,6 +116,12 @@ jobs:
           echo "::set-output name=content::$changelog_content"
         shell: bash
       
+  contract-test:
+    name: Contract test the APIs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       # Start the API implementation services and execute contract testing
       - name: Start services
         run: chmod +x run-all.sh && ./run-all.sh
