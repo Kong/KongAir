@@ -90,15 +90,18 @@ jobs:
         with:
           base: ${{ matrix.app.dir }}/${{ matrix.app.name }}/base.yaml
           revision: ${{ matrix.app.dir }}/${{ matrix.app.name }}/openapi.yaml
+      # Encode in base64 because output is a multi-line string    
       - name: Set Env for Breaking Changes
-        run: echo "BREAKING_CHANGES=${{ steps.oasdiff.outputs.breaking }}" >> $GITHUB_ENV
+        run: |
+          BREAKING_CHANGES=$(echo "${{ steps.oasdiff.outputs.breaking }}" | base64)
+          echo "BREAKING_CHANGES=$BREAKING_CHANGES" >> $GITHUB_ENV
       - name: Create Issue on Breaking Change
         if: steps.oasdiff.outputs.breaking != 'No breaking changes'
         uses: JasonEtco/create-an-issue@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APP_NAME: ${{ matrix.app.name }}
-          BREAKING_CHANGES: ${{ env.BREAKING_CHANGES }}
+          BREAKING_CHANGES: $(echo "$BREAKING_CHANGES" | base64 --decode)
         with:
           filename: .github/ISSUE_TEMPLATE/breaking-change.md
       # Create a changelog between previous and current OAS
