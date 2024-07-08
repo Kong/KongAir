@@ -185,9 +185,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Generate K6 script from openapi
-        uses: hatamiarash7/openapi-generator@v0.2.0
+        uses: hatamiarash7/openapi-generator@v0.3.0
         with:
-          openapi: '${{ matrix.app.dir }}/${{ matrix.app.name }}/openapi.yaml'
+          openapi-file: '${{ matrix.app.dir }}/${{ matrix.app.name }}/openapi.yaml'
           generator: 'k6'
           output-dir: '${{ matrix.app.dir }}/${{ matrix.app.name }}/k6'
       - name: Start services
