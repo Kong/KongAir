@@ -10,7 +10,7 @@ info:
   title: Customer Information Service
 
 servers:
-- url: https://api.kong-air.com
+- url: http://localhost:8083
   description: KongAir API Server
 
 tags:

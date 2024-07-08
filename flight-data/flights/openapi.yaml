@@ -63,8 +63,9 @@ paths:
         - name: date
           in: query
           description: Filter by date (defaults to current day)
-          required: true
+          required: false
           style: form
+          example: 2024-03-20
           schema:
             type: string
             format: date
@@ -114,6 +115,7 @@ paths:
           description: The flight number
           required: true
           style: simple
+          example: KA0284
           schema:
             type: string
       responses:
@@ -170,6 +172,7 @@ paths:
         description: The flight number
         required: true
         style: simple
+        example: KA0284
         schema:
           type: string
       responses:
