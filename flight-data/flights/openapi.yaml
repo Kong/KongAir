@@ -210,7 +210,7 @@ components:
       type: object
       properties:
         number:
-          type: integer
+          type: string
         route_id:
           type: string
         scheduled_departure:
