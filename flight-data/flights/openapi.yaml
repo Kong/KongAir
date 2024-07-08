@@ -5,7 +5,7 @@ openapi: 3.0.0
 info:
   description: KongAir Flights service provides the scheduled flights for KongAir
   version: 0.1.0
-  title: Flights Service
+  title: KongAir Flights Service
   contact:
     name: Kong, Inc.
 
@@ -63,7 +63,7 @@ paths:
         - name: date
           in: query
           description: Filter by date (defaults to current day)
-          required: false
+          required: true
           style: form
           schema:
             type: string

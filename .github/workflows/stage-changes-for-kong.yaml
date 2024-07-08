@@ -312,14 +312,16 @@ jobs:
         with:
           base: ${{ matrix.app.dir }}/${{ matrix.app.name }}/base.yaml
           revision: ${{ matrix.app.dir }}/${{ matrix.app.name }}/openapi.yaml
+          output-to-file: ${{ matrix.app.dir }}/${{ matrix.app.name }}/changelog.txt
       - name: Create PR Comment with Changelog
         id: create_comment
-        #if: steps.oaschangelog.outputs.changelog != 'No changelog changes'
-        uses: peter-evans/create-or-update-comment@v1
+        if: steps.oaschangelog.outputs.changelog != 'No changelog changes'
+        uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: ${{ needs.oas-to-kong.outputs.pull-request-number }}
-          body: |
-            **Changelog for OpenAPI Specification:**
+          body-path: ${{ matrix.app.dir }}/${{ matrix.app.name }}/changelog.txt
+          # body: |
+          #   **Changelog for OpenAPI Specification:**
             
-            ${{ steps.oaschangelog.outputs.changelog }}
+          #   ${{ steps.oaschangelog.outputs.changelog }}
       
