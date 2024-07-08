@@ -91,17 +91,17 @@ jobs:
           base: ${{ matrix.app.dir }}/${{ matrix.app.name }}/base.yaml
           revision: ${{ matrix.app.dir }}/${{ matrix.app.name }}/openapi.yaml
       # Encode in base64 because output is a multi-line string    
-      - name: Set Env for Breaking Changes
-        run: |
-          BREAKING_CHANGES=$(echo "${{ steps.oasdiff.outputs.breaking }}" | base64)
-          echo "BREAKING_CHANGES=$BREAKING_CHANGES" >> $GITHUB_ENV
+      # - name: Set Env for Breaking Changes
+      #   run: |
+      #     BREAKING_CHANGES=$(echo "${{ steps.oasdiff.outputs.breaking }}" | base64)
+      #     echo "BREAKING_CHANGES=$BREAKING_CHANGES" >> $GITHUB_ENV
       - name: Create Issue on Breaking Change
         if: steps.oasdiff.outputs.breaking != 'No breaking changes'
         uses: JasonEtco/create-an-issue@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APP_NAME: ${{ matrix.app.name }}
-          BREAKING_CHANGES: $(echo "$BREAKING_CHANGES" | base64 --decode)
+          BREAKING_CHANGES: ${{ steps.oasdiff.outputs.breaking }}
         with:
           filename: .github/ISSUE_TEMPLATE/breaking-change.md
       # Create a changelog between previous and current OAS
@@ -111,13 +111,13 @@ jobs:
         with:
           base: ${{ matrix.app.dir }}/${{ matrix.app.name }}/base.yaml
           revision: ${{ matrix.app.dir }}/${{ matrix.app.name }}/openapi.yaml
-          output-to-file: ${{ matrix.app.dir }}/${{ matrix.app.name }}/changelog.txt
-      - name: Read Changelog File
-        id: read_changelog
-        run: |
-          changelog_content=$(cat ${{ matrix.app.dir }}/${{ matrix.app.name }}/changelog.txt | base64)
-          echo "changelog_content=$changelog_content" >> $GITHUB_OUTPUT
-        shell: bash
+          #output-to-file: ${{ matrix.app.dir }}/${{ matrix.app.name }}/changelog.txt
+      # - name: Read Changelog File
+      #   id: read_changelog
+      #   run: |
+      #     changelog_content=$(cat ${{ matrix.app.dir }}/${{ matrix.app.name }}/changelog.txt | base64)
+      #     echo "changelog_content=$changelog_content" >> $GITHUB_OUTPUT
+      #   shell: bash
       
   contract-test:
     name: Contract test the APIs
@@ -181,7 +181,7 @@ jobs:
   oas-to-kong:
     name: Convert OAS to Kong configurations
 
-    needs: has-changes
+    needs: [has-changes, oas-break-diff]
     if: ${{ needs.has-changes.outputs.are-changes == 'true' }}
 
     runs-on: ubuntu-latest
@@ -293,5 +293,5 @@ jobs:
           body: |
             **Changelog for OpenAPI Specification:**
             
-            echo "${{ steps.read_changelog.outputs.changelog_content }}" | base64 --decode
+            ${{ steps.read_changelog.outputs.changelog_content }}
       
