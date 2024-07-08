@@ -243,5 +243,5 @@ components:
       required:
         - flight_number
         - in_flight_entertainment
-        - mean_options
+        - meal_options
         - aircraft_type
