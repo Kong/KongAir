@@ -176,7 +176,7 @@ jobs:
 
   oas-to-kong:
     name: Convert OAS to Kong configurations
-    needs: [has-changes, oas-break]
+    needs: [has-changes, oas-break, contract-test]
     if: ${{ needs.has-changes.outputs.are-changes == 'true' }}
     runs-on: ubuntu-latest
     outputs:
@@ -314,7 +314,7 @@ jobs:
           revision: ${{ matrix.app.dir }}/${{ matrix.app.name }}/openapi.yaml
       - name: Create PR Comment with Changelog
         id: create_comment
-        if: steps.oaschangelog.outputs.changelog != 'No changelog changes'
+        #if: steps.oaschangelog.outputs.changelog != 'No changelog changes'
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ needs.oas-to-kong.outputs.pull-request-number }}
