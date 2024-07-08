@@ -195,13 +195,7 @@ jobs:
       - name: Install k6
         run: |
           curl https://github.com/grafana/k6/releases/download/v0.52.0/k6-v0.52.0-linux-amd64.tar.gz -L | tar xvz --strip-components 1
-      - name: Install packages
-        run: |
-          npm install
-      - name: Start server and run tests
-        run: |
-          npm start & npx wait-on http://localhost:3000
-          ./k6 run test.js --vus 10 --duration 10s
+          ./k6 run '${{ matrix.app.dir }}/${{ matrix.app.name }}/k6/script.js' --vus 10 --duration 10s
 
   oas-to-kong:
     name: Convert OAS to Kong configurations
