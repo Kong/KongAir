@@ -115,7 +115,7 @@ jobs:
       - name: Read Changelog File
         id: read_changelog
         run: |
-          changelog_content=$(cat ${{ matrix.app.dir }}/${{ matrix.app.name }}/changelog.txt)
+          changelog_content=$(cat ${{ matrix.app.dir }}/${{ matrix.app.name }}/changelog.txt | base64)
           echo "changelog_content=$changelog_content" >> $GITHUB_OUTPUT
         shell: bash
       
@@ -293,5 +293,5 @@ jobs:
           body: |
             **Changelog for OpenAPI Specification:**
             
-            ${{ steps.read_changelog.outputs.changelog_content }}
+            echo "${{ steps.read_changelog.outputs.changelog_content }}" | base64 --decode
       
