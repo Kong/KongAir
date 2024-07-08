@@ -116,6 +116,7 @@ jobs:
       
   contract-test:
     name: Contract test the APIs
+    needs: has-changes
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

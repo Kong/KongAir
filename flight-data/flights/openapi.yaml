@@ -63,7 +63,7 @@ paths:
         - name: date
           in: query
           description: Filter by date (defaults to current day)
-          required: true
+          required: false
           style: form
           schema:
             type: string
