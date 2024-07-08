@@ -7,7 +7,7 @@ info:
   version: 0.1.0
   title: Flights Service
   contact:
-    name: Kong
+    name: Kong, Inc.
 
 servers:
 - url: http://localhost:8080

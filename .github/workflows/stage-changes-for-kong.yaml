@@ -51,8 +51,8 @@ jobs:
               - 'experience/kong/**'
               - 'platform/kong/**'
         
-  oas-break-diff:
-    name: Obtain OAS diff and breaking changes
+  oas-break:
+    name: Check for breaking changes
     
     needs: has-changes
     if: ${{ needs.has-changes.outputs.are-changes == 'true' }}
@@ -176,7 +176,7 @@ jobs:
 
   oas-to-kong:
     name: Convert OAS to Kong configurations
-    needs: [has-changes, oas-break-diff]
+    needs: [has-changes, oas-break]
     if: ${{ needs.has-changes.outputs.are-changes == 'true' }}
     runs-on: ubuntu-latest
     outputs:
@@ -281,7 +281,7 @@ jobs:
         with:
           title: Stage Kong Gateway Configuration
       
-  oaschangelog:
+  oas-changelog:
     # obtain the changelog between the previous and current OAS for all services
     # and create a PR comment with the changelog
     needs: oas-to-kong
@@ -314,12 +314,12 @@ jobs:
           revision: ${{ matrix.app.dir }}/${{ matrix.app.name }}/openapi.yaml
       - name: Create PR Comment with Changelog
         id: create_comment
-        if: steps.oaschangelog.outputs.changelog_content != ''
+        if: steps.oaschangelog.outputs.changelog != 'No changelog changes'
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ needs.oas-to-kong.outputs.pull-request-number }}
           body: |
             **Changelog for OpenAPI Specification:**
             
-            ${{ steps.read_changelog.outputs.changelog_content }}
+            ${{ steps.oaschangelog.outputs.changelog }}
       
