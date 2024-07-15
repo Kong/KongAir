@@ -51,6 +51,9 @@ jobs:
               - 'experience/kong/**'
               - 'platform/kong/**'
         
+  # Check if there are breaking changes in the OAS
+  # specifications of the services. If there are breaking
+  # changes, create an issue in the repository.
   oas-break:
     name: Check breaking changes
     
@@ -100,6 +103,8 @@ jobs:
         with:
           filename: .github/ISSUE_TEMPLATE/breaking-change.md
       
+  # Run contract testing with SchemaThesis.
+  # The tests are based on the OpenAPI specifications of the services.
   contract-test:
     name: Contract testing
     needs: has-changes
@@ -138,6 +143,8 @@ jobs:
           args: '-H "x-consumer-username: jsmith"'
           #token: ${{ secrets.SCHEMATHESIS_TOKEN }}
 
+  # Run security testing with OWASP ZAP Scan.
+  # The test is based on the OpenAPI specifications of the services.
   security-test:
     name: Security testing
     runs-on: ubuntu-latest
@@ -166,6 +173,7 @@ jobs:
           format: openapi
           target: '${{ matrix.app.dir }}/${{ matrix.app.name }}/openapi.yaml'
 
+  # Run load testing with K6. The script is generated from the OpenAPI specification.
   load-test:
     name: Load testing
     runs-on: ubuntu-latest
@@ -208,6 +216,7 @@ jobs:
         run: |
           curl https://github.com/grafana/k6/releases/download/v0.52.0/k6-v0.52.0-linux-amd64.tar.gz -L | tar xvz --strip-components 1
           ./k6 run '${{ matrix.app.dir }}/${{ matrix.app.name }}/k6/script.js' --vus 10 --duration 10s
+
 
   oas-to-kong:
     name: Convert OAS to Kong configurations
@@ -302,6 +311,8 @@ jobs:
             -o platform/kong/.generated/kong.yaml \
             "platform-repo-managed"
 
+      - name: Kong linting
+        run: deck file lint -s platform/kong/.generated/kong.yaml platform/kong/lint-rulesets.yaml
       - name: Upload Artifacts
         # Artifacts are the files that are built along the way of the pipeline but are not committed to the repo
         uses: actions/upload-artifact@v3
@@ -316,6 +327,9 @@ jobs:
         with:
           title: Stage Kong Gateway Configuration
       
+  # Obtain the changelog between the previous and current OAS for all services
+  # and create a PR comment with the changelog. This is useful for tracking changes
+  # and provides details in case of breaking changes.
   oas-changelog:
     # obtain the changelog between the previous and current OAS for all services
     # and create a PR comment with the changelog

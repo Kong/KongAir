@@ -1,0 +1,42 @@
+rules:
+# Kong configuration files
+  service-http-check:
+    description: "Ensure http usage in Kong GW Services"
+    given: $.services[*].protocol
+    severity: error
+    then:
+      function: pattern
+      functionOptions:
+        match: "^http$"
+  route-https-check:
+    description: "Ensure https usage in Kong GW Routes, except for acme-dummy-service"
+    given: $.services[?(@.name != "acme-dummy-service")].routes[*].protocols[*]
+    severity: error
+    then:
+      function: enumeration
+      functionOptions:
+        values: "https"
+  allowed-plugin-check:
+    description: "Ensure all plugins present are part of the allowed list for Kong GW Services"
+    given: "$.services[*].plugins[*].name"
+    severity: error
+    then:
+      function: pattern
+      functionOptions:
+        match: "jwt|graphql-proxy-cache-advanced|"
+  svc-plugin-check-check-list:
+    description: "Ensure all plugins present are enabled for Kong GW Services"
+    given: "$.services[*].plugins[*].enabled"
+    severity: error
+    then:
+      function: pattern
+      functionOptions:
+        match: "^true$"
+  acme-global-plugin:
+    description: "Ensure the ACME global plugin is present and enabled"
+    given: "$.plugins[?(@.name == 'acme')].enabled"
+    severity: error
+    then:
+      function: pattern
+      functionOptions:
+        match: "^true$"
