@@ -59,6 +59,7 @@ paths:
           in: path
           description: String route ID
           required: true
+          example: "LHR-JFK"
           schema:
             type: string
       responses:
@@ -95,6 +96,7 @@ paths:
           description: filter by origin
           required: false
           style: form
+          example: "LHR"
           schema:
             type: array
             items:

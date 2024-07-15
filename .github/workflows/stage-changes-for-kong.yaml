@@ -190,9 +190,21 @@ jobs:
           openapi-file: '${{ matrix.app.dir }}/${{ matrix.app.name }}/openapi.yaml'
           generator: 'k6'
           output-dir: '${{ matrix.app.dir }}/${{ matrix.app.name }}/k6'
+      - name: Specifiy username
+        # if app name is bookings, use dfreese as username
+        # change string "TODO_EDIT_THE_X-CONSUMER-USERNAME" to "dfreese" in the script.js file
+        # if the app name is customer, use jsmith as username
+        # change string "TODO_EDIT_THE_X-CONSUMER-USERNAME" to "jsmith" in the script.js file
+        run: |
+          if [ "${{ matrix.app.name }}" == "bookings" ]; then
+            sed -i 's/TODO_EDIT_THE_X-CONSUMER-USERNAME/dfreese/g' '${{ matrix.app.dir }}/${{ matrix.app.name }}/k6/script.js'
+          fi
+          if [ "${{ matrix.app.name }}" == "customer" ]; then
+            sed -i 's/TODO_EDIT_THE_X-CONSUMER-USERNAME/jsmith/g' '${{ matrix.app.dir }}/${{ matrix.app.name }}/k6/script.js'
+          fi
       - name: Start services
         run: chmod +x run-all.sh && ./run-all.sh
-      - name: Install k6
+      - name: Run load test
         run: |
           curl https://github.com/grafana/k6/releases/download/v0.52.0/k6-v0.52.0-linux-amd64.tar.gz -L | tar xvz --strip-components 1
           ./k6 run '${{ matrix.app.dir }}/${{ matrix.app.name }}/k6/script.js' --vus 10 --duration 10s

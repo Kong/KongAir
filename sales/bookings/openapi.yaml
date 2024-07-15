@@ -52,6 +52,14 @@ paths:
       summary: Get a customers current bookings
       description: Returns bookings for a customer
       operationId: get-bookings
+      parameters:
+        - name: x-consumer-username
+          in: header
+          description: Username ID
+          required: true
+          example: dfreese
+          schema:
+            type: string
       responses:
         '200':
           description: Successful Response
@@ -82,6 +90,14 @@ paths:
       summary: Create a new customer booking
       description: Creates a new booking for a customer
       operationId: post-booking
+      parameters:
+        - name: x-consumer-username
+          in: header
+          description: Username ID
+          required: true
+          example: dfreese
+          schema:
+            type: string
       responses:
         '201':
           description: Booking Created Successfully
@@ -133,7 +149,7 @@ paths:
               Example new booking request body:
                 value: |
                  {
-                   "flight_number": "KA924",
+                   "flight_number": "KA0284",
                    "seat": "32A"
                  }
 

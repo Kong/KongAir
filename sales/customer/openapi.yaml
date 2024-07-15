@@ -55,6 +55,14 @@ paths:
       - sales
       - customer
       operationId: get-cust-info
+      parameters:
+        - name: x-consumer-username
+          in: header
+          description: Username ID
+          required: true
+          example: jsmith
+          schema:
+            type: string
       responses:
         '200':
           $ref: '#/components/responses/CustomerSingle'

@@ -83,6 +83,8 @@ module.exports = function (bookingsStore) {
       res.status(201).json({ ticket_number: newBooking.ticket_number });
 
     } catch (error) {
+      // log error to stdout
+      console.error(error);
       if (error.response && error.response.status === 404 || error.response.status === 400) {
         res.sendStatus(404);
       } else {
