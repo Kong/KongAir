@@ -24,6 +24,8 @@ jobs:
   deploy-kong:
     name: Deploy Kong to PRD
     runs-on: ubuntu-latest
+    env:
+      DEPLOY_TARGET: KONNECT
 
     steps:
       - name: Checkout
@@ -35,15 +37,24 @@ jobs:
           deck-version: '1.38.0'
           wrapper: false
 
-#      - name: deck sync konnect
-#        run: |
-#           deck gateway sync --select-tag platform-repo-managed \
-#               --konnect-control-plane-name KongAir-PRD \
-#               --konnect-token ${{ secrets.KONNECT_PAT }} \
-#               PRD/kong/kong.yaml
+      - name: deck sync konnect
+        if: env.DEPLOY_TARGET == 'konnect' || env.DEPLOY_TARGET == ''
+        run: |
+           deck gateway sync --select-tag platform-repo-managed \
+               --konnect-control-plane-name ${{ env.KONNECT_CP_NAME }}\
+               --konnect-token ${{ secrets.KONNECT_PAT }} \
+               --konnect-addr ${{ env.KONNECT_ADDR }} \
+               PRD/kong/kong.yaml
 
       - name: deck sync Kong EE
+        if: env.DEPLOY_TARGET == 'EE'
         run: |
             deck gateway sync --select-tag platform-repo-managed \
-                --kong-addr https://pqnbwkudd5puqbqwb-665dc2829c50d27a789d8fb1.labs.strigo.io:30501 \
+                --kong-addr ${{ env.KONG_EE_ADMIN_API }} \
                 PRD/kong/kong.yaml
+      
+      - name: deck sync Kong Ingress Controller
+        if: env.DEPLOY_TARGET == 'KIC'
+        run: |
+            deck file kong2kic --select-tag platform-repo-managed \
+                -s PRD/kong/kong.yaml | kubectl apply -f -
