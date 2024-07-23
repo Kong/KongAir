@@ -313,6 +313,7 @@ jobs:
 
       - name: Kong linting
         run: deck file lint -s platform/kong/.generated/kong.yaml platform/kong/lint-rulesets.yaml
+        
       - name: Upload Artifacts
         # Artifacts are the files that are built along the way of the pipeline but are not committed to the repo
         uses: actions/upload-artifact@v3
