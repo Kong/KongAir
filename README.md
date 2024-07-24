@@ -26,16 +26,25 @@ Automated APIOps processes are exemplified in [GitHub Actions workflows](.github
    - Checks if there are any changes in relevant files like specifications, configurations, or pipeline files. The following jobs will only execute if there are relevant changes.
 
 2. **Job: `oas-break`**
-   - Checks for breaking changes in the OpenAPI Specifications (OAS) and creates an issue if any are found.
+   - Checks for breaking changes in the OpenAPI Specifications (OAS) and creates an issue if any are found. This is an example issue created by the workflow:
+
+   ![Example Issue created](images/OAS-breaking-change.png)
 
 3. **Job: `contract-test`**
-   - Runs contract testing using SchemaThesis based on the OpenAPI specifications of the services.
+   - Runs contract testing using SchemaThesis based on the OpenAPI specifications of the services. Looking at the action output, you can see the result of the test:
+
+   ![Schemathesis report](images/schemathesis.png)
 
 4. **Job: `security-test`**
-   - Runs security testing using OWASP ZAP Scan on the services' OpenAPI specifications.
+   - Runs security testing using OWASP ZAP Scan on the services' OpenAPI specifications. The result of the test will be informed via an Issue:
+
+   ![ZAP report](images/zap-api-scan.png)
+
 
 5. **Job: `load-test`**
-   - Executes load testing using K6, generating scripts from the OpenAPI specifications.
+   - Executes load testing using K6, generating scripts from the OpenAPI specifications. Looking at the action output, you can see the result of the test:
+
+   ![K6 report](images/load-test-k6.png)
 
 6. **Job: `oas-to-kong`**
    - Converts OpenAPI Specifications to Kong configurations, combines them, and creates a pull request for the changes.
