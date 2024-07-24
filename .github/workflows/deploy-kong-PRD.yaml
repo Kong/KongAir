@@ -38,7 +38,7 @@ jobs:
           wrapper: false
 
       - name: deck sync konnect
-        if: env.DEPLOY_TARGET == 'konnect' || env.DEPLOY_TARGET == ''
+        if: env.DEPLOY_TARGET == 'KONNECT' || env.DEPLOY_TARGET == ''
         run: |
            deck gateway sync --select-tag platform-repo-managed \
                --konnect-control-plane-name ${{ env.KONNECT_CP_NAME }}\
