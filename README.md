@@ -30,6 +30,10 @@ Automated APIOps processes are exemplified in [GitHub Actions workflows](.github
 
    ![Example Issue created](images/OAS-breaking-change.png)
 
+   In addition, more detailed information appears as a comment in the pull request:
+
+   ![Detailed breaking change](images/detailed-breaking-change.png)
+
 3. **Job: `contract-test`**
    - Runs contract testing using SchemaThesis based on the OpenAPI specifications of the services. Looking at the action output, you can see the result of the test:
 
