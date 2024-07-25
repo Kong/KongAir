@@ -1,0 +1,9 @@
+_format_version: "1.0"
+
+patches:
+  - selectors:
+    - $.services[?(@.name=="routes-service")]
+    values:
+      host: routes.kong-air.dev
+      port: 443
+      protocol: https

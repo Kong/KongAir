@@ -9,6 +9,8 @@ PORTS_FILE := $(BASE_MAKEFILE_DIR)PORTS.env
 
 echo_fail = printf "\e[31m✘ \033\e[0m$(1)\n"
 echo_pass = printf "\e[32m✔ \033\e[0m$(1)\n"
+echo_info = printf "\e[33mℹ \033\e[0m$(1)\n"
+echo_bull = printf "\e[34m• \033\e[0m$1\n"
 
 check-dependency = $(if $(shell command -v $(1)),$(call echo_pass,found $(1)),$(call echo_fail,$(1) not installed);exit 1)
 
