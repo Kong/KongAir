@@ -1,6 +1,6 @@
 # KongAir
 
-This repository implements an example [APIOps](https://github.com/Kong/go-apiops) pipeline for the Kong Gateway. It is based on the fictitious airline KongAir, and is modeled as a shared monorepo in which 5 teams have their code and configurations stored in folders at the top level:
+This repository implements an example engineering organization for a fictitious airline, KongAir. Included in the repo are [APIOps](https://github.com/Kong/go-apiops) pipelines for Kong Gateway and Kong Konnect. This example is meant to mimic a multi-service multi-repo environment, but is modeled as a shared monorepo for simplicity.  There are 4 example engineering teams, which have their code and configurations stored in folders off the top level:
 
 * The [flight-data](flight-data/) team owns two public facing APIs that serve KongAir's flight data information services
 including the [routes](flight-data/routes/) and [flights](flight-data/flights/) services.
