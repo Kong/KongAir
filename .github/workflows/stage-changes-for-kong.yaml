@@ -165,6 +165,22 @@ jobs:
         uses: actions/checkout@v3
       - name: Start services
         run: chmod +x run-all.sh && ./run-all.sh
+      - name: Change server URL in OpenAPI
+        # Change the server URL in the OpenAPI file to localhost
+        # so that the security test can run against the local services
+        run: |
+          if [ "${{ matrix.app.name }}" == "flights" ]; then
+            sed -i 's|url: https://api.kong-air.com|url: http://localhost:8080|' '${{ matrix.app.dir }}/${{ matrix.app.name }}/openapi.yaml'
+          fi
+          if [ "${{ matrix.app.name }}" == "routes" ]; then
+            sed -i 's|url: https://api.kong-air.com|url: http://localhost:8081|' '${{ matrix.app.dir }}/${{ matrix.app.name }}/openapi.yaml'
+          fi
+          if [ "${{ matrix.app.name }}" == "bookings" ]; then
+            sed -i 's|url: https://api.kong-air.com|url: http://localhost:8082|' '${{ matrix.app.dir }}/${{ matrix.app.name }}/openapi.yaml'
+          fi
+          if [ "${{ matrix.app.name }}" == "customer" ]; then
+            sed -i 's|url: https://api.kong-air.com|url: http://localhost:8083|' '${{ matrix.app.dir }}/${{ matrix.app.name }}/openapi.yaml'
+          fi
       - name: ZAP Scan
         uses: zaproxy/action-api-scan@v0.7.0
         with:
@@ -192,6 +208,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Change server URL in OpenAPI
+        # Change the server URL in the OpenAPI specification to localhost
+        # so that the load test can run against the local services
+        run: |
+          if [ "${{ matrix.app.name }}" == "flights" ]; then
+            sed -i 's|url: https://api.kong-air.com|url: http://localhost:8080|' '${{ matrix.app.dir }}/${{ matrix.app.name }}/openapi.yaml'
+          fi
+          if [ "${{ matrix.app.name }}" == "routes" ]; then
+            sed -i 's|url: https://api.kong-air.com|url: http://localhost:8081|' '${{ matrix.app.dir }}/${{ matrix.app.name }}/openapi.yaml'
+          fi
+          if [ "${{ matrix.app.name }}" == "bookings" ]; then
+            sed -i 's|url: https://api.kong-air.com|url: http://localhost:8082|' '${{ matrix.app.dir }}/${{ matrix.app.name }}/openapi.yaml'
+          fi
+          if [ "${{ matrix.app.name }}" == "customer" ]; then
+            sed -i 's|url: https://api.kong-air.com|url: http://localhost:8083|' '${{ matrix.app.dir }}/${{ matrix.app.name }}/openapi.yaml'
+          fi
       - name: Generate K6 script from openapi
         uses: hatamiarash7/openapi-generator@v0.3.0
         with:
