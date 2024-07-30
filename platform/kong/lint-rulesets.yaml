@@ -1,13 +1,13 @@
 rules:
 # Kong configuration files
-  service-https-check:
-    description: "Ensure https usage in Kong GW Services"
+  service-http-check:
+    description: "Ensure http usage in Kong GW Services"
     given: $.services[*].protocol
     severity: error
     then:
       function: pattern
       functionOptions:
-        match: "^https$"
+        match: "^http$"
   route-https-check:
     description: "Ensure https usage in Kong GW Routes, except for acme-dummy-service"
     given: $.services[?(@.name != "acme-dummy-service")].routes[*].protocols[*]
