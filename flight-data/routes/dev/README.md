@@ -14,11 +14,16 @@
 Requires some initial setup including an authenticated cloudflared installation and local configuration. See
 https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/get-started/create-local-tunnel/
 
-`~/.cloudflared/config.yml`
+1. cloudflared tunnel login
+1. cloudflared tunnel create routes
+1. cloudflared tunnel route dns 55f23fbd-9104-4b47-a14b-d068f9b980aa routes
+1. Setup a configuration file: `~/.cloudflared/config.yml`
+
 ```yaml
 url: http://localhost:8081
-tunnel: 82ad4f45-149a-41e9-b026-90ab432c8804
-credentials-file: $HOME/.cloudflared/82ad4f45-149a-41e9-b026-90ab432c8804.json
+tunnel: 55f23fbd-9104-4b47-a14b-d068f9b980aa
+credentials-file: $HOME/.cloudflared/55f23fbd-9104-4b47-a14b-d068f9b980aa.json
 ```
 
+## Run the tunnel
 1. `cloudflared tunnel run routes`
