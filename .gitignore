@@ -6,3 +6,6 @@ kong-quickstart.*
 kong.env
 kong.yaml
 *.pid
+tls*/
+*.env
+*.log

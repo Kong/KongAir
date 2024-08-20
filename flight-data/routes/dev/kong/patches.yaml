@@ -1,0 +1,34 @@
+_format_version: "1.0"
+
+patches:
+  - selectors:
+    - $
+    values:
+      consumers:
+        - username: anonymous
+        - username: daliya
+          keyauth_credentials:
+            - key: kongftw
+      consumer_groups:
+        - name: vip
+          plugins:
+            - name: request-transformer
+              config:
+                add:
+                  headers:
+                    x-vip: true
+          consumers:
+            - username: daliya
+  - selectors:
+    - $.services[?(@.name=="routes-service")]
+    values:
+      host: routes.kong-air.dev
+      port: 443
+      protocol: https
+      plugins:
+        - name: key-auth
+          config:
+            key_names:
+            - apikey
+            hide_credentials: true
+            anonymous: "anonymous"
