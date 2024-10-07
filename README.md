@@ -1,4 +1,4 @@
-# KongAir
+# KongAir 1
 
 An example Kong application based on a fictitious airline, KongAir.
 
