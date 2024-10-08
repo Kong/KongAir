@@ -12,7 +12,7 @@ output "commercial_ops_control_plane_id" {
 
 resource "konnect_team" "commercial_ops_team" {
   name        = "Commercial Operations Team"
-  description = "Commercial Operations Team managed by Terraform"
+  description = "Commercial Operations Team managed by TF"
 
   labels = {
     example = "here"
