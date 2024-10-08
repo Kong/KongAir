@@ -7,3 +7,5 @@ kong.env
 kong.yaml
 *.pid
 .hypothesis/
+platform/terraform/.terraform.lock.hcl
+platform/terraform/.terraform/**
