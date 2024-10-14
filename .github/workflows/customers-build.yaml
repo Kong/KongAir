@@ -1,18 +1,20 @@
-name: Stage changes for Kong
+name: Validate and Build Customer API Config
 
 on:
   workflow_dispatch:
-  push:
+  # push:
+  #   branches:
+  #     - main
+  #     - feat/digenable
+      # paths:
+      # - 'sales/customer/opeanapi.yaml'
+      # - 'sales/customer/kong/**'
+      # paths-ignore:
+      # - 'PRD/**'
+      # - 'platform/kong/.generated/kong.yaml'
+  pull_request:
     branches:
       - main
-      - feat/digenable
-      - workflow/**
-    paths:
-      - 'sales/bookings/opeanapi.yaml'
-      - 'sales/bookings/kong/**'
-    # paths-ignore:
-    #   - 'PRD/**'
-    #   - 'platform/kong/.generated/kong.yaml'
 
 jobs:
 
@@ -83,7 +85,7 @@ jobs:
         run: |
           deck file merge sales/customer/kong/.generated/kong.yaml \
           sales/customer/kong/plugins/*.yaml \
-          --output-file sales/customer/.generated/kong.yaml
+          --output-file sales/customer/kong/.generated/kong.yaml
 
       - name: Add tags
         run: |
@@ -92,11 +94,20 @@ jobs:
           --selector "$.services[*].routes[*]" sales \
           --output-file sales/customer/kong/.generated/kong.yaml
 
-      - name: Add environment Specific Patch
+      - name: Add environment Specific Patch & create artifact
         run: |
           cat sales/customer/kong/.generated/kong.yaml | \
           deck file patch sales/customer/kong/patches.yaml \
-          --output-file sales/customer/kong/.generated/kong.yaml
+          --output-file .github/artifacts/customer/kong.yaml
+
+      - name: Validate decK state file locally
+        run: |
+          deck file validate sales/customer/kong/.generated/kong.yaml
+
+      - name: Copy to artifact directory
+        run: |
+          cp sales/customer/kong/.generated/kong.yaml \
+             .github/artifacts/customer/kong.yaml
 
       - name: Upload Artifacts
         # Artifacts are the files that are built along the way of the pipeline but are not committed to the repo
@@ -104,10 +115,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: kong-configurations-customer-api
-          path: .github/artifacts/kong/*.yaml
-
-      - name: Create PR for changed Kong Gateway Configuration
-        # The only file that should be changed for this PR is platform/kong/.generated/kong.yaml
-        uses: peter-evans/create-pull-request@v5
-        with:
-          title: Stage Kong Gateway Configuration
+          path: .github/artifacts/customer/*.yaml

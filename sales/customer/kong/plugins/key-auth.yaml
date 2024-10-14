@@ -1,0 +1,6 @@
+plugins:
+- name: key-auth
+  service: customer-information-service
+  config:
+    key_names:
+    - apikey
