@@ -110,8 +110,11 @@ jobs:
           cp sales/customer/kong/.generated/kong.yaml \
              .github/artifacts/customer/kong.yaml
       
-      - name: Check directory status
-        run: ls -R
+      - name: Check directory status for customer API
+        run: ls -l sales/customer/kong/.generated/
+      
+      - name: Check directory status for customer API
+        run: ls -l .github/artifacts/customer/
 
       # - name: Upload Artifacts
       #   # Artifacts are the files that are built along the way of the pipeline but are not committed to the repo
