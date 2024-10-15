@@ -110,6 +110,9 @@ jobs:
           cp sales/customer/kong/.generated/kong.yaml \
              .github/artifacts/customer/kong.yaml
       
+      - name: Check directory status
+        run: ls -R
+
       # - name: Upload Artifacts
       #   # Artifacts are the files that are built along the way of the pipeline but are not committed to the repo
       #   uses: actions/upload-artifact@v3
@@ -149,7 +152,7 @@ jobs:
 
       - name: Check status for files to be committed
         run: git status
-        
+
       - name: Create PR for changed Kong Gateway Configuration
         uses: peter-evans/create-pull-request@v5
         with:
