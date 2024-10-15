@@ -110,12 +110,12 @@ jobs:
           cp sales/customer/kong/.generated/kong.yaml \
              .github/artifacts/customer/kong.yaml
       
-      - name: Upload Artifacts
-        # Artifacts are the files that are built along the way of the pipeline but are not committed to the repo
-        uses: actions/upload-artifact@v3
-        with:
-          name: kong-configurations-customer-api
-          path: .github/artifacts/kong/*.yaml
+      # - name: Upload Artifacts
+      #   # Artifacts are the files that are built along the way of the pipeline but are not committed to the repo
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: kong-configurations-customer-api
+      #     path: .github/artifacts/kong/*.yaml
            
       - name: Validate connectivity to Konnect
         run: |
@@ -139,10 +139,10 @@ jobs:
           --konnect-addr https://au.api.konghq.com>> $GITHUB_ENV
           echo "$EOF" >> $GITHUB_ENV
 
-      # - name: Create PR to stage changes for the Kong Gateway in production
-      #   uses: peter-evans/create-pull-request@v5
-      #   with:
-      #     title: "❗PRD❗: Staged changes for Kong Gateway PRD deployment"
-      #     branch: "PRD/kong"
-      #     labels: "PRD,kong"
-      #     body: "Merging this PR will result in the following changes deployed to PRD \n\n ```\n${{env.DIFF}}\n```"
+      - name: Create PR to stage changes for the Kong Gateway in production
+        uses: peter-evans/create-pull-request@v5
+        with:
+          title: "❗PRD❗: Staged changes for Kong Gateway PRD deployment"
+          branch: "PRD/kong"
+          labels: "PRD,kong"
+          body: "Merging this PR will result in the following changes deployed to PRD \n\n ```\n${{env.DIFF}}\n```"
