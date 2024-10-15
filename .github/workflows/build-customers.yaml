@@ -1,4 +1,4 @@
-name: Validate and Build Customer API Config
+name: Build Customer API - Generate Kong Configs
 
 on:
   workflow_dispatch:
@@ -90,29 +90,59 @@ jobs:
       - name: Add tags
         run: |
           cat sales/customer/kong/.generated/kong.yaml | \
-          deck file add-tags  --selector "$.services[*]" \
-          --selector "$.services[*].routes[*]" sales \
+          deck file add-tags sales customer \
+          --selector "$.services[*]" \
+          --selector "$.services[*].routes[*]"  \
           --output-file sales/customer/kong/.generated/kong.yaml
 
       - name: Add environment Specific Patch & create artifact
         run: |
           cat sales/customer/kong/.generated/kong.yaml | \
           deck file patch sales/customer/kong/patches.yaml \
-          --output-file .github/artifacts/customer/kong.yaml
+          --output-file sales/customer/kong/.generated/kong.yaml
 
       - name: Validate decK state file locally
         run: |
           deck file validate sales/customer/kong/.generated/kong.yaml
-
+      
       - name: Copy to artifact directory
         run: |
           cp sales/customer/kong/.generated/kong.yaml \
              .github/artifacts/customer/kong.yaml
-
+      
       - name: Upload Artifacts
         # Artifacts are the files that are built along the way of the pipeline but are not committed to the repo
-        # to test
         uses: actions/upload-artifact@v3
         with:
           name: kong-configurations-customer-api
-          path: .github/artifacts/customer/*.yaml
+          path: .github/artifacts/kong/*.yaml
+           
+      - name: Validate connectivity to Konnect
+        run: |
+          deck gateway ping \
+          --konnect-control-plane-name shrikanth-cp \
+          --konnect-token ${{ secrets.KONNECT_PAT }} \
+          --konnect-addr https://au.api.konghq.com
+
+      - name: deck diff
+        id: deck-diff
+        # deck diff results in a multi-line output, which requires some
+        #  bash gymnastics to handle and pass through to the next job.
+        #  See: https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#example-of-a-multiline-string
+        run: |
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "DIFF<<$EOF" >> $GITHUB_ENV
+          deck gateway diff --select-tag sales --select-tag customer \
+          .github/artifacts/customer/kong.yaml \
+          --konnect-control-plane-name shrikanth-cp \
+          --konnect-token ${{ secrets.KONNECT_PAT }} \
+          --konnect-addr https://au.api.konghq.com>> $GITHUB_ENV
+          echo "$EOF" >> $GITHUB_ENV
+
+      # - name: Create PR to stage changes for the Kong Gateway in production
+      #   uses: peter-evans/create-pull-request@v5
+      #   with:
+      #     title: "❗PRD❗: Staged changes for Kong Gateway PRD deployment"
+      #     branch: "PRD/kong"
+      #     labels: "PRD,kong"
+      #     body: "Merging this PR will result in the following changes deployed to PRD \n\n ```\n${{env.DIFF}}\n```"

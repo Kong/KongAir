@@ -1,0 +1,63 @@
+name: Deploy Customers API to Kong
+
+on:
+  # push:
+  #   branches:
+  #     - main
+  workflow_dispatch:
+
+jobs:
+  deploy-api-to-kong:
+    name: Deploy Customer API to Kong
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup deck
+        uses: kong/setup-deck@v1
+        with:
+          deck-version: '1.40.3'
+          wrapper: false
+      
+      - name: SHow current workspace
+        run: echo $GITHUB_WORKSPACE
+
+      - name: Create Dir
+        run: mkdir artifacts
+
+      - name:
+        uses: actions/download-artifact@v4
+        with:
+          name: kong-configurations-customer-api
+          path: artifacts
+      
+      - name: Display structure of downloaded files
+        run: ls -R artifacts
+
+      - name: Validate connectivity to Konnect
+        run: |
+          deck gateway ping \
+          --konnect-control-plane-name shrikanth-cp \
+          --konnect-token ${{ secrets.KONNECT_PAT }} \
+          --konnect-addr https://au.api.konghq.com
+
+      # - name: Backup current Kong Configuration
+      #   run: |
+      #     deck gateway dump --select-tag sales --select-tag customer \
+      #      --output-file sales/customer/kong/.generated/backup.yaml \
+      #      --konnect-control-plane-name shrikanth-cp \
+      #      --konnect-token ${{ secrets.KONNECT_PAT }} \
+      #      --konnect-addr https://au.api.konghq.com 
+      
+      # - name: Apply Configuration to Kong
+      #   run: |
+      #     deck gateway sync --select-tag sales  \
+      #      .github/artifacts/customer/kong.yaml \
+      #       --konnect-control-plane-name shrikanth-cp \
+      #       --konnect-token ${{ secrets.KONNECT_PAT }} \
+      #       --konnect-addr https://au.api.konghq.com 
+
+
+      
