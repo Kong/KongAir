@@ -146,6 +146,10 @@ jobs:
       #     branch: "PRD/kong"
       #     labels: "PRD,kong"
       #     body: "Merging this PR will result in the following changes deployed to PRD \n\n ```\n${{env.DIFF}}\n```"
+
+      - name: Check status for files to be committed
+        run: git status
+        
       - name: Create PR for changed Kong Gateway Configuration
         uses: peter-evans/create-pull-request@v5
         with:
