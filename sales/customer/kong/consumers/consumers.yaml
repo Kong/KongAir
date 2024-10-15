@@ -1,0 +1,10 @@
+consumers:
+- keyauth_credentials:
+  - key: dfreese-key
+  username: dfreese
+- keyauth_credentials:
+  - key: jdoe-key
+  username: jdoe
+- keyauth_credentials:
+  - key: jsmith-key
+  username: jsmith

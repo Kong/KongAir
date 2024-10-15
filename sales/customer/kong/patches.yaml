@@ -7,7 +7,3 @@ patches:
       host: customer.kongair
       port: 8083
       protocol: http
-      plugins:
-        - name: jwt
-          _config: default-jwt
-          enabled: true
