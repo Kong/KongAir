@@ -12,9 +12,9 @@ on:
       # paths-ignore:
       # - 'PRD/**'
       # - 'platform/kong/.generated/kong.yaml'
-  pull_request:
-    branches:
-      - main
+  # pull_request:
+  #   branches:
+  #     - main
 
 jobs:
 
