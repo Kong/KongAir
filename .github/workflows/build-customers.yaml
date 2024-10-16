@@ -2,8 +2,8 @@ name: Build Customer API - Generate Kong Configs
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
+  push:
+    branches:
       - main
       - feat/**
       # paths:
