@@ -120,6 +120,9 @@ jobs:
           cp sales/customer/kong/.generated/kong.yaml \
              .github/artifacts/customer/kong.yaml
 
+      - name: Check vars
+        run: echo $KONNECT_ADDR_EU && echo $KONNECT_INTERNAL_CP
+
       # - name: Upload Artifacts
       #   # Artifacts are the files that are built along the way of the pipeline but are not committed to the repo
       #   uses: actions/upload-artifact@v3
