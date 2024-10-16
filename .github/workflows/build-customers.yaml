@@ -120,9 +120,6 @@ jobs:
           cp sales/customer/kong/.generated/kong.yaml \
              .github/artifacts/customer/kong.yaml
 
-      - name: Check vars
-        run: echo ${{vars.KONNECT_ADDR_EU}} && echo ${{vars.KONNECT_INTERNAL_CP}}
-
       # - name: Upload Artifacts
       #   # Artifacts are the files that are built along the way of the pipeline but are not committed to the repo
       #   uses: actions/upload-artifact@v3
@@ -133,9 +130,9 @@ jobs:
       - name: Validate connectivity to Konnect
         run: |
           deck gateway ping \
-          --konnect-control-plane-name $KONNECT_INTERNAL_CP \
+          --konnect-control-plane-name ${{vars.KONNECT_INTERNAL_CP}} \
           --konnect-token ${{ secrets.KONNECT_PAT }} \
-          --konnect-addr $KONNECT_ADDR_EU
+          --konnect-addr ${{vars.KONNECT_ADDR_EU}}
 
       - name: deck diff
         id: deck-diff
@@ -147,9 +144,9 @@ jobs:
           echo "DIFF<<$EOF" >> $GITHUB_ENV
           deck gateway diff --select-tag sales --select-tag customer \
           .github/artifacts/customer/kong.yaml \
-          --konnect-control-plane-name $KONNECT_INTERNAL_CP \
+          --konnect-control-plane-name ${{vars.KONNECT_INTERNAL_CP}} \
           --konnect-token ${{ secrets.KONNECT_PAT }} \
-          --konnect-addr $KONNECT_ADDR_EU>> $GITHUB_ENV
+          --konnect-addr ${{vars.KONNECT_ADDR_EU}}>> $GITHUB_ENV
           echo "$EOF" >> $GITHUB_ENV
 
       - name: Create PR to stage changes for the Kong Gateway in production
