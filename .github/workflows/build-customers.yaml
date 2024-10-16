@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
   # push:
   #   branches:
-  #     - main
-  #     - feat/digenable
+      - main
+      - feat/**
       # paths:
       # - 'sales/customer/opeanapi.yaml'
       # - 'sales/customer/kong/**'
