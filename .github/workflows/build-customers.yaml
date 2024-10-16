@@ -12,9 +12,9 @@ on:
       # paths-ignore:
       # - 'PRD/**'
       # - 'platform/kong/.generated/kong.yaml'
-  pull_request:
-    branches:
-      - main
+  # pull_request:
+  #   branches:
+  #     - main
 
 jobs:
 
@@ -69,6 +69,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          ref: feat/digenable
 
       - name: Setup deck
         uses: kong/setup-deck@v1
@@ -110,6 +112,12 @@ jobs:
           cp sales/customer/kong/.generated/kong.yaml \
              .github/artifacts/customer/kong.yaml
       
+      - name: Check directory status for customer API
+        run: ls -l sales/customer/kong/.generated/
+      
+      - name: Check directory status for customer API
+        run: ls -l .github/artifacts/customer/
+
       # - name: Upload Artifacts
       #   # Artifacts are the files that are built along the way of the pipeline but are not committed to the repo
       #   uses: actions/upload-artifact@v3
@@ -139,10 +147,22 @@ jobs:
           --konnect-addr https://au.api.konghq.com>> $GITHUB_ENV
           echo "$EOF" >> $GITHUB_ENV
 
-      - name: Create PR to stage changes for the Kong Gateway in production
+      # - name: Create PR to stage changes for the Kong Gateway in production
+      #   uses: peter-evans/create-pull-request@v5
+      #   with:
+      #     title: "❗PRD❗: Staged changes for Kong Gateway PRD deployment"
+      #     branch: "PRD/kong"
+      #     labels: "PRD,kong"
+      #     body: "Merging this PR will result in the following changes deployed to PRD \n\n ```\n${{env.DIFF}}\n```"
+
+      - name: Check status for files to be committed
+        run: git status
+
+      - name: Create PR for changed Kong Gateway Configuration
         uses: peter-evans/create-pull-request@v5
         with:
-          title: "❗PRD❗: Staged changes for Kong Gateway PRD deployment"
-          branch: "PRD/kong"
-          labels: "PRD,kong"
+          title: Stage Kong Gateway Configuration
           body: "Merging this PR will result in the following changes deployed to PRD \n\n ```\n${{env.DIFF}}\n```"
+          add-paths: |
+            .github/artifacts/customer/*.yaml
+            sales/customer/kong/.generated/*.yaml
