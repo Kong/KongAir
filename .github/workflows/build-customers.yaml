@@ -69,8 +69,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          ref: feat/digenable
+        # with:
+        #   ref: feat/digenable
 
       - name: Setup deck
         uses: kong/setup-deck@v1
