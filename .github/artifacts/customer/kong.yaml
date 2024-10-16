@@ -1,0 +1,57 @@
+_format_version: "3.0"
+plugins:
+- config:
+    key_names:
+    - apikey
+  name: key-auth
+  service: customer-information-service
+- config:
+    cache_ttl: 300
+    content_type:
+    - text/plain
+    - application/json
+    request_method:
+    - GET
+    - HEAD
+    response_code:
+    - 200
+    strategy: memory
+  name: proxy-cache-advanced
+  route: customer-information-service_get-cust-info
+services:
+- host: customer.kongair
+  id: 690e812e-2873-566a-b02f-d03e0bf8ff69
+  name: customer-information-service
+  path: /
+  plugins: []
+  port: 8083
+  protocol: http
+  routes:
+  - id: 5984bb2d-328e-5785-a06a-f639c3a59d94
+    methods:
+    - GET
+    name: customer-information-service_get-cust-info
+    paths:
+    - ~/customer$
+    plugins: []
+    regex_priority: 200
+    strip_path: false
+    tags:
+    - sales
+    - customer
+  - id: 37cbdca9-74d9-51ec-ab8b-008d96f9bd75
+    methods:
+    - GET
+    name: customer-information-service_health_get
+    paths:
+    - ~/health$
+    plugins: []
+    regex_priority: 200
+    strip_path: false
+    tags:
+    - sales
+    - customer
+  tags:
+  - sales
+  - customer
+upstreams: []
