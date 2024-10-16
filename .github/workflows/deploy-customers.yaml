@@ -30,21 +30,21 @@ jobs:
           --konnect-token ${{ secrets.KONNECT_PAT }} \
           --konnect-addr https://au.api.konghq.com
 
-      # - name: Backup current Kong Configuration
-      #   run: |
-      #     deck gateway dump --select-tag sales --select-tag customer \
-      #      --output-file sales/customer/kong/.generated/backup.yaml \
-      #      --konnect-control-plane-name shrikanth-cp \
-      #      --konnect-token ${{ secrets.KONNECT_PAT }} \
-      #      --konnect-addr https://au.api.konghq.com 
+      - name: Backup current Kong Configuration
+        run: |
+          deck gateway dump --select-tag sales --select-tag customer \
+           --output-file sales/customer/kong/.generated/backup.yaml \
+           --konnect-control-plane-name shrikanth-cp \
+           --konnect-token ${{ secrets.KONNECT_PAT }} \
+           --konnect-addr https://au.api.konghq.com 
       
-      # - name: Apply Configuration to Kong
-      #   run: |
-      #     deck gateway sync --select-tag sales  \
-      #      .github/artifacts/customer/kong.yaml \
-      #       --konnect-control-plane-name shrikanth-cp \
-      #       --konnect-token ${{ secrets.KONNECT_PAT }} \
-      #       --konnect-addr https://au.api.konghq.com 
+      - name: Apply Configuration to Kong
+        run: |
+          deck gateway sync --select-tag sales  \
+           .github/artifacts/customer/kong.yaml \
+            --konnect-control-plane-name shrikanth-cp \
+            --konnect-token ${{ secrets.KONNECT_PAT }} \
+            --konnect-addr https://au.api.konghq.com 
 
 
       
