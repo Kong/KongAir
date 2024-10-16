@@ -147,22 +147,22 @@ jobs:
           --konnect-addr https://au.api.konghq.com>> $GITHUB_ENV
           echo "$EOF" >> $GITHUB_ENV
 
-      # - name: Create PR to stage changes for the Kong Gateway in production
-      #   uses: peter-evans/create-pull-request@v5
-      #   with:
-      #     title: "❗PRD❗: Staged changes for Kong Gateway PRD deployment"
-      #     branch: "PRD/kong"
-      #     labels: "PRD,kong"
-      #     body: "Merging this PR will result in the following changes deployed to PRD \n\n ```\n${{env.DIFF}}\n```"
+      - name: Create PR to stage changes for the Kong Gateway in production
+        uses: peter-evans/create-pull-request@v5
+        with:
+          title: "❗PRD❗: Staged changes for Kong Gateway PRD deployment"
+          branch: "PRD/kong"
+          labels: "PRD,kong"
+          body: "Merging this PR will result in the following changes deployed to PRD \n\n ```\n${{env.DIFF}}\n```"
 
       - name: Check status for files to be committed
         run: git status
 
-      - name: Create PR for changed Kong Gateway Configuration
-        uses: peter-evans/create-pull-request@v5
-        with:
-          title: Stage Kong Gateway Configuration
-          body: "Merging this PR will result in the following changes deployed to PRD \n\n ```\n${{env.DIFF}}\n```"
-          add-paths: |
-            .github/artifacts/customer/*.yaml
-            sales/customer/kong/.generated/*.yaml
+      # - name: Create PR for changed Kong Gateway Configuration
+      #   uses: peter-evans/create-pull-request@v5
+      #   with:
+      #     title: Stage Kong Gateway Configuration
+      #     body: "Merging this PR will result in the following changes deployed to PRD \n\n ```\n${{env.DIFF}}\n```"
+      #     # add-paths: |
+      #     #   .github/artifacts/customer/*.yaml
+      #     #   sales/customer/kong/.generated/*.yaml

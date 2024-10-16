@@ -1,9 +1,11 @@
 name: Deploy Customers API to Kong
 
 on:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
+      - feat/digenable
+
   workflow_dispatch:
 
 jobs:
@@ -20,21 +22,6 @@ jobs:
         with:
           deck-version: '1.40.3'
           wrapper: false
-      
-      - name: SHow current workspace
-        run: echo $GITHUB_WORKSPACE
-
-      - name: Create Dir
-        run: mkdir artifacts
-
-      - name:
-        uses: actions/download-artifact@v4
-        with:
-          name: kong-configurations-customer-api
-          path: artifacts
-      
-      - name: Display structure of downloaded files
-        run: ls -R artifacts
 
       - name: Validate connectivity to Konnect
         run: |
