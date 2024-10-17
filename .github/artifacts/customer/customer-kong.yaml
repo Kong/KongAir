@@ -36,7 +36,6 @@ plugins:
       body: []
       headers:
       - X-Powered-By:Konnect
-      - X-Foo:Bar
   enabled: true
   name: request-transformer-advanced
 services:
