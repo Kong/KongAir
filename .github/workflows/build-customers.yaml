@@ -2,14 +2,15 @@ name: Build Customer API - Generate Kong Configs
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-      - feat/**
-    paths:
-      - 'sales/customer/opeanapi.yaml'
-      - 'sales/customer/kong/**'
-      - '.github/workflows/build-customers.yaml'
+  # push:
+  #   branches:
+  #     - main
+  #     - feat/**
+  #     - wawa
+  #   paths:
+  #     - 'sales/customer/opeanapi.yaml'
+  #     - 'sales/customer/kong/**'
+  #     - '.github/workflows/build-customers.yaml'
       # paths-ignore:
       # - 'PRD/**'
       # - 'platform/kong/.generated/kong.yaml'
