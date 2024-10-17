@@ -34,7 +34,7 @@ jobs:
       
       - name: Apply Configuration to Kong
         run: |
-          deck gateway sync --select-tag sales  \
+          deck gateway sync --select-tag sales --select-tag customer \
            .github/artifacts/customer/kong.yaml \
             --konnect-control-plane-name ${{vars.KONNECT_INTERNAL_CP}} \
             --konnect-token ${{ secrets.KONNECT_PAT }} \
