@@ -7,18 +7,19 @@ on:
   push:
     branches:
       - feat/digenable
-    paths:
-      - 'sales/customer/opeanapi.yaml'
-      - 'sales/customer/kong/**'
-      - '.github/workflows/build-customers.yaml'
-  pull_request:
-    branches:
       - main
-      - feat/digenable
     paths:
       - 'sales/customer/opeanapi.yaml'
       - 'sales/customer/kong/**'
       - '.github/workflows/build-customers.yaml'
+  # pull_request:
+  #   branches:
+  #     - main
+  #     - feat/digenable
+  #   paths:
+  #     - 'sales/customer/opeanapi.yaml'
+  #     - 'sales/customer/kong/**'
+  #     - '.github/workflows/build-customers.yaml'
 
 jobs:
 
