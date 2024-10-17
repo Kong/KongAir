@@ -61,7 +61,7 @@ jobs:
           --selector "$.services[*].routes[*]"  \
           --output-file sales/customer/kong/.generated/kong.yaml
 
-      - name: Add environment Specific Patch & create artifact
+      - name: Add environment Specific Patch
         run: |
           cat sales/customer/kong/.generated/kong.yaml | \
           deck file patch sales/customer/kong/patches.yaml \
@@ -92,11 +92,15 @@ jobs:
           EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
           echo "DIFF<<$EOF" >> $GITHUB_ENV
           deck gateway diff --select-tag sales --select-tag customer \
-          .github/artifacts/customer/kong.yaml \
+          .github/artifacts/customer/customer-kong.yaml \
           --konnect-control-plane-name ${{vars.KONNECT_INTERNAL_CP}} \
           --konnect-token ${{ secrets.KONNECT_PAT }} \
           --konnect-addr ${{vars.KONNECT_ADDR_EU}}>> $GITHUB_ENV
           echo "$EOF" >> $GITHUB_ENV
+
+      #an artifact file will be committed only if it the Kong config differs from the previous one.
+      - name: Check status of any files to be committed
+        run: git status
 
       - name: Create PR to stage changes for the Kong Gateway in production
         uses: peter-evans/create-pull-request@v5
@@ -106,14 +110,3 @@ jobs:
           labels: "PRD,kong"
           body: "Merging this PR will result in the following changes deployed to PRD \n\n ```\n${{env.DIFF}}\n```"
 
-      - name: Check status for files to be committed
-        run: git status
-
-      # - name: Create PR for changed Kong Gateway Configuration
-      #   uses: peter-evans/create-pull-request@v5
-      #   with:
-      #     title: Stage Kong Gateway Configuration
-      #     body: "Merging this PR will result in the following changes deployed to PRD \n\n ```\n${{env.DIFF}}\n```"
-      #     # add-paths: |
-      #     #   .github/artifacts/customer/*.yaml
-      #     #   sales/customer/kong/.generated/*.yaml
