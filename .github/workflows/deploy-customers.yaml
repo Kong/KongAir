@@ -39,6 +39,17 @@ jobs:
             --konnect-control-plane-name ${{vars.KONNECT_INTERNAL_CP}} \
             --konnect-token ${{ secrets.KONNECT_PAT }} \
             --konnect-addr ${{vars.KONNECT_ADDR_EU}}
+      
+      - name: Run Integration Tests
+        run: |
+          for test_script in sales/customer/tests/*.sh; do
+            echo "Running $test_script"
+            bash "$test_script"
+            if [ $? -ne 0 ]; then
+              echo "Test $test_script failed"
+              exit 1
+            fi
+          done
 
 
       
