@@ -29,7 +29,7 @@ plugins:
   name: proxy-cache-advanced
   route: customer-information-service_get-cust-info
 services:
-- host: http://kongair-flights-service.kongair.svc.cluster.local
+- host: kongair-flights-service.kongair.svc.cluster.local
   id: 690e812e-2873-566a-b02f-d03e0bf8ff69
   name: customer-information-service
   path: /
