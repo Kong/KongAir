@@ -29,12 +29,12 @@ plugins:
   name: proxy-cache-advanced
   route: customer-information-service_get-cust-info
 services:
-- host: kongair-flights-service.kongair.svc.cluster.local
+- host: kongair-customers-service.kongair.svc.cluster.local
   id: 690e812e-2873-566a-b02f-d03e0bf8ff69
   name: customer-information-service
   path: /
   plugins: []
-  port: 8080
+  port: 8083
   protocol: http
   routes:
   - id: 5984bb2d-328e-5785-a06a-f639c3a59d94
