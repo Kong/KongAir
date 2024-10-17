@@ -12,3 +12,6 @@ plugins:
     - application/json
     cache_ttl: 300
     strategy: memory
+    redis:
+      cluster_addresses: null
+      sentinel_addresses: null
