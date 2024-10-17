@@ -4,6 +4,6 @@ patches:
   - selectors:
     - $.services[?(@.name=="customer-information-service")]
     values:
-      host: kongair-flights-service.kongair.svc.cluster.local
-      port: 8080
+      host: kongair-customers-service.kongair.svc.cluster.local
+      port: 8083
       protocol: http
