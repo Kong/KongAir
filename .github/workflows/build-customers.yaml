@@ -14,65 +14,23 @@ on:
       # paths-ignore:
       # - 'PRD/**'
       # - 'platform/kong/.generated/kong.yaml'
-  # pull_request:
-  #   branches:
-  #     - main
+  pull_request:
+    branches:
+      - main
+      - feat/digenable
+    paths:
+      - 'sales/customer/opeanapi.yaml'
+      - 'sales/customer/kong/**'
+      - '.github/workflows/build-customers.yaml'
 
 jobs:
 
-#  this job is useful to debug workflows, see https://github.com/mheap/debug-artifact
-#  debug-artifacts:
-#    name: Upload Debug Artifacts
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Upload Debug Artifacts
-#        uses: mheap/debug-artifact@v1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-# commenting out this job temporarily, will add back (and consider if needed)
-  # has-changes:
-  #   name: Have specs, configurations, or pipeline files changed
-  #   runs-on: ubuntu-latest
-
-  #   outputs:
-  #     are-changes: ${{ steps.changed-files.outputs.files }}
-
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-
-  #     - uses: dorny/paths-filter@v2
-  #       id: changed-files
-  #       with:
-  #         filters: |
-  #           files:
-  #             - '.github/workflows/stage-changes-for-kong.yaml'
-  #             - 'flight-data/flights/openapi.yaml'
-  #             - 'flight-data/flights/kong/**'
-  #             - 'flight-data/routes/openapi.yaml'
-  #             - 'flight-data/routes/kong/**'
-  #             - 'sales/bookings/opeanapi.yaml'
-  #             - 'sales/bookings/kong/**'
-  #             - 'sales/customer/opeanapi.yaml'
-  #             - 'sales/customer/kong/**'
-  #             - 'experience/kong/**'
-  #             - 'platform/kong/**'
-
   oas-to-kong:
     name: Convert OAS to Kong configurations
-
-    # commenting out this job temporarily, will add back (and consider if needed)
-    # needs: has-changes
-    # if: ${{ needs.has-changes.outputs.are-changes == 'true' }}
-
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        # with:
-        #   ref: feat/digenable
 
       - name: Setup deck
         uses: kong/setup-deck@v1
@@ -115,18 +73,10 @@ jobs:
         run: |
           deck file validate sales/customer/kong/.generated/kong.yaml
 
-      # todo - do we need this?
       - name: Copy to artifact directory
         run: |
           cp sales/customer/kong/.generated/kong.yaml \
-             .github/artifacts/customer/kong.yaml
-
-      # - name: Upload Artifacts
-      #   # Artifacts are the files that are built along the way of the pipeline but are not committed to the repo
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: kong-configurations-customer-api
-      #     path: .github/artifacts/kong/*.yaml
+             .github/artifacts/customer/customer-kong.yaml
            
       - name: Validate connectivity to Konnect
         run: |
