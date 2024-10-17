@@ -19,6 +19,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      
+      - name: Check if file exists
+      id: check_file
+      run: |
+        if [ ! -f ".github/artifacts/customer/customer-kong.yaml" ]; then
+          echo "Artifact file not found! Stopping workflow.. Run the build workflow before deploy !"
+          exit 1  # Exit with error if file does not exist
+        else
+          echo "Artifact file exists!"
+        fi
 
       - name: Setup deck
         uses: kong/setup-deck@v1
