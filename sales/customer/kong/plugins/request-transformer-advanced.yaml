@@ -1,0 +1,8 @@
+plugins:
+- enabled: true
+  name: request-transformer-advanced
+  config:
+    add:
+      body: []
+      headers:
+      - X-Powered-By:Konnect
