@@ -25,7 +25,7 @@ jobs:
         run: |
           if [ ! -f ".github/artifacts/customer/customer-kong.yaml" ]; then
             echo "Artifact file not found! Stopping workflow.. Run the build workflow before deploy !"
-            exit 1  # Exit with error if file does not exist
+            exit 1  
           else
             echo "Artifact file exists!"
           fi
