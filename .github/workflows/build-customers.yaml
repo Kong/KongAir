@@ -2,75 +2,33 @@ name: Build Customer API - Generate Kong Configs
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
-  #     - feat/digenable
-      # paths:
-      # - 'sales/customer/opeanapi.yaml'
-      # - 'sales/customer/kong/**'
-      # paths-ignore:
-      # - 'PRD/**'
-      # - 'platform/kong/.generated/kong.yaml'
+  # Run if someone pushes to the feature branch (during development)
+  # we've not put main here as nobody should push directly to main
+  push:
+    branches:
+      - feat/digenable
+      - main
+    paths:
+      - 'sales/customer/opeanapi.yaml'
+      - 'sales/customer/kong/**'
+      - '.github/workflows/build-customers.yaml'
   # pull_request:
   #   branches:
   #     - main
+  #     - feat/digenable
+  #   paths:
+  #     - 'sales/customer/opeanapi.yaml'
+  #     - 'sales/customer/kong/**'
+  #     - '.github/workflows/build-customers.yaml'
 
 jobs:
 
-#  this job is useful to debug workflows, see https://github.com/mheap/debug-artifact
-#  debug-artifacts:
-#    name: Upload Debug Artifacts
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Upload Debug Artifacts
-#        uses: mheap/debug-artifact@v1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-# commenting out this job temporarily, will add back (and consider if needed)
-  # has-changes:
-  #   name: Have specs, configurations, or pipeline files changed
-  #   runs-on: ubuntu-latest
-
-  #   outputs:
-  #     are-changes: ${{ steps.changed-files.outputs.files }}
-
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-
-  #     - uses: dorny/paths-filter@v2
-  #       id: changed-files
-  #       with:
-  #         filters: |
-  #           files:
-  #             - '.github/workflows/stage-changes-for-kong.yaml'
-  #             - 'flight-data/flights/openapi.yaml'
-  #             - 'flight-data/flights/kong/**'
-  #             - 'flight-data/routes/openapi.yaml'
-  #             - 'flight-data/routes/kong/**'
-  #             - 'sales/bookings/opeanapi.yaml'
-  #             - 'sales/bookings/kong/**'
-  #             - 'sales/customer/opeanapi.yaml'
-  #             - 'sales/customer/kong/**'
-  #             - 'experience/kong/**'
-  #             - 'platform/kong/**'
-
   oas-to-kong:
     name: Convert OAS to Kong configurations
-
-    # commenting out this job temporarily, will add back (and consider if needed)
-    # needs: has-changes
-    # if: ${{ needs.has-changes.outputs.are-changes == 'true' }}
-
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          ref: feat/digenable
 
       - name: Setup deck
         uses: kong/setup-deck@v1
@@ -89,6 +47,12 @@ jobs:
           sales/customer/kong/plugins/*.yaml \
           --output-file sales/customer/kong/.generated/kong.yaml
 
+      - name: Add consumer configuration
+        run: |
+          deck file merge sales/customer/kong/.generated/kong.yaml \
+          sales/customer/kong/consumers/*.yaml \
+          --output-file sales/customer/kong/.generated/kong.yaml
+
       - name: Add tags
         run: |
           cat sales/customer/kong/.generated/kong.yaml | \
@@ -97,7 +61,7 @@ jobs:
           --selector "$.services[*].routes[*]"  \
           --output-file sales/customer/kong/.generated/kong.yaml
 
-      - name: Add environment Specific Patch & create artifact
+      - name: Add environment Specific Patch
         run: |
           cat sales/customer/kong/.generated/kong.yaml | \
           deck file patch sales/customer/kong/patches.yaml \
@@ -106,31 +70,18 @@ jobs:
       - name: Validate decK state file locally
         run: |
           deck file validate sales/customer/kong/.generated/kong.yaml
-      
+
       - name: Copy to artifact directory
         run: |
           cp sales/customer/kong/.generated/kong.yaml \
-             .github/artifacts/customer/kong.yaml
-      
-      - name: Check directory status for customer API
-        run: ls -l sales/customer/kong/.generated/
-      
-      - name: Check directory status for customer API
-        run: ls -l .github/artifacts/customer/
-
-      # - name: Upload Artifacts
-      #   # Artifacts are the files that are built along the way of the pipeline but are not committed to the repo
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: kong-configurations-customer-api
-      #     path: .github/artifacts/kong/*.yaml
+             .github/artifacts/customer/customer-kong.yaml
            
       - name: Validate connectivity to Konnect
         run: |
           deck gateway ping \
-          --konnect-control-plane-name shrikanth-cp \
+          --konnect-control-plane-name ${{vars.KONNECT_INTERNAL_CP}} \
           --konnect-token ${{ secrets.KONNECT_PAT }} \
-          --konnect-addr https://au.api.konghq.com
+          --konnect-addr ${{vars.KONNECT_ADDR_EU}}
 
       - name: deck diff
         id: deck-diff
@@ -141,28 +92,21 @@ jobs:
           EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
           echo "DIFF<<$EOF" >> $GITHUB_ENV
           deck gateway diff --select-tag sales --select-tag customer \
-          .github/artifacts/customer/kong.yaml \
-          --konnect-control-plane-name shrikanth-cp \
+          .github/artifacts/customer/customer-kong.yaml \
+          --konnect-control-plane-name ${{vars.KONNECT_INTERNAL_CP}} \
           --konnect-token ${{ secrets.KONNECT_PAT }} \
-          --konnect-addr https://au.api.konghq.com>> $GITHUB_ENV
+          --konnect-addr ${{vars.KONNECT_ADDR_EU}}>> $GITHUB_ENV
           echo "$EOF" >> $GITHUB_ENV
 
-      # - name: Create PR to stage changes for the Kong Gateway in production
-      #   uses: peter-evans/create-pull-request@v5
-      #   with:
-      #     title: "❗PRD❗: Staged changes for Kong Gateway PRD deployment"
-      #     branch: "PRD/kong"
-      #     labels: "PRD,kong"
-      #     body: "Merging this PR will result in the following changes deployed to PRD \n\n ```\n${{env.DIFF}}\n```"
-
-      - name: Check status for files to be committed
+      #an artifact file will be committed only if it the Kong config differs from the previous one.
+      - name: Check status of any files to be committed
         run: git status
 
-      - name: Create PR for changed Kong Gateway Configuration
+      - name: Create PR to stage changes for the Kong Gateway in production
         uses: peter-evans/create-pull-request@v5
         with:
-          title: Stage Kong Gateway Configuration
+          title: "❗PRD❗: Staged changes for Kong Gateway PRD deployment"
+          # branch: "PRD/kong"
+          labels: "PRD,kong"
           body: "Merging this PR will result in the following changes deployed to PRD \n\n ```\n${{env.DIFF}}\n```"
-          add-paths: |
-            .github/artifacts/customer/*.yaml
-            sales/customer/kong/.generated/*.yaml
+

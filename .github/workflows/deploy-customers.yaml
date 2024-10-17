@@ -1,9 +1,14 @@
 name: Deploy Customers API to Kong
 
 on:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
+      - feat/digenable
+    paths:
+      - '.github/artifacts/customer/*.yaml'
+      - '.github/workflows/deploy-customers.yaml'
+
   workflow_dispatch:
 
 jobs:
@@ -14,50 +19,51 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      
+      - name: Check if file exists
+        id: check_file
+        run: |
+          if [ ! -f ".github/artifacts/customer/customer-kong.yaml" ]; then
+            echo "Artifact file not found! Stopping workflow.. Run the build workflow before deploy !"
+            exit 1  
+          else
+            echo "Artifact file exists!"
+          fi
 
       - name: Setup deck
         uses: kong/setup-deck@v1
         with:
           deck-version: '1.40.3'
           wrapper: false
-      
-      - name: SHow current workspace
-        run: echo $GITHUB_WORKSPACE
-
-      - name: Create Dir
-        run: mkdir artifacts
-
-      - name:
-        uses: actions/download-artifact@v4
-        with:
-          name: kong-configurations-customer-api
-          path: artifacts
-      
-      - name: Display structure of downloaded files
-        run: ls -R artifacts
 
       - name: Validate connectivity to Konnect
         run: |
           deck gateway ping \
-          --konnect-control-plane-name shrikanth-cp \
+          --konnect-control-plane-name ${{vars.KONNECT_INTERNAL_CP}} \
           --konnect-token ${{ secrets.KONNECT_PAT }} \
-          --konnect-addr https://au.api.konghq.com
-
-      # - name: Backup current Kong Configuration
-      #   run: |
-      #     deck gateway dump --select-tag sales --select-tag customer \
-      #      --output-file sales/customer/kong/.generated/backup.yaml \
-      #      --konnect-control-plane-name shrikanth-cp \
-      #      --konnect-token ${{ secrets.KONNECT_PAT }} \
-      #      --konnect-addr https://au.api.konghq.com 
+          --konnect-addr ${{vars.KONNECT_ADDR_EU}}
       
-      # - name: Apply Configuration to Kong
-      #   run: |
-      #     deck gateway sync --select-tag sales  \
-      #      .github/artifacts/customer/kong.yaml \
-      #       --konnect-control-plane-name shrikanth-cp \
-      #       --konnect-token ${{ secrets.KONNECT_PAT }} \
-      #       --konnect-addr https://au.api.konghq.com 
+      - name: Apply Configuration to Kong
+        run: |
+          deck gateway sync --select-tag sales --select-tag customer \
+           .github/artifacts/customer/customer-kong.yaml \
+            --konnect-control-plane-name ${{vars.KONNECT_INTERNAL_CP}} \
+            --konnect-token ${{ secrets.KONNECT_PAT }} \
+            --konnect-addr ${{vars.KONNECT_ADDR_EU}}
+
+      - name: Sleep for a couple of seconds 
+        run: sleep 5
+      
+      - name: Run Integration Tests
+        run: |
+          for test_script in sales/customer/tests/*.sh; do
+            echo "Running $test_script"
+            bash "$test_script"
+            if [ $? -ne 0 ]; then
+              echo "Test $test_script failed"
+              exit 1
+            fi
+          done
 
 
       
