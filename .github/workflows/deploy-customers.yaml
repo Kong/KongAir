@@ -1,12 +1,12 @@
 name: Deploy Customers API to Kong
 
 on:
-  push:
-    branches:
-      - main
-      - feat/digenable
-    paths:
-       - '.github/artifacts/customer/kong.yaml'
+  # push:
+  #   branches:
+  #     - main
+  #     - feat/digenable
+  #   paths:
+  #      - '.github/artifacts/customer/kong.yaml'
 
   workflow_dispatch:
 
@@ -40,13 +40,13 @@ jobs:
            --konnect-token ${{ secrets.KONNECT_PAT }} \
            --konnect-addr $KONNECT_ADDR_EU
       
-      # - name: Apply Configuration to Kong
-      #   run: |
-      #     deck gateway sync --select-tag sales  \
-      #      .github/artifacts/customer/kong.yaml \
-      #       --konnect-control-plane-name $KONNECT_INTERNAL_CP \
-      #       --konnect-token ${{ secrets.KONNECT_PAT }} \
-      #       --konnect-addr $KONNECT_ADDR_EU
+      - name: Apply Configuration to Kong
+        run: |
+          deck gateway sync --select-tag sales  \
+           .github/artifacts/customer/kong.yaml \
+            --konnect-control-plane-name $KONNECT_INTERNAL_CP \
+            --konnect-token ${{ secrets.KONNECT_PAT }} \
+            --konnect-addr $KONNECT_ADDR_EU
 
 
       
