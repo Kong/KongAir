@@ -1,4 +1,14 @@
 _format_version: "3.0"
+consumers:
+- keyauth_credentials:
+  - key: dfreese-key
+  username: dfreese
+- keyauth_credentials:
+  - key: jdoe-key
+  username: jdoe
+- keyauth_credentials:
+  - key: jsmith-key
+  username: jsmith
 plugins:
 - config:
     key_names:
@@ -19,12 +29,12 @@ plugins:
   name: proxy-cache-advanced
   route: customer-information-service_get-cust-info
 services:
-- host: customer.kongair
+- host: http://kongair-flights-service.kongair.svc.cluster.local
   id: 690e812e-2873-566a-b02f-d03e0bf8ff69
   name: customer-information-service
   path: /
   plugins: []
-  port: 8083
+  port: 8080
   protocol: http
   routes:
   - id: 5984bb2d-328e-5785-a06a-f639c3a59d94
