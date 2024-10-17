@@ -6,8 +6,8 @@ on:
       - main
       - feat/digenable
     paths:
-       - '.github/artifacts/customer/*.yaml'
-       - '.github/workflows/deploy-customers.yaml'
+      - '.github/artifacts/customer/*.yaml'
+      - '.github/workflows/deploy-customers.yaml'
 
   workflow_dispatch:
 
