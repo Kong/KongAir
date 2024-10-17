@@ -28,6 +28,13 @@ plugins:
     strategy: memory
   name: proxy-cache-advanced
   route: customer-information-service_get-cust-info
+- config:
+    add:
+      body: []
+      headers:
+      - X-Powered-By:Konnect
+  enabled: true
+  name: request-transformer-advanced
 services:
 - host: kongair-customers-service.kongair.svc.cluster.local
   id: 690e812e-2873-566a-b02f-d03e0bf8ff69
