@@ -8,3 +8,6 @@ consumers:
 - keyauth_credentials:
   - key: jsmith-key
   username: jsmith
+- keyauth_credentials:
+  - key: foo-key
+  username: foo
