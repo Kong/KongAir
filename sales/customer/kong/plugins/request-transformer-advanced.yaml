@@ -6,3 +6,4 @@ plugins:
       body: []
       headers:
       - X-Powered-By:Konnect
+      - X-Foo:Bar
