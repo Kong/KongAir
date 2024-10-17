@@ -28,25 +28,17 @@ jobs:
       - name: Validate connectivity to Konnect
         run: |
           deck gateway ping \
-          --konnect-control-plane-name shrikanth-cp \
+          --konnect-control-plane-name ${{vars.KONNECT_INTERNAL_CP}} \
           --konnect-token ${{ secrets.KONNECT_PAT }} \
-          --konnect-addr $KONNECT_ADDR_EU
-
-      - name: Backup current Kong Configuration
-        run: |
-          deck gateway dump --select-tag sales --select-tag customer \
-           --output-file sales/customer/kong/.generated/backup.yaml \
-           --konnect-control-plane-name $KONNECT_INTERNAL_CP \
-           --konnect-token ${{ secrets.KONNECT_PAT }} \
-           --konnect-addr $KONNECT_ADDR_EU
+          --konnect-addr ${{vars.KONNECT_ADDR_EU}}
       
       - name: Apply Configuration to Kong
         run: |
           deck gateway sync --select-tag sales  \
            .github/artifacts/customer/kong.yaml \
-            --konnect-control-plane-name $KONNECT_INTERNAL_CP \
+            --konnect-control-plane-name ${{vars.KONNECT_INTERNAL_CP}} \
             --konnect-token ${{ secrets.KONNECT_PAT }} \
-            --konnect-addr $KONNECT_ADDR_EU
+            --konnect-addr ${{vars.KONNECT_ADDR_EU}}
 
 
       
