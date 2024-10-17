@@ -20,6 +20,9 @@ plugins:
     content_type:
     - text/plain
     - application/json
+    redis:
+      cluster_addresses: null
+      sentinel_addresses: null
     request_method:
     - GET
     - HEAD
