@@ -36,6 +36,7 @@ plugins:
       body: []
       headers:
       - X-Powered-By:Konnect
+      - X-Tested-By:Duncan
   enabled: true
   name: request-transformer-advanced
 services:
