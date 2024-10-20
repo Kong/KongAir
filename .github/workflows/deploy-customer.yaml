@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - main
-      - feat/digenable
+      - feat/*
     paths:
       - '.github/artifacts/customer/*.yaml'
-      - '.github/workflows/deploy-customers.yaml'
+      - '.github/workflows/deploy-customer.yaml'
 
   workflow_dispatch:
 
