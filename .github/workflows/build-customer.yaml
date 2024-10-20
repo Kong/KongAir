@@ -3,23 +3,14 @@ name: Build Customer API - Generate Kong Configs
 on:
   workflow_dispatch:
   # Run if someone pushes to the feature branch (during development)
-  # we've not put main here as nobody should push directly to main
   push:
     branches:
-      - feat/digenable
+      - feat/*
       - main
     paths:
       - 'sales/customer/opeanapi.yaml'
       - 'sales/customer/kong/**'
-      - '.github/workflows/build-customers.yaml'
-  # pull_request:
-  #   branches:
-  #     - main
-  #     - feat/digenable
-  #   paths:
-  #     - 'sales/customer/opeanapi.yaml'
-  #     - 'sales/customer/kong/**'
-  #     - '.github/workflows/build-customers.yaml'
+      - '.github/workflows/build-customer.yaml'
 
 jobs:
 
