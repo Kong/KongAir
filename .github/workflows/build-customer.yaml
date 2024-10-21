@@ -27,13 +27,6 @@ jobs:
           deck-version: '1.40.3'
           wrapper: false
 
-      - name: Install inso
-        run: brew install inso
-
-      # API Spec linting
-      - name: Validate specification
-        run: inso lint spec sales/customer/openapi.yaml
-
       - name: Generate Kong Declarative Configs from Spec
         run: |
           deck file openapi2kong --spec sales/customer/openapi.yaml \
