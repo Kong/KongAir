@@ -35,7 +35,7 @@ plugins:
     add:
       body: []
       headers:
-      - X-Powered-By:Konnect!
+      - X-Powered-By:Konnect
   enabled: true
   name: request-transformer-advanced
 services:
