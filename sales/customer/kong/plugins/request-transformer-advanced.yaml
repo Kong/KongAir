@@ -5,4 +5,4 @@ plugins:
     add:
       body: []
       headers:
-      - X-Powered-By:Konnect!
+      - X-Powered-By:Konnect!!
