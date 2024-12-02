@@ -41,7 +41,7 @@ jobs:
           deck gateway ping \
           --konnect-control-plane-name ${{vars.KONNECT_INTERNAL_CP}} \
           --konnect-token ${{ secrets.KONNECT_PAT }} \
-          --konnect-addr ${{vars.KONNECT_ADDR_EU}}
+          --konnect-addr ${{vars.KONNECT_ADDR}}
       
       - name: Apply Configuration to Kong
         run: |
@@ -49,7 +49,7 @@ jobs:
            .github/artifacts/customer/customer-kong.yaml \
             --konnect-control-plane-name ${{vars.KONNECT_INTERNAL_CP}} \
             --konnect-token ${{ secrets.KONNECT_PAT }} \
-            --konnect-addr ${{vars.KONNECT_ADDR_EU}}
+            --konnect-addr ${{vars.KONNECT_ADDR}}
 
       - name: Sleep for a couple of seconds 
         run: sleep 5
