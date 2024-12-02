@@ -72,7 +72,7 @@ jobs:
           deck gateway ping \
           --konnect-control-plane-name ${{vars.KONNECT_INTERNAL_CP}} \
           --konnect-token ${{ secrets.KONNECT_PAT }} \
-          --konnect-addr ${{vars.KONNECT_ADDR_EU}}
+          --konnect-addr ${{vars.KONNECT_ADDR}}
 
       - name: deck diff
         id: deck-diff
@@ -86,7 +86,7 @@ jobs:
           .github/artifacts/customer/customer-kong.yaml \
           --konnect-control-plane-name ${{vars.KONNECT_INTERNAL_CP}} \
           --konnect-token ${{ secrets.KONNECT_PAT }} \
-          --konnect-addr ${{vars.KONNECT_ADDR_EU}}>> $GITHUB_ENV
+          --konnect-addr ${{vars.KONNECT_ADDR}}>> $GITHUB_ENV
           echo "$EOF" >> $GITHUB_ENV
 
       #an artifact file will be committed only if it the Kong config differs from the previous one.
