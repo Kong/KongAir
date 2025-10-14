@@ -3,12 +3,12 @@ portals:
     name: "KongAir Portal"
     display_name: "KongAir Developer Portal"
     description: "Explore KongAir operational APIs for schedules, routes, bookings, and customer accounts."
-    authentication_enabled: false
+    authentication_enabled: true
     rbac_enabled: false
-    auto_approve_developers: false
-    auto_approve_applications: false
-    default_api_visibility: "public"
-    default_page_visibility: "public"
+    auto_approve_developers: true
+    auto_approve_applications: true
+    default_api_visibility: "private"
+    default_page_visibility: "private"
     default_application_auth_strategy_id: !ref kongair-apikey-strategy#id
 
     customization:
@@ -79,7 +79,7 @@ portals:
         slug: "apis"
         title: "API Catalog"
         description: "Discover KongAir services, explore capabilities, and download specs."
-        visibility: "public"
+        visibility: "private"
         status: "published"
         content: !file ./pages/apis.md
 
