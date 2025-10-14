@@ -9,7 +9,6 @@ portals:
     auto_approve_applications: true
     default_api_visibility: "private"
     default_page_visibility: "private"
-    default_application_auth_strategy_id: !ref kongair-apikey-strategy#id
 
     customization:
       ref: kongair-portal-customization

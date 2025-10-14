@@ -1,11 +1,12 @@
 
-application_auth_strategies:
-  - ref: kongair-apikey-strategy
-    name: kongair-api-key-strat
-    display_name: Kong Air API Key Authentication
-    strategy_type: key_auth
-    configs:
-      key-auth:
-        key_names:
-          - X-API-Key
-          - Api-Key
+#application_auth_strategies:
+#  - ref: kongair-apikey-strategy
+#    name: kongair-apikey-strategy
+#    display_name: Kong Air API Key Authentication
+#    strategy_type: key_auth
+#    configs:
+#      key-auth:
+#        key_names:
+#          - X-API-Key
+#          - Api-Key
+#          - apikey
