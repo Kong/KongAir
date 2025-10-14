@@ -1,5 +1,3 @@
-# Application Authentication Strategy
-# Converted from: cfg/portal/app-auth-strategy.yaml
 
 resource "konnect_application_auth_strategy" "kongair_apikey_strategy" {
   key_auth = {

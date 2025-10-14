@@ -1,5 +1,4 @@
 # Portal Snippets Configuration
-# Converted from: cfg/portal/portal.yaml (snippets section)
 
 # KongAir Hero Snippet
 resource "konnect_portal_snippet" "kongair_hero" {

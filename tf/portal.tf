@@ -1,6 +1,3 @@
-# Portal Configuration
-# Converted from: cfg/portal/portal.yaml
-
 # KongAir Portal
 resource "konnect_portal" "kongair_portal" {
   name                                 = "KongAir Portal"

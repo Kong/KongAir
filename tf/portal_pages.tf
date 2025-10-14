@@ -1,5 +1,4 @@
 # Portal Pages Configuration
-# Converted from: cfg/portal/portal.yaml (pages section)
 
 # Home Page
 resource "konnect_portal_page" "kongair_home" {
