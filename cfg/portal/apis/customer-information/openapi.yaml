@@ -1,0 +1,101 @@
+---
+openapi: 3.0.0
+info:
+  contact:
+    name: Kong, Inc.
+  description: |
+    KongAir Customer Information service provides customer information
+    (payment methods, contact info, frequent flyer, etc...)
+  version: 0.1.0
+  title: Customer Information Service
+
+servers:
+- url: https://api.kong-air.com
+  description: KongAir API Server
+
+paths:
+  /health:
+    get:
+      summary: Health check endpoint for Kubernetes
+      description: Endpoint that returns the service health status.
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "OK"
+        '500':
+          description: Service is unhealthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "unhealthy"
+  "/customer":
+    get:
+      summary: Fetch a customers information
+      description: Fetch a customers information
+      tags:
+      - sales
+      - customer
+      operationId: get-cust-info
+      responses:
+        '200':
+          $ref: '#/components/responses/CustomerSingle'
+        '404':
+          description: Customer Not Found
+
+components:
+  responses:
+    CustomerSingle:
+      description: A get action response for a single Customer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Customer'
+  schemas:
+    PaymentMethod:
+      type: object
+      properties:
+        id:
+          type: string
+        redacted_card_number:
+          type: string
+        card_holder_name:
+          type: string
+        expiration-date:
+          type: string
+    CustomerInformation:
+      type: object
+      properties:
+        address:
+          type: string
+        phone_number:
+          type: string
+        email:
+          type: string
+        frequent_flier_number:
+          type: string
+        payment_methods:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentMethod'
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        name:
+          type: string
+        information:
+          $ref: '#/components/schemas/CustomerInformation'

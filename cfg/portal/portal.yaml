@@ -1,0 +1,181 @@
+portals:
+  - ref: kongair-portal
+    name: "KongAir Portal"
+    display_name: "KongAir Developer Portal"
+    description: "Explore KongAir operational APIs for schedules, routes, bookings, and customer accounts."
+    authentication_enabled: false
+    rbac_enabled: false
+    auto_approve_developers: false
+    auto_approve_applications: false
+    default_api_visibility: "public"
+    default_page_visibility: "public"
+    default_application_auth_strategy_id: !ref kongair-apikey-strategy#id
+
+    customization:
+      ref: kongair-portal-customization
+      theme:
+        mode: "light"
+        colors:
+          primary: "#0B5F9E"
+      layout: "topnav"
+      menu:
+        main:
+          - path: "/"
+            title: "Home"
+            external: false
+            visibility: "public"
+          - path: "/getting-started"
+            title: "Getting Started"
+            external: false
+            visibility: "public"
+          - path: "/guides"
+            title: "Guides"
+            external: false
+            visibility: "public"
+          - path: "/apis"
+            title: "APIs"
+            external: false
+            visibility: "public"
+        footer_sections:
+          - title: "KongAir"
+            items:
+              - path: "#"
+                title: "About"
+                external: false
+                visibility: "public"
+              - path: "#"
+                title: "Careers"
+                external: false
+                visibility: "public"
+              - path: "#"
+                title: "Press"
+                external: false
+                visibility: "public"
+          - title: "Resources"
+            items:
+              - path: "#"
+                title: "Status"
+                external: false
+                visibility: "public"
+              - path: "#"
+                title: "Support"
+                external: false
+                visibility: "public"
+              - path: "#"
+                title: "Contact"
+                external: false
+                visibility: "public"
+
+    pages:
+      - ref: kongair-home
+        slug: "/"
+        title: "KongAir APIs"
+        description: "Build travel experiences powered by real-time schedules, inventory, and customer insights."
+        visibility: "public"
+        status: "published"
+        content: !file ./pages/home.md
+
+      - ref: kongair-apis
+        slug: "apis"
+        title: "API Catalog"
+        description: "Discover KongAir services, explore capabilities, and download specs."
+        visibility: "public"
+        status: "published"
+        content: !file ./pages/apis.md
+
+      - ref: kongair-getting-started
+        slug: "getting-started"
+        title: "Getting Started"
+        description: "Learn how to authenticate, call sandbox endpoints, and move to production."
+        visibility: "public"
+        status: "published"
+        content: !file ./pages/getting-started.md
+
+      - ref: kongair-guides
+        slug: "guides"
+        title: "Implementation Guides"
+        description: "Step-by-step instructions for combining KongAir APIs in real travel flows."
+        visibility: "public"
+        status: "published"
+        content: !file ./pages/guides.md
+        children:
+          - ref: kongair-guide-flight-operations
+            slug: "flight-operations"
+            title: "Flight Operations"
+            description: "Create schedule-aware experiences with the Flights and Routes APIs."
+            visibility: "public"
+            status: "published"
+            content: !file ./pages/guides/flight-operations.md
+
+          - ref: kongair-guide-booking-automation
+            slug: "booking-automation"
+            title: "Booking Automation"
+            description: "Streamline booking flows, confirmations, and updates."
+            visibility: "public"
+            status: "published"
+            content: !file ./pages/guides/manage-bookings.md
+            children:
+              - ref: kongair-guide-booking-notifications
+                slug: "real-time-updates"
+                title: "Real-time Booking Updates"
+                description: "Trigger downstream systems when bookings change."
+                visibility: "public"
+                status: "published"
+                content: !file ./pages/guides/manage-bookings/real-time-updates.md
+
+          - ref: kongair-guide-customer-360
+            slug: "customer-360"
+            title: "Customer 360"
+            description: "Combine booking and customer data for personalized travel experiences."
+            visibility: "public"
+            status: "published"
+            content: !file ./pages/guides/customer-360.md
+
+    snippets:
+      - ref: kongair-hero
+        name: "kongair-hero"
+        title: "KongAir Hero"
+        description: "Hero section used on the home page."
+        visibility: "public"
+        status: "published"
+        content: !file ./snippets/kongair-hero.md
+
+      - ref: kongair-hero-illustration
+        name: "kongair-hero-illustration"
+        title: "KongAir Hero Illustration"
+        description: "Primary aircraft illustration displayed in the hero."
+        visibility: "public"
+        status: "published"
+        content: !file ./snippets/kongair-hero-image.md
+
+      - ref: kongair-logo-bar
+        name: "kongair-logo-bar"
+        title: "Partner Logos"
+        description: "Sample airline partner strip."
+        visibility: "public"
+        status: "published"
+        content: !file ./snippets/kongair-logo-bar.md
+
+      - ref: kongair-destination-art
+        name: "kongair-destination-art"
+        title: "Destination Route Illustration"
+        description: "Supplemental route map art for portal pages."
+        visibility: "public"
+        status: "published"
+        content: !file ./snippets/kongair-destination-art.md
+
+      - ref: kongair-page-nav
+        name: "kongair-page-nav"
+        title: "Guide Navigation"
+        description: "Reusable navigation block for guide pages."
+        visibility: "public"
+        status: "published"
+        content: !file ./snippets/kongair-page-nav.md
+
+      - ref: kongair-page-toc
+        name: "kongair-page-toc"
+        title: "On This Page"
+        description: "Table of contents helper for long-form articles."
+        visibility: "public"
+        status: "published"
+        content: !file ./snippets/kongair-page-toc.md

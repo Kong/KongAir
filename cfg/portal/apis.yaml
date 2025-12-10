@@ -1,0 +1,163 @@
+# KongAir API catalogue for kongctl
+
+control_planes:
+  - ref: kongair-cp
+    _external:
+      selector:
+        matchFields:
+          name: "kongair"
+
+    gateway_services:
+      - ref: kongair-gw-svc
+        _external:
+          selector:
+            matchFields:
+              name: "kongair-api"
+
+apis:
+  - ref: kongair-flights
+    name: !file apis/flights/openapi.yaml#info.title
+    description: !file apis/flights/openapi.yaml#info.description
+    version: !file apis/flights/openapi.yaml#info.version
+    labels:
+      domain: flight-data
+      product: operations
+      protocol: rest
+
+    versions:
+      - ref: kongair-flights-v0-1
+        version: !file apis/flights/openapi.yaml#info.version
+        spec: !file apis/flights/openapi.yaml
+
+    documents:
+      - ref: kongair-flights-overview
+        title: "Flights API: Getting Started"
+        slug: flights-getting-started
+        status: published
+        content: !file apis/flights/docs/getting-started.md
+
+      - ref: kongair-flights-query-reference
+        title: "Flights API: Query Patterns"
+        slug: flights-query-patterns
+        status: published
+        content: !file apis/flights/docs/query-reference.md
+
+      - ref: kongair-flights-data-model
+        title: "Flights API: Data Model"
+        slug: flights-data-model
+        status: published
+        content: !file apis/flights/docs/data-model.md
+
+    publications:
+      - ref: kongair-flights-publication
+        portal_id: !ref kongair-portal#id
+        visibility: public
+
+    implementations:
+      - ref: kongair-flighs-implementation
+        service:
+          control_plane_id: !ref kongair-cp#id
+          id: !ref kongair-gw-svc#id
+
+
+#  - ref: kongair-routes
+#    name: !file apis/routes/openapi.yaml#info.title
+#    description: !file apis/routes/openapi.yaml#info.description
+#    version: !file apis/routes/openapi.yaml#info.version
+#    labels:
+#      domain: flight-data
+#      product: operations
+#      protocol: rest
+#
+#    versions:
+#      - ref: kongair-routes-v0-1
+#        version: !file apis/routes/openapi.yaml#info.version
+#        spec: !file apis/routes/openapi.yaml
+#
+#    documents:
+#      - ref: kongair-routes-overview
+#        title: "Routes API: Getting Started"
+#        slug: routes-getting-started
+#        status: published
+#        content: !file apis/routes/docs/getting-started.md
+#
+#      - ref: kongair-routes-filtering
+#        title: "Routes API: Filtering"
+#        slug: routes-filtering
+#        status: published
+#        content: !file apis/routes/docs/filtering.md
+#
+#    publications:
+#      - ref: kongair-routes-publication
+#        portal_id: !ref kongair-portal#id
+#        visibility: public
+#
+#  - ref: kongair-bookings
+#    name: !file apis/bookings/openapi.yaml#info.title
+#    description: !file apis/bookings/openapi.yaml#info.description
+#    version: !file apis/bookings/openapi.yaml#info.version
+#    labels:
+#      domain: sales
+#      product: commerce
+#      protocol: rest
+#
+#    versions:
+#      - ref: kongair-bookings-v0-1
+#        version: !file apis/bookings/openapi.yaml#info.version
+#        spec: !file apis/bookings/openapi.yaml
+#
+#    documents:
+#      - ref: kongair-bookings-overview
+#        title: "Bookings API: Getting Started"
+#        slug: bookings-getting-started
+#        status: published
+#        content: !file apis/bookings/docs/getting-started.md
+#
+#      - ref: kongair-bookings-auth
+#        title: "Bookings API: Authentication"
+#        slug: bookings-authentication
+#        status: published
+#        content: !file apis/bookings/docs/authentication.md
+#
+#      - ref: kongair-bookings-errors
+#        title: "Bookings API: Errors and Retries"
+#        slug: bookings-errors
+#        status: published
+#        content: !file apis/bookings/docs/error-handling.md
+#
+#    publications:
+#      - ref: kongair-bookings-publication
+#        portal_id: !ref kongair-portal#id
+#        visibility: public
+#
+#  - ref: kongair-customer-info
+#    name: !file apis/customer-information/openapi.yaml#info.title
+#    description: !file apis/customer-information/openapi.yaml#info.description
+#    version: !file apis/customer-information/openapi.yaml#info.version
+#    labels:
+#      domain: sales
+#      product: loyalty
+#      protocol: rest
+#
+#    versions:
+#      - ref: kongair-customer-info-v0-1
+#        version: !file apis/customer-information/openapi.yaml#info.version
+#        spec: !file apis/customer-information/openapi.yaml
+#
+#    documents:
+#      - ref: kongair-customer-info-overview
+#        title: "Customer Information API: Getting Started"
+#        slug: customer-info-getting-started
+#        status: published
+#        content: !file apis/customer-information/docs/getting-started.md
+#
+#      - ref: kongair-customer-info-sync
+#        title: "Customer Information API: Profile Sync"
+#        slug: customer-info-profile-sync
+#        status: published
+#        content: !file apis/customer-information/docs/profile-sync.md
+#
+#    publications:
+#      - ref: kongair-customer-info-publication
+#        portal_id: !ref kongair-portal#id
+#        visibility: public

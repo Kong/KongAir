@@ -9,3 +9,4 @@ kong.yaml
 tls*/
 *.env
 *.log
+temp/
