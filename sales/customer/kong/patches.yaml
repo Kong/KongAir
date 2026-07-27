@@ -11,3 +11,10 @@ patches:
         - name: jwt
           _config: default-jwt
           enabled: true
+        - name: request-transformer-advanced
+          enabled: true
+          configs: 
+            add: 
+              body: []
+              headers:
+              - X-Powered-By:Konnect!!
